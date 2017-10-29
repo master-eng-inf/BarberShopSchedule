@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="WhiteEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:colorControlNormal">@android:color/white</item>
+        <item name="android:colorControlActivated">@android:color/white</item>
+        <item name="android:colorControlHighlight">@android:color/white</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+</resources>
