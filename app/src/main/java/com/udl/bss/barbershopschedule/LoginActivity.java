@@ -22,5 +22,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button barber_home_btn = (Button) findViewById(R.id.barber_home_button);
+
+        barber_home_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BarberHomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
