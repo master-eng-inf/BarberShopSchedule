@@ -92,6 +92,16 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
 
+                <Button
+                    android:id="@+id/barber_nav_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Barber navigation"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:textColor="@color/colorPrimary"
+                    android:theme="@style/PrimaryAccent"
+                    style="@style/Widget.AppCompat.Button.Colored"/>
+
             </LinearLayout>
 
         </LinearLayout>

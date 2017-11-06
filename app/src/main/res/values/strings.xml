@@ -18,6 +18,10 @@
     <string name="transname_barberdesc">barberDesc</string>
     <string name="transname_barberimg">barberImage</string>
 
+    <string name="barber_schedule_button">Schedule</string>
+    <string name="barber_service_button">Services</string>
+    <string name="barber_promotion_button">Promotions</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
