@@ -103,8 +103,10 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
+        if (id == R.id.home) {
+            HomeFragment hf = HomeFragment.newInstance();
+            startFragment(hf);
+        } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
             startFragment(blf);
         } else if (id == R.id.nav_share) {
