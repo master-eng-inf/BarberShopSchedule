@@ -1,4 +1,4 @@
-package com.udl.bss.barbershopschedule;
+package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,9 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.udl.bss.barbershopschedule.adapters.MyAdapter;
+import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
 import com.udl.bss.barbershopschedule.domain.Barber;
-import com.udl.bss.barbershopschedule.listeners.ItemClick;
+import com.udl.bss.barbershopschedule.listeners.BarberClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ import java.util.List;
 public class BarberListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private MyAdapter adapter;
+    private BarberAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,7 +95,7 @@ public class BarberListFragment extends Fragment {
                 sr.setRefreshing(false);
 
                 if (adapter == null) {
-                    adapter = (MyAdapter) mRecyclerView.getAdapter();
+                    adapter = (BarberAdapter) mRecyclerView.getAdapter();
 
                 }
                 adapter.removeAll();
@@ -118,7 +119,7 @@ public class BarberListFragment extends Fragment {
         barberList.add(barber1);
         barberList.add(barber2);
 
-        adapter = new MyAdapter(barberList, new ItemClick(getActivity(), mRecyclerView));
+        adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
         mRecyclerView.setAdapter(adapter);
     }
 

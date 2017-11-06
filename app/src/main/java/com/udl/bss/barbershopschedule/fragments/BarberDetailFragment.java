@@ -1,4 +1,4 @@
-package com.udl.bss.barbershopschedule;
+package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
 public class BarberDetailFragment extends Fragment {
