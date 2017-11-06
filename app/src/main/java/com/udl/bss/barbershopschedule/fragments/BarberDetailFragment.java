@@ -3,14 +3,15 @@ package com.udl.bss.barbershopschedule.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.adapters.PagerAdapter;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
@@ -47,28 +48,44 @@ public class BarberDetailFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = view.findViewById(R.id.edit_fab);
-        ImageView imageView = view.findViewById(R.id.image_detail);
-        TextView textView_description = view.findViewById(R.id.description_detail);
-        TextView textView_name = view.findViewById(R.id.name_detail);
-        TextView textView_addr = view.findViewById(R.id.address_detail);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.general_information));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.schedule));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.prices_and_promotions));
 
         Bundle args = getArguments();
-
         Barber barber = args.getParcelable("barber");
+
+        ImageView imageView = (ImageView)view.findViewById(R.id.barber_shop_image);
+
         if (barber != null) {
 
             if (barber.getImage() != null) {
                 imageView.setImageBitmap(barber.getImage());
             }
-            textView_name.setText(barber.getName());
-            textView_description.setText(barber.getDescription());
-            String addr = barber.getAddress() + ", " + barber.getCity();
-            textView_addr.setText(addr);
 
+            final ViewPager viewPager = (ViewPager) view.findViewById(R.id.container);
+            final PagerAdapter adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount(), barber);
+
+            viewPager.setAdapter(adapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
-
-
     }
     @Override
     public void onAttach(Context context) {
@@ -90,5 +107,4 @@ public class BarberDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
 
     }
-
 }

@@ -45,9 +45,9 @@ public class BarberClick implements OnItemClickListener {
         }
         startFragmentWithSharedElement(fragment,
                 image_cv, activity.getString(R.string.transname_barberimg),
-                address_cv, activity.getString(R.string.transname_barberaddress),
+                name_cv, activity.getString(R.string.transname_barbername),
                 description_cv, activity.getString(R.string.transname_barberdesc),
-                name_cv, activity.getString(R.string.transname_barbername));
+                address_cv, activity.getString(R.string.transname_barberaddress));
     }
 
     private void startFragmentWithSharedElement(Fragment fragment,
@@ -61,7 +61,7 @@ public class BarberClick implements OnItemClickListener {
                     .addSharedElement(sharedElement1, transitionName1)
                     .addSharedElement(sharedElement2, transitionName2)
                     .addSharedElement(sharedElement3, transitionName3)
-                    .addSharedElement(sharedElement4, transitionName4)
+                    //.addSharedElement(sharedElement4, transitionName4)
                     .replace(R.id.content_home, fragment)
                     .addToBackStack(null)
                     .commit();
