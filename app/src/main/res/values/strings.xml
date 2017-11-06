@@ -18,9 +18,23 @@
     <string name="transname_barberdesc">barberDesc</string>
     <string name="transname_barberimg">barberImage</string>
 
-    <string name="barber_schedule_button">Schedule</string>
     <string name="barber_service_button">Services</string>
+    <string name="barber_new_service_button">New Service</string>
+    <string name="barber_service_creation_name">Service name</string>
+    <string name="barber_service_creation_description">Service description</string>
+
+
     <string name="barber_promotion_button">Promotions</string>
+    <string name="barber_new_promotion_button">New Promotion</string>
+    <string name="barber_promotion_creation_name">Promotion name</string>
+    <string name="barber_promotion_creation_description">Promotion description</string>
+
+
+    <string name="barber_create_button">Create</string>
+    <string name="barber_cancel_button">Cancel</string>
+
+    <string name="barber_schedule_button">Schedule</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

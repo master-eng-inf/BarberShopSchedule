@@ -6,26 +6,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity {
+public class BarberServicesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_barber_services);
 
-        Button login_btn = (Button) findViewById(R.id.login_button);
+        Button barber_new_service_btn = (Button) findViewById(R.id.barber_new_service_btn);
 
-        login_btn.setOnClickListener(new View.OnClickListener() {
+        barber_new_service_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BarberNewServiceActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button barber_home_btn = (Button) findViewById(R.id.barber_home_btn);
+        Button btn_back = (Button) findViewById(R.id.btn_back);
 
-        barber_home_btn.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BarberHomeActivity.class);

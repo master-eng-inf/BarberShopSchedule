@@ -98,4 +98,3 @@ public class MyAdapter  extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return mDataset.size()-1;
     }
 }
-
