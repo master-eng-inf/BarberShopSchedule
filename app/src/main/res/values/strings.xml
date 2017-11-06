@@ -20,4 +20,6 @@
 
     <string name="next_appointment">Next appointments</string>
     <string name="promotions">Promotions</string>
+
+    <string name="show_barbers">Show barbers</string>
 </resources>
