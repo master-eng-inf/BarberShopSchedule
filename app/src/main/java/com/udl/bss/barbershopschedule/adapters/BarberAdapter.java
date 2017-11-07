@@ -98,4 +98,3 @@ public class BarberAdapter extends RecyclerView.Adapter<BarberAdapter.ViewHolder
         return mDataset.size()-1;
     }
 }
-
