@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,11 +21,11 @@
             android:layout_height="wrap_content"
             android:transitionName="@string/transname_barberdesc"/>
 
-        <ImageView
-            android:id="@+id/review"
+        <RatingBar
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/review"/>
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="3"/>
 
         <ImageView
             android:id="@+id/map"
@@ -35,4 +35,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
