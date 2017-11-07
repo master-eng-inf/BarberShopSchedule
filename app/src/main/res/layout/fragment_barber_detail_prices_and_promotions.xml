@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.udl.bss.barbershopschedule.fragments.HomeFragment"
+    tools:context="com.udl.bss.barbershopschedule.fragments.BarberDetailPricesAndPromotionsFragment"
     android:background="#d3d3d3">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,13 +10,14 @@
         android:id="@+id/barber_home_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:context="com.udl.bss.barbershopschedule.fragments.HomeFragment"
         android:orientation="vertical"
         android:background="#d3d3d3">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next_appointment"
+            android:text="@string/prices"
             android:padding="@dimen/activity_horizontal_margin"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -40,4 +41,6 @@
             android:id="@+id/rv2" />
 
     </LinearLayout>
+
+
 </android.support.v4.widget.NestedScrollView>

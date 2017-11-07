@@ -1,0 +1,59 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:layout_margin="4dp"
+    card_view:cardBackgroundColor="#FFAB00"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4sp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_cv"
+            android:layout_width="55dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"
+            android:src="@drawable/ic_euro_symbol_white_24dp"/>
+
+
+        <TextView
+            android:id="@+id/service_cv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_cv"
+            android:layout_centerVertical="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="5dp"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:transitionName="@string/transname_barberaddress"/>
+
+        <TextView
+            android:id="@+id/price_cv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/name_cv"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:transitionName="@string/transname_barberdesc"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

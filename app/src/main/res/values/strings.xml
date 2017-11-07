@@ -25,7 +25,9 @@
     <string name="schedule">Schedule</string>
     <string name="prices_and_promotions">Prices/Promotions</string>
 
-
+    <string name="prices">Prices</string>
+    <string name="show_barbers">Show barbers</string>
+    <string name="title_activity_price_detail">PriceDetailActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -115,5 +117,4 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="show_barbers">Show barbers</string>
 </resources>

@@ -27,6 +27,10 @@
         <activity
             android:name=".PromotionsDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PriceDetailActivity"
+            android:label="@string/title_activity_price_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
