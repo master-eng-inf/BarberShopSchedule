@@ -49,10 +49,10 @@ public class BarberDetail_ScheduleFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                Intent intent = new Intent();
-                intent.putExtra("","");
+                Intent intent = new Intent(getContext(), BarberServicePricesActivity.class);
+                intent.putExtra("barber", barber);
 
-                Toast.makeText(getActivity(), dayOfMonth+"-"+month+"-"+year, Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
     }

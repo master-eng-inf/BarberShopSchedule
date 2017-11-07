@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.udl.bss.barbershopschedule.utils.BarberServicePricesActivity"
+    tools:context="com.udl.bss.barbershopschedule.BarberServicePricesActivity"
     tools:showIn="@layout/activity_barber_service_prices">
 
     <ListView
