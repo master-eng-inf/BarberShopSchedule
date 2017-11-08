@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.udl.bss.barbershopschedule.BarberDetail_GeneralInformationFragment"
+    tools:context="com.udl.bss.barbershopschedule.fragments.BarberDetailGeneralInformationFragment"
     android:background="#d3d3d3">
 
     <LinearLayout

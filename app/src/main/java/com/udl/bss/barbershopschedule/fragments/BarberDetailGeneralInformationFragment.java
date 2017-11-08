@@ -1,4 +1,4 @@
-package com.udl.bss.barbershopschedule;
+package com.udl.bss.barbershopschedule.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
-public class BarberDetail_GeneralInformationFragment extends Fragment {
+public class BarberDetailGeneralInformationFragment extends Fragment {
     private static final String BARBER_SHOP = "barber_shop";
     private Barber barber;
 
-    public static BarberDetail_GeneralInformationFragment newInstance(Barber param1) {
-        BarberDetail_GeneralInformationFragment fragment = new BarberDetail_GeneralInformationFragment();
+    public static BarberDetailGeneralInformationFragment newInstance(Barber param1) {
+        BarberDetailGeneralInformationFragment fragment = new BarberDetailGeneralInformationFragment();
         Bundle args = new Bundle();
         args.putParcelable(BARBER_SHOP, param1);
         fragment.setArguments(args);
@@ -32,7 +33,7 @@ public class BarberDetail_GeneralInformationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_barber_detail__general_information, container, false);
+        return inflater.inflate(R.layout.fragment_barber_detail_general_information, container, false);
     }
 
     @Override
