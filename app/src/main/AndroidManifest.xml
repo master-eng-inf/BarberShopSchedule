@@ -24,7 +24,7 @@
         <activity
             android:name=".BarberServicePricesActivity"
             android:label="@string/title_activity_barber_service_prices"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AppointmentDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -34,13 +34,14 @@
         <activity
             android:name=".PriceDetailActivity"
             android:label="@string/title_activity_price_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BarberHomeActivity" />
         <activity android:name=".BarberServicesActivity" />
         <activity android:name=".BarberPromotionsActivity" />
         <activity android:name=".BarberScheduleActivity" />
         <activity android:name=".BarberNewServiceActivity" />
-        <activity android:name=".BarberNewPromotionActivity"></activity>
+        <activity android:name=".BarberNewPromotionActivity" />
+        <activity android:name=".BarberScheduleDayActivity"></activity>
     </application>
 
 </manifest>
