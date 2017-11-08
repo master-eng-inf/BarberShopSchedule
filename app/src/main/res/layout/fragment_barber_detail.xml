@@ -17,7 +17,7 @@ android:background="@android:color/background_light" >
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        app:layout_scrollFlags="scroll|enterAlways"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
         app:layout_collapseMode="pin">
 
         <ImageView
