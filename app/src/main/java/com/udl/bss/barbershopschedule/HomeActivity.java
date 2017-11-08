@@ -25,7 +25,8 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         BarberListFragment.OnFragmentInteractionListener,
         BarberDetailFragment.OnFragmentInteractionListener,
-        HomeFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener,
+        BarberHomeFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +62,18 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        String user = getIntent().getStringExtra("user");
 
-        HomeFragment fragment = HomeFragment.newInstance();
-        startFragment(fragment);
+        if (user.equals("b") || user.equals("barber")) {
+            navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
+            BarberHomeFragment fragment = BarberHomeFragment.newInstance();
+            startFragment(fragment);
+        } else {
+            navigationView.inflateMenu(R.menu.activity_home_drawer);
+            HomeFragment fragment = HomeFragment.newInstance();
+            startFragment(fragment);
+        }
+
     }
 
     @Override
