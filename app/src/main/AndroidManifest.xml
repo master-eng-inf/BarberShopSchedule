@@ -24,8 +24,11 @@
         <activity
             android:name=".BarberServicePricesActivity"
             android:label="@string/title_activity_barber_service_prices"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".BarberFreeHoursActivity"
+            android:label="@string/title_activity_barber_free_hours"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
