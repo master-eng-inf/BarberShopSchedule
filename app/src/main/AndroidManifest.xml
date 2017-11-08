@@ -41,6 +41,10 @@
         <activity android:name=".BarberScheduleActivity" />
         <activity android:name=".BarberNewServiceActivity" />
         <activity android:name=".BarberNewPromotionActivity"></activity>
+        <activity
+            android:name=".BarberFreeHoursActivity"
+            android:label="@string/title_activity_barber_free_hours"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

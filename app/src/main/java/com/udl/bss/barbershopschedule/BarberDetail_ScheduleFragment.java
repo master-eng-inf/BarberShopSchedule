@@ -49,7 +49,7 @@ public class BarberDetail_ScheduleFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                Intent intent = new Intent(getContext(), BarberServicePricesActivity.class);
+                Intent intent = new Intent(getContext(), BarberFreeHoursActivity.class);
                 intent.putExtra("barber", barber);
 
                 startActivity(intent);

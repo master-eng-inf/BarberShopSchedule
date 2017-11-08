@@ -77,7 +77,6 @@ public class BarberListFragment extends Fragment {
             mRecyclerView = getView().findViewById(R.id.rv);
         }
 
-
         if (mRecyclerView != null) {
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
