@@ -62,7 +62,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         Appointment a = getIntent().getParcelableExtra("appointment");
 
-        ctl.setTitle(a.getBarberShopName());
+        ctl.setTitle(a.getName());
         tv_date.setText(new SimpleDateFormat("HH:mm dd-MM-yyyy",
                 new Locale("es", "ES")).format(a.getDate()));
         tv_service.setText(a.getService());
