@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="navigation_drawer_open">Obrir calaix de navegació</string>
+    <string name="navigation_drawer_close">Tancar calaix de navegació</string>
+
+    <string name="action_settings">Configuració</string>
+
+    <string name="login_button">Iniciar sessió</string>
+    <string name="home_title">Pàgina principal</string>
+    <string name="register_button">Registrar</string>
+    <string name="username">Nom d\'usuari</string>
+    <string name="password">Contrasenya</string>
+
+    <string name="next_appointment">Pròximes cites</string>
+    <string name="promotions">Promocions</string>
+
+    <string name="show_barbers">Mostra barbers</string>
+
+</resources>

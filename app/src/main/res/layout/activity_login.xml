@@ -12,13 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        >
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/logo_icon" />
 
     </LinearLayout>
 
@@ -91,6 +92,16 @@
                     android:theme="@style/TransparentAccent"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+
+                <Button
+                    android:id="@+id/barber_home_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Barber navigation"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:textColor="@color/colorPrimary"
+                    android:theme="@style/PrimaryAccent"
+                    style="@style/Widget.AppCompat.Button.Colored"/>
 
             </LinearLayout>
 

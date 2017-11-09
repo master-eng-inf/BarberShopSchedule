@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.udl.bss.barbershopschedule.BarberDetail_GeneralInformationFragment;
-import com.udl.bss.barbershopschedule.BarberDetail_PricesAndPromotionsFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberDetailPricesAndPromotionsFragment;
 import com.udl.bss.barbershopschedule.BarberDetail_ScheduleFragment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
@@ -35,7 +35,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 BarberDetail_ScheduleFragment tab2 = BarberDetail_ScheduleFragment.newInstance(this.barber);
                 return tab2;
             case 2:
-                BarberDetail_PricesAndPromotionsFragment tab3 = BarberDetail_PricesAndPromotionsFragment.newInstance(this.barber);
+                BarberDetailPricesAndPromotionsFragment tab3 = BarberDetailPricesAndPromotionsFragment.newInstance(this.barber);
                 return tab3;
             default:
                 return null;

@@ -7,18 +7,18 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.view.View;
 
-import com.udl.bss.barbershopschedule.BarberDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.MyAdapter;
+import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
-public class ItemClick implements OnItemClickListener {
+public class BarberClick implements OnItemClickListener {
 
     private FragmentActivity activity;
     private RecyclerView recyclerView;
 
-    public ItemClick (FragmentActivity activity, RecyclerView recyclerView) {
+    public BarberClick(FragmentActivity activity, RecyclerView recyclerView) {
         this.activity = activity;
         this.recyclerView = recyclerView;
     }
@@ -33,7 +33,7 @@ public class ItemClick implements OnItemClickListener {
         View address_cv = view.findViewById(R.id.address_cv);
 
 
-        MyAdapter adapter = (MyAdapter) recyclerView.getAdapter();
+        BarberAdapter adapter = (BarberAdapter) recyclerView.getAdapter();
 
         BarberDetailFragment fragment =
                 BarberDetailFragment.newInstance(adapter.getItem(position));
@@ -59,8 +59,8 @@ public class ItemClick implements OnItemClickListener {
             activity.getSupportFragmentManager()
                     .beginTransaction()
                     .addSharedElement(sharedElement1, transitionName1)
-                    .addSharedElement(sharedElement2, transitionName2)
-                    .addSharedElement(sharedElement3, transitionName3)
+                    //.addSharedElement(sharedElement2, transitionName2)
+                    //.addSharedElement(sharedElement3, transitionName3)
                     //.addSharedElement(sharedElement4, transitionName4)
                     .replace(R.id.content_home, fragment)
                     .addToBackStack(null)
