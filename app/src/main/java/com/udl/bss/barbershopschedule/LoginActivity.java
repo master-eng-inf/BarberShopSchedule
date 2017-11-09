@@ -27,12 +27,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button barber_home_btn = (Button) findViewById(R.id.barber_home_btn);
+        Button guest_btn = findViewById(R.id.guest_btn);
 
-        barber_home_btn.setOnClickListener(new View.OnClickListener() {
+        guest_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BarberHomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("user", "");
                 startActivity(intent);
             }
         });

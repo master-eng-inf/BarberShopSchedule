@@ -35,10 +35,6 @@
             android:name=".PriceDetailActivity"
             android:label="@string/title_activity_price_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BarberHomeActivity" />
-        <activity android:name=".BarberServicesActivity" />
-        <activity android:name=".BarberPromotionsActivity" />
-        <activity android:name=".BarberScheduleActivity" />
         <activity android:name=".BarberNewServiceActivity" />
         <activity android:name=".BarberNewPromotionActivity" />
         <activity

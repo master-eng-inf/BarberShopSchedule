@@ -59,4 +59,6 @@
     <string name="logout">Logout</string>
     <string name="exit">Exit</string>
 
+    <string name="guest">Guest</string>
+
 </resources>
