@@ -1,0 +1,26 @@
+<com.github.clans.fab.FloatingActionMenu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fab_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    app:menu_colorNormal="@color/colorPrimary"
+    app:menu_colorPressed="@color/colorPrimary"
+    app:menu_fab_show_animation="@anim/show_from_bottom"
+    app:menu_fab_hide_animation="@anim/hide_to_bottom"
+    app:menu_backgroundColor="#af000000"
+    app:menu_labels_style="@style/MenuLabelsStyle"
+    app:menu_labels_margin="@dimen/fab_margin">
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_user_new_appointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:fab_label="@string/new_appointment"
+        style="@style/FloatingButtonStyle"
+        android:src="@drawable/ic_star_border_white_24dp"/>
+
+</com.github.clans.fab.FloatingActionMenu>

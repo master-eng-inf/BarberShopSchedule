@@ -53,5 +53,6 @@
     <string name="title_activity_barber_free_hours">Free Hours</string>
 
     <string name="services">Services</string>
+    <string name="new_appointment">New appointment</string>
 
 </resources>

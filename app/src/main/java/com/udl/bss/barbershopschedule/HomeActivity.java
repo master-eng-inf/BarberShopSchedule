@@ -1,13 +1,11 @@
 package com.udl.bss.barbershopschedule;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.transition.Fade;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewStub;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
@@ -42,15 +44,6 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Fade fade = new Fade();
             fade.excludeTarget(android.R.id.statusBarBackground, true);
@@ -69,17 +62,51 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         String user = getIntent().getStringExtra("user");
+        ViewStub stub = findViewById(R.id.stub);
+        Fragment fragment;
 
         if (user.equals("b") || user.equals("barber")) {
+
+            stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
-            BarberHomeFragment fragment = BarberHomeFragment.newInstance();
-            startFragment(fragment);
+            fragment = BarberHomeFragment.newInstance();
+            stub.inflate();
+
+            final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
+
+            FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
+            fab_new_service.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    floatingActionMenu.close(true);
+                    Intent intent = new Intent(getApplicationContext(), BarberNewServiceActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            FloatingActionButton fab_new_promo = findViewById(R.id.fab_barber_new_promo);
+            fab_new_promo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    floatingActionMenu.close(true);
+                    Intent intent = new Intent(getApplicationContext(), BarberNewPromotionActivity.class);
+                    startActivity(intent);
+                }
+            });
+
         } else {
+
+            stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
-            HomeFragment fragment = HomeFragment.newInstance();
-            startFragment(fragment);
+            fragment = HomeFragment.newInstance();
+            stub.inflate();
+
         }
+
+        startFragment(fragment);
+
 
     }
 
