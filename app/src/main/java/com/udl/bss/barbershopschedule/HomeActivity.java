@@ -150,6 +150,9 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.home) {
             HomeFragment hf = HomeFragment.newInstance();
             startFragment(hf);
+        } else if (id == R.id.barber_home) {
+            BarberHomeFragment bhf = BarberHomeFragment.newInstance();
+            startFragment(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
             startFragment(blf);
@@ -162,10 +165,14 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.show_promotions) {
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
             startFragment(bpf);
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.profile) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.log_out) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.exit) {
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

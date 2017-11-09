@@ -55,4 +55,8 @@
     <string name="services">Services</string>
     <string name="new_appointment">New appointment</string>
 
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="exit">Exit</string>
+
 </resources>

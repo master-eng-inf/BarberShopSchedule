@@ -12,17 +12,25 @@
             android:title="@string/show_barbers" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/action_settings">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/profile"
+                android:icon="@drawable/ic_person_black_24dp"
+                android:title="@string/profile" />
         </menu>
     </item>
+
+    <group android:id="@+id/exit_group">
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_chevron_left_black_24dp"
+            android:title="@string/logout" />
+        <item
+            android:id="@+id/exit"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="@string/exit" />
+
+    </group>
 
 </menu>

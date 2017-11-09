@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra("user", username_et.getText().toString());
                 startActivity(intent);
+                finish();
             }
         });
 
