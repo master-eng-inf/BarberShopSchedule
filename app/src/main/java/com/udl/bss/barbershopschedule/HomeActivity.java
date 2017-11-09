@@ -18,7 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberPromotionsFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberScheduleFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberServicesFragment;
 import com.udl.bss.barbershopschedule.fragments.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity
@@ -26,7 +30,10 @@ public class HomeActivity extends AppCompatActivity
         BarberListFragment.OnFragmentInteractionListener,
         BarberDetailFragment.OnFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener,
-        BarberHomeFragment.OnFragmentInteractionListener {
+        BarberHomeFragment.OnFragmentInteractionListener,
+        BarberScheduleFragment.OnFragmentInteractionListener,
+        BarberServicesFragment.OnFragmentInteractionListener,
+        BarberPromotionsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +126,15 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
             startFragment(blf);
+        } else if (id == R.id.show_schedule) {
+            BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
+            startFragment(bsf);
+        } else if (id == R.id.show_services) {
+            BarberServicesFragment bsf = BarberServicesFragment.newInstance();
+            startFragment(bsf);
+        } else if (id == R.id.show_promotions) {
+            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
+            startFragment(bpf);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

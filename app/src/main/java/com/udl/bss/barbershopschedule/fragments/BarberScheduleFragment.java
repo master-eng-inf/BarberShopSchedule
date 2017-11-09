@@ -1,4 +1,4 @@
-package com.udl.bss.barbershopschedule;
+package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,17 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.udl.bss.barbershopschedule.R;
 
-public class BarberHomeFragment extends Fragment {
+
+public class BarberScheduleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public BarberHomeFragment() {
+    public BarberScheduleFragment() {
         // Required empty public constructor
     }
 
-    public static BarberHomeFragment newInstance() {
-        return new BarberHomeFragment();
+    public static BarberScheduleFragment newInstance() {
+        return new BarberScheduleFragment();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class BarberHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_barber_home, container, false);
+        return inflater.inflate(R.layout.fragment_barber_schedule, container, false);
     }
 
 
