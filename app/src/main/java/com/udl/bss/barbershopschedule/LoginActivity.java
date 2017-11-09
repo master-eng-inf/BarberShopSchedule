@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -13,22 +14,26 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button login_btn = (Button) findViewById(R.id.login_button);
+        Button login_btn = findViewById(R.id.login_button);
+        final EditText username_et = findViewById(R.id.username_et);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("user", username_et.getText().toString());
                 startActivity(intent);
+                finish();
             }
         });
 
-        Button barber_home_btn = (Button) findViewById(R.id.barber_home_btn);
+        Button guest_btn = findViewById(R.id.guest_btn);
 
-        barber_home_btn.setOnClickListener(new View.OnClickListener() {
+        guest_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BarberHomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("user", "");
                 startActivity(intent);
             }
         });

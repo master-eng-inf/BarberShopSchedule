@@ -54,7 +54,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.service.setText(mDataset.get(position).getService());
-        holder.name.setText(mDataset.get(position).getBarberShopName());
+        holder.name.setText(mDataset.get(position).getName());
         Date date_obj = mDataset.get(position).getDate();
         String date = new SimpleDateFormat("HH:mm dd-MM-yyyy", new Locale("es", "ES")).format(date_obj);
         holder.date.setText(date);

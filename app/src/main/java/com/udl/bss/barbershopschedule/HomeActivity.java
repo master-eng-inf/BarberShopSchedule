@@ -1,13 +1,11 @@
 package com.udl.bss.barbershopschedule;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.transition.Fade;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,16 +14,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewStub;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberPromotionsFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberScheduleFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberServicesFragment;
 import com.udl.bss.barbershopschedule.fragments.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         BarberListFragment.OnFragmentInteractionListener,
         BarberDetailFragment.OnFragmentInteractionListener,
-        HomeFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener,
+        BarberHomeFragment.OnFragmentInteractionListener,
+        BarberScheduleFragment.OnFragmentInteractionListener,
+        BarberServicesFragment.OnFragmentInteractionListener,
+        BarberPromotionsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +43,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Fade fade = new Fade();
@@ -62,8 +63,51 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        HomeFragment fragment = HomeFragment.newInstance();
+        String user = getIntent().getStringExtra("user");
+        ViewStub stub = findViewById(R.id.stub);
+        Fragment fragment;
+
+        if (user.equals("b") || user.equals("barber")) {
+
+            stub.setLayoutResource(R.layout.barber_fab);
+            navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
+            fragment = BarberHomeFragment.newInstance();
+            stub.inflate();
+
+            final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
+
+            FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
+            fab_new_service.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    floatingActionMenu.close(true);
+                    Intent intent = new Intent(getApplicationContext(), BarberNewServiceActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            FloatingActionButton fab_new_promo = findViewById(R.id.fab_barber_new_promo);
+            fab_new_promo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    floatingActionMenu.close(true);
+                    Intent intent = new Intent(getApplicationContext(), BarberNewPromotionActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        } else {
+
+            stub.setLayoutResource(R.layout.user_fab);
+            navigationView.inflateMenu(R.menu.activity_home_drawer);
+            fragment = HomeFragment.newInstance();
+            stub.inflate();
+
+        }
+
         startFragment(fragment);
+
+
     }
 
     @Override
@@ -106,13 +150,29 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.home) {
             HomeFragment hf = HomeFragment.newInstance();
             startFragment(hf);
+        } else if (id == R.id.barber_home) {
+            BarberHomeFragment bhf = BarberHomeFragment.newInstance();
+            startFragment(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
             startFragment(blf);
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.show_schedule) {
+            BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
+            startFragment(bsf);
+        } else if (id == R.id.show_services) {
+            BarberServicesFragment bsf = BarberServicesFragment.newInstance();
+            startFragment(bsf);
+        } else if (id == R.id.show_promotions) {
+            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
+            startFragment(bpf);
+        } else if (id == R.id.profile) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.log_out) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.exit) {
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

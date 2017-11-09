@@ -4,10 +4,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -24,11 +24,7 @@
         <activity
             android:name=".BarberServicePricesActivity"
             android:label="@string/title_activity_barber_service_prices"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".BarberFreeHoursActivity"
-            android:label="@string/title_activity_barber_free_hours"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AppointmentDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -38,13 +34,14 @@
         <activity
             android:name=".PriceDetailActivity"
             android:label="@string/title_activity_price_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".BarberHomeActivity" />
-        <activity android:name=".BarberServicesActivity" />
-        <activity android:name=".BarberPromotionsActivity" />
-        <activity android:name=".BarberScheduleActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BarberNewServiceActivity" />
-        <activity android:name=".BarberNewPromotionActivity"></activity>
+        <activity android:name=".BarberNewPromotionActivity" />
+        <activity
+            android:name=".BarberFreeHoursActivity"
+            android:label="@string/title_activity_barber_free_hours"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".BarberScheduleDayActivity" />
     </application>
 
 </manifest>

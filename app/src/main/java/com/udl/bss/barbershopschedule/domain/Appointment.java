@@ -7,20 +7,20 @@ import java.util.Date;
 
 public class Appointment implements Parcelable {
     private int id;
-    private String barberShopName;
+    private String name;
     private String service;
     private Date date;
 
-    public Appointment(int id, String barberShopName, String service, Date date) {
+    public Appointment(int id, String name, String service, Date date) {
         this.id = id;
-        this.barberShopName = barberShopName;
+        this.name = name;
         this.service = service;
         this.date = date;
     }
 
     private Appointment(Parcel in) {
         this.id = in.readInt();
-        this.barberShopName = in.readString();
+        this.name = in.readString();
         this.service = in.readString();
         this.date = new Date(in.readLong());
     }
@@ -39,7 +39,7 @@ public class Appointment implements Parcelable {
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(barberShopName);
+        dest.writeString(name);
         dest.writeString(service);
         dest.writeLong(date.getTime());
     }
@@ -57,12 +57,12 @@ public class Appointment implements Parcelable {
         this.id = id;
     }
 
-    public String getBarberShopName() {
-        return barberShopName;
+    public String getName() {
+        return name;
     }
 
-    public void setBarberShopName(String barberShopName) {
-        this.barberShopName = barberShopName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getService() {
@@ -86,7 +86,7 @@ public class Appointment implements Parcelable {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", barberShopName='" + barberShopName + '\'' +
+                ", name='" + name + '\'' +
                 ", service='" + service + '\'' +
                 ", date=" + date +
                 '}';
@@ -100,7 +100,7 @@ public class Appointment implements Parcelable {
         Appointment that = (Appointment) o;
 
         if (id != that.id) return false;
-        if (barberShopName != null ? !barberShopName.equals(that.barberShopName) : that.barberShopName != null)
+        if (name != null ? !name.equals(that.name) : that.name != null)
             return false;
         if (service != null ? !service.equals(that.service) : that.service != null) return false;
         return date != null ? date.equals(that.date) : that.date == null;
@@ -109,7 +109,7 @@ public class Appointment implements Parcelable {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (barberShopName != null ? barberShopName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (service != null ? service.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;

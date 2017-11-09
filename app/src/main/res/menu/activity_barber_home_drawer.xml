@@ -3,19 +3,28 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/home"
+            android:id="@+id/barber_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/home_title" />
         <item
-            android:id="@+id/show_barbers"
+            android:id="@+id/show_schedule"
+            android:icon="@drawable/ic_date_range_black_24dp"
+            android:title="@string/schedule" />
+        <item
+            android:id="@+id/show_services"
             android:icon="@drawable/ic_view_list_black_24dp"
-            android:title="@string/show_barbers" />
+            android:title="@string/services" />
+        <item
+            android:id="@+id/show_promotions"
+            android:icon="@drawable/ic_card_giftcard_black_24dp"
+            android:title="@string/promotions" />
+
     </group>
 
     <item android:title="@string/action_settings">
         <menu>
             <item
-                android:id="@+id/profile"
+                android:id="@+id/nav_share"
                 android:icon="@drawable/ic_person_black_24dp"
                 android:title="@string/profile" />
         </menu>

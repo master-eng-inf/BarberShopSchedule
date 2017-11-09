@@ -3,7 +3,8 @@
     android:id="@+id/barber_list_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.udl.bss.barbershopschedule.fragments.BarberListFragment">
+    tools:context="com.udl.bss.barbershopschedule.fragments.BarberListFragment"
+    android:background="#d3d3d3">
 
     <include layout="@layout/recycleview_swipe" />
 

@@ -1,4 +1,4 @@
-package com.udl.bss.barbershopschedule;
+package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.Toast;
 
+import com.udl.bss.barbershopschedule.BarberFreeHoursActivity;
+import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
-public class BarberDetail_ScheduleFragment extends Fragment {
+public class BarberDetailScheduleFragment extends Fragment {
 
     private static final String BARBER_SHOP = "barber_shop";
     private Barber barber;
 
-    public static BarberDetail_ScheduleFragment newInstance(Barber param1) {
-        BarberDetail_ScheduleFragment fragment = new BarberDetail_ScheduleFragment();
+    public static BarberDetailScheduleFragment newInstance(Barber param1) {
+        BarberDetailScheduleFragment fragment = new BarberDetailScheduleFragment();
         Bundle args = new Bundle();
         args.putParcelable(BARBER_SHOP, param1);
         fragment.setArguments(args);
@@ -36,7 +37,7 @@ public class BarberDetail_ScheduleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_barber_detail__schedule, container, false);
+        return inflater.inflate(R.layout.fragment_barber_detail_schedule, container, false);
     }
 
     @Override

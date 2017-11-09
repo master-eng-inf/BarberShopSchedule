@@ -18,8 +18,7 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BarberPromotionsActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -28,8 +27,7 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BarberPromotionsActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
