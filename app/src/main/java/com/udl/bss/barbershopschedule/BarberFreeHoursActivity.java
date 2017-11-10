@@ -1,22 +1,32 @@
 package com.udl.bss.barbershopschedule;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
 import com.udl.bss.barbershopschedule.adapters.GeneralAdapter;
+import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
+import com.udl.bss.barbershopschedule.listeners.FreeHourClick;
+import com.udl.bss.barbershopschedule.listeners.PriceClick;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class BarberFreeHoursActivity extends AppCompatActivity {
+
+    private RecyclerView freeHoursRecycleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +35,18 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.freeHoursRecycleView = findViewById(R.id.free_hours);
+
+        if(this.freeHoursRecycleView != null)
+        {
+            this.freeHoursRecycleView.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            this.freeHoursRecycleView.setLayoutManager(llm);
+
+            SetFreeHours();
+        }
+
+        /*
         ListView listView = (ListView)findViewById(R.id.free_hours);
 
         GeneralAdapter ga = new GeneralAdapter(this, R.layout.barber_free_hours_layout, GetElements());
@@ -49,6 +71,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
     }
 
     @Override
@@ -58,36 +81,37 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
         return true;
     }
 
-    private List<Object> GetElements()
+    private void SetFreeHours()
     {
-        List<Object> lstToReturn = new ArrayList<>();
+        List<Date> freeHoursList = new ArrayList<>();
 
         Date d1 = new Date();
         d1.setHours(10);
         d1.setMinutes(00);
 
         Date d2 = new Date();
-        d1.setHours(12);
-        d1.setMinutes(00);
+        d2.setHours(12);
+        d2.setMinutes(00);
 
         Date d3 = new Date();
-        d1.setHours(17);
-        d1.setMinutes(00);
+        d3.setHours(17);
+        d3.setMinutes(00);
 
         Date d4 = new Date();
-        d1.setHours(18);
-        d1.setMinutes(00);
+        d4.setHours(18);
+        d4.setMinutes(00);
 
         Date d5 = new Date();
-        d1.setHours(18);
-        d1.setMinutes(30);
+        d5.setHours(18);
+        d5.setMinutes(30);
 
-        lstToReturn.add(d1);
-        lstToReturn.add(d2);
-        lstToReturn.add(d3);
-        lstToReturn.add(d4);
-        lstToReturn.add(d5);
+        freeHoursList.add(d1);
+        freeHoursList.add(d2);
+        freeHoursList.add(d3);
+        freeHoursList.add(d4);
+        freeHoursList.add(d5);
 
-        return lstToReturn;
+        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick((Activity)this, this.freeHoursRecycleView));
+        this.freeHoursRecycleView.setAdapter(adapter);
     }
 }
