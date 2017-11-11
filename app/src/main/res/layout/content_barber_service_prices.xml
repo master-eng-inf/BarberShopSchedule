@@ -8,9 +8,9 @@
     tools:context="com.udl.bss.barbershopschedule.BarberServicePricesActivity"
     tools:showIn="@layout/activity_barber_service_prices">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/service_prices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

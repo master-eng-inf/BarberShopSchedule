@@ -1,27 +1,26 @@
 package com.udl.bss.barbershopschedule;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.udl.bss.barbershopschedule.adapters.GeneralAdapter;
-import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
+import com.udl.bss.barbershopschedule.domain.Price;
+import com.udl.bss.barbershopschedule.domain.Time;
+import com.udl.bss.barbershopschedule.listeners.PricePreAppointmentClick;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BarberServicePricesActivity extends AppCompatActivity {
 
-    private Date date;
+    private Time time;
+    private RecyclerView pricesRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,51 +28,39 @@ public class BarberServicePricesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_barber_service_prices);
 
         Intent intent = getIntent();
-        date = intent.getParcelableExtra("Date");
+        time = intent.getParcelableExtra("Time");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView listView = (ListView) findViewById(R.id.service_prices);
+        this.pricesRecyclerView = findViewById(R.id.service_prices);
 
-        GeneralAdapter ga = new GeneralAdapter(this, R.layout.barber_services_layout, GetElements());
+        if(this.pricesRecyclerView != null)
+        {
+            this.pricesRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            this.pricesRecyclerView.setLayoutManager(llm);
 
-        listView.setAdapter(ga);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BarberService service = (BarberService) parent.getItemAtPosition(position);
-                Toast.makeText(getApplication(),"This will create your appointment for a " + service.Get_Description() ,Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            setPricesItems();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
-    private List<Object> GetElements()
-    {
-        List<Object> lstToReturn = new ArrayList<>();
+    private void setPricesItems() {
+        List<Price> pricesList = new ArrayList<>();
 
-        lstToReturn.add(new BarberService(0, "Man haircut", 10));
-        lstToReturn.add(new BarberService(1, "Kid haircut", 5));
-        lstToReturn.add(new BarberService(2, "Girl haircut", 5));
-        lstToReturn.add(new BarberService(3, "Woman haircut", 10));
+        Price price1 = new Price(1, "TODO", "Hair cut", 7);
+        Price price2 = new Price(2, "TODO", "Tint",12);
 
-        return lstToReturn;
+        pricesList.add(price1);
+        pricesList.add(price2);
+
+        PriceAdapter adapter = new PriceAdapter(pricesList, new PricePreAppointmentClick((Activity)this, pricesRecyclerView));
+        pricesRecyclerView.setAdapter(adapter);
     }
 }

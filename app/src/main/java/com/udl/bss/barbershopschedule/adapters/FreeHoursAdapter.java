@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.domain.Time;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 
 import java.util.Date;
@@ -20,29 +21,30 @@ import java.util.List;
 
 public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.ViewHolder> {
 
-    private List<Date> mDataset;
+    private List<Time> mDataset;
     private OnItemClickListener listener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        TextView date;
+        public CardView cv;
+        public TextView date;
+        public View view;
 
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_view);
             date = itemView.findViewById(R.id.date_cv);
+            view = itemView;
         }
     }
 
-    public FreeHoursAdapter(List<Date> mDataset, OnItemClickListener listener)
-    {
+    public FreeHoursAdapter(List<Time> mDataset, OnItemClickListener listener) {
         this.mDataset = mDataset;
         this.listener = listener;
     }
 
     @Override
     public FreeHoursAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+                                                          int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.free_hours_card_view, parent, false);
         return new FreeHoursAdapter.ViewHolder(v);
@@ -50,13 +52,18 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
 
     @Override
     public void onBindViewHolder(final FreeHoursAdapter.ViewHolder holder, int position) {
-        holder.date.setText(mDataset.get(position).getHours() + ":" + mDataset.get(position).getMinutes());
+        Time time = mDataset.get(position);
+        String text = time.GetHour() + ":" + time.GetMinutes();
 
-        /*
-        ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");
-        //ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_name");
-        ViewCompat.setTransitionName(holder.price, String.valueOf(position)+"_desc");
-        */
+        if (time.GetMinutes() == 0) {
+            text += "0";
+        }
+
+        ((TextView)holder.view.findViewById(R.id.date_cv)).setText(text);
+
+        if (!time.GetAvailability()) {
+            holder.view.findViewById(R.id.card_view).setBackgroundResource(R.color.freeHourUnavailable);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,23 +78,23 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
         return mDataset.size();
     }
 
-    public Date getItem (int position) {
+    public Time getItem(int position) {
         return mDataset.get(position);
     }
 
-    public void removeAll(){
-        Iterator<Date> iter = mDataset.iterator();
-        while(iter.hasNext()){
-            Date date = iter.next();
-            int position = mDataset.indexOf(date);
+    public void removeAll() {
+        Iterator<Time> iter = mDataset.iterator();
+        while (iter.hasNext()) {
+            Time time = iter.next();
+            int position = mDataset.indexOf(time);
             iter.remove();
             notifyItemRemoved(position);
         }
     }
 
-    public int add(Date date){
-        mDataset.add(date);
-        notifyItemInserted(mDataset.size()-1);
-        return mDataset.size()-1;
+    public int add(Time time) {
+        mDataset.add(time);
+        notifyItemInserted(mDataset.size() - 1);
+        return mDataset.size() - 1;
     }
 }

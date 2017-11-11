@@ -16,5 +16,6 @@
     <string name="promotions">Promocions</string>
 
     <string name="show_barbers">Mostra barbers</string>
-
+    <string name="unavailable_date">Data no disponible</string>
+    <string name="unavailable_time">Hora no disponible</string>
 </resources>

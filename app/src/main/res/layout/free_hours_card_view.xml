@@ -3,9 +3,9 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:layout_margin="4dp"
-    card_view:cardBackgroundColor="#857282"
+    card_view:cardBackgroundColor="#008080"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4sp"
     android:clickable="true"
@@ -30,13 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/image_cv"
+            android:layout_centerVertical="true"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"
             android:textColor="#fff"
             android:textSize="15sp"/>
-        <!--
-            android:transitionName="@string/transname_barbername"/>
-        -->
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

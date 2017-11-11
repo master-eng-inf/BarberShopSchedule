@@ -9,10 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.udl.bss.barbershopschedule.BarberFreeHoursActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class BarberDetailScheduleFragment extends Fragment {
 
@@ -49,11 +54,17 @@ public class BarberDetailScheduleFragment extends Fragment {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
-                Intent intent = new Intent(getContext(), BarberFreeHoursActivity.class);
-                intent.putExtra("barber", barber);
+                if (year >= calendar.get(Calendar.YEAR) && month >= calendar.get(Calendar.MONTH) && dayOfMonth >= calendar.get(Calendar.DAY_OF_MONTH)) {
+                    Intent intent = new Intent(getContext(), BarberFreeHoursActivity.class);
+                    intent.putExtra("barber", barber);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(), R.string.unavailable_date, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
