@@ -66,7 +66,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
         freeHoursList.add(new Time(2017, 11, 11, 19, 00, true));
         freeHoursList.add(new Time(2017, 11, 11, 19, 30, false));
 
-        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick((Activity)this, this.freeHoursRecycleView));
+        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(this, this.freeHoursRecycleView), getApplicationContext());
         this.freeHoursRecycleView.setAdapter(adapter);
     }
 }

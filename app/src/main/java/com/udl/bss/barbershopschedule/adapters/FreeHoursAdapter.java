@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,23 +24,23 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
 
     private List<Time> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cv;
         public TextView date;
-        public View view;
 
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_view);
             date = itemView.findViewById(R.id.date_cv);
-            view = itemView;
         }
     }
 
-    public FreeHoursAdapter(List<Time> mDataset, OnItemClickListener listener) {
+    public FreeHoursAdapter(List<Time> mDataset, OnItemClickListener listener, Context context) {
         this.mDataset = mDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -59,10 +60,12 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
             text += "0";
         }
 
-        ((TextView)holder.view.findViewById(R.id.date_cv)).setText(text);
+        holder.date.setText(text);
 
         if (!time.GetAvailability()) {
-            holder.view.findViewById(R.id.card_view).setBackgroundResource(R.color.freeHourUnavailable);
+            holder.cv.setCardBackgroundColor(context.getResources().getColor(R.color.freeHourUnavailable));
+        } else {
+            holder.cv.setCardBackgroundColor(context.getResources().getColor(R.color.freeHourAvailable));
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
