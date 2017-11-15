@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,33 +13,42 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BarberListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BarberListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BarberListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private BarberAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
+
+    final static String urlBarbers = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barbers.json";
+    String jsonStr;
+    private String TAG = HomeActivity.class.getSimpleName();
 
     public BarberListFragment() {
     }
@@ -55,7 +65,6 @@ public class BarberListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_barber_list, container, false);
     }
 
@@ -82,7 +91,7 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            setItems();
+            new GetBarbers().execute();
 
         }
 
@@ -98,7 +107,7 @@ public class BarberListFragment extends Fragment {
 
                 }
                 adapter.removeAll();
-                setItems();
+                new GetBarbers().execute();
             }
         });
         sr.setColorSchemeResources(android.R.color.holo_blue_dark,
@@ -106,20 +115,7 @@ public class BarberListFragment extends Fragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_red_dark);
             /* /Swipe down to refresh */
-    }
 
-    private void setItems() {
-        List<Barber> barberList = new ArrayList<>();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-        Barber barber1 = new Barber(1, "Barber 1", "Description barber 1", "Lleida", "Carrer 1", bitmap);
-        Barber barber2 = new Barber(2, "Barber 2", "Description barber 2", "Lleida", "Carrer 2", bitmap);
-
-        barberList.add(barber1);
-        barberList.add(barber2);
-
-        adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
-        mRecyclerView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -150,4 +146,97 @@ public class BarberListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private class GetBarbers extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            List<Barber> barberList = new ArrayList<>();
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+            try {
+                JSONObject root = new JSONObject(jsonStr);
+                JSONArray jsonarr = (JSONArray) root.get("barbers");
+
+                for (int i = 0; i < jsonarr.length(); i++) {
+                    JSONObject json = jsonarr.getJSONObject(i);
+
+                    Barber barber = new Barber(json.getInt("id"),
+                            json.getString("name"),
+                            json.getString("description"),
+                            json.getString("city"),
+                            json.getString("address"), bitmap);
+                    barberList.add(barber);
+                }
+
+                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
+                mRecyclerView.setAdapter(adapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            HttpURLConnection conn=null;
+            InputStream inputStream;
+            BufferedReader reader=null;
+
+            try {
+
+                URL url = new URL(urlBarbers);
+
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                inputStream = conn.getInputStream();
+
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    return null;
+                }
+
+                jsonStr = buffer.toString();
+
+                // Print json string
+                // Log.e(TAG, "Response from url: " + jsonStr);
+
+            } catch (MalformedURLException e) {
+                Log.e(TAG, "MalformedURLException: " + e.getMessage());
+            }catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(TAG, "Error closing stream", e);
+                    }
+                }
+
+            }
+
+            return null;
+        }
+    }
+
 }
