@@ -18,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
+import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +89,11 @@ public class BarberListFragment extends Fragment {
         }
 
         if (mRecyclerView != null) {
+
+            final FloatingActionMenu floatingActionMenu = getActivity().findViewById(R.id.fab_menu);
+
+            mRecyclerView.addOnScrollListener(new FloatingButtonScrollListener(floatingActionMenu));
+
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
@@ -76,6 +77,9 @@ public class BarberHomeFragment extends Fragment {
             setAppointmentItems();
 
         }
+
+        FloatingActionMenu floatingActionMenu = getActivity().findViewById(R.id.fab_menu);
+        floatingActionMenu.setClosedOnTouchOutside(true);
 
     }
 

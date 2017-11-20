@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
+
         String user = getIntent().getStringExtra("user");
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
@@ -73,8 +75,6 @@ public class HomeActivity extends AppCompatActivity
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
             fragment = BarberHomeFragment.newInstance();
             stub.inflate();
-
-            final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
 
             FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
             fab_new_service.setOnClickListener(new View.OnClickListener() {
