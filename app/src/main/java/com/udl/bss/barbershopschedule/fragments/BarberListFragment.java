@@ -46,7 +46,7 @@ public class BarberListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    final static String urlBarbers = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barbers.json";
+    final static String urlBarbers = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json";
     String jsonStr;
     private String TAG = HomeActivity.class.getSimpleName();
 
@@ -158,7 +158,7 @@ public class BarberListFragment extends Fragment {
 
             try {
                 JSONObject root = new JSONObject(jsonStr);
-                JSONArray jsonarr = (JSONArray) root.get("barbers");
+                JSONArray jsonarr = (JSONArray) root.get("barber_shops");
 
                 for (int i = 0; i < jsonarr.length(); i++) {
                     JSONObject json = jsonarr.getJSONObject(i);
