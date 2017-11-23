@@ -17,6 +17,10 @@
     <string name="transname_barberdesc">barberDesc</string>
     <string name="transname_barberimg">barberImage</string>
 
+    <string name="transname_servicename">serviceName</string>
+    <string name="transname_serviceprice">servicePrice</string>
+    <string name="transname_serviceduration">serviceDuration</string>
+
     <string name="next_appointment">Next appointments</string>
     <string name="promotions">Promotions</string>
     <string name="barber_service_button">Services</string>
