@@ -20,6 +20,7 @@ import java.util.List;
  */
 
 public class BarberServiceAdapter extends RecyclerView.Adapter<BarberServiceAdapter.ViewHolder> {
+
     private List<BarberService> mDataset;
     private OnItemClickListener listener;
 
@@ -37,16 +38,21 @@ public class BarberServiceAdapter extends RecyclerView.Adapter<BarberServiceAdap
         }
     }
 
+    public BarberServiceAdapter(List<BarberService> myDataset, OnItemClickListener listener) {
+        mDataset = myDataset;
+        this.listener = listener;
+    }
+
     @Override
     public BarberServiceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.barber_service_list_view, parent, false);
-        return new BarberServiceAdapter.ViewHolder(v);
+                .inflate(R.layout.barber_service_card_view, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final BarberServiceAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.service_name.setText(mDataset.get(position).GetName());
         holder.service_price.setText(String.valueOf(mDataset.get(position).GetPrice()));
         holder.service_duration.setText(String.valueOf(mDataset.get(position).GetDuration()));
