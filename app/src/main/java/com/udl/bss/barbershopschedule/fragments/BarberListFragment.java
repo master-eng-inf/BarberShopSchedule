@@ -174,7 +174,9 @@ public class BarberListFragment extends Fragment {
                             json.getString("name"),
                             json.getString("description"),
                             json.getString("city"),
-                            json.getString("address"), bitmap);
+                            json.getString("address"),
+                            json.getString("phone"),
+                            json.getString("email"),bitmap);
                     barberList.add(barber);
                 }
 

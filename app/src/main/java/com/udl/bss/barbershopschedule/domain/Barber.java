@@ -6,21 +6,26 @@ import android.os.Parcelable;
 
 import com.udl.bss.barbershopschedule.utils.BitmapUtils;
 
-public class Barber implements Parcelable{
+
+public class Barber implements Parcelable {
 
     private int id;
     private String name;
     private String description;
     private String city;
     private String address;
+    private String phone;
+    private String email;
     private Bitmap image;
 
-    public Barber(int id, String name, String description, String city, String address, Bitmap image) {
+    public Barber(int id, String name, String description, String city, String address, String phone, String email, Bitmap image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.city = city;
         this.address = address;
+        this.phone = phone;
+        this.email = email;
         this.image = image;
     }
 
@@ -30,6 +35,7 @@ public class Barber implements Parcelable{
         this.description = in.readString();
         this.city = in.readString();
         this.address = in.readString();
+        this.phone = in.readString();
         this.image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
@@ -50,7 +56,9 @@ public class Barber implements Parcelable{
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(city);
+        dest.writeString(phone);
         dest.writeString(address);
+        dest.writeString(email);
         dest.writeByteArray(BitmapUtils.bitmapToByteArray(image));
     }
 
@@ -99,6 +107,22 @@ public class Barber implements Parcelable{
         this.address = address;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String phone) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Bitmap getImage() {
         return image;
     }
@@ -115,6 +139,8 @@ public class Barber implements Parcelable{
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", image=" + image +
                 '}';
     }
@@ -131,6 +157,8 @@ public class Barber implements Parcelable{
         if (description != null ? !description.equals(barber.description) : barber.description != null)
             return false;
         if (city != null ? !city.equals(barber.city) : barber.city != null) return false;
+        if (phone != null ? !phone.equals(barber.phone) : barber.phone != null) return false;
+        if (email != null ? !email.equals(barber.email) : barber.email != null) return false;
         if (address != null ? !address.equals(barber.address) : barber.address != null)
             return false;
         return image != null ? image.equals(barber.image) : barber.image == null;
@@ -143,6 +171,8 @@ public class Barber implements Parcelable{
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (image != null ? image.hashCode() : 0);
         return result;
     }
