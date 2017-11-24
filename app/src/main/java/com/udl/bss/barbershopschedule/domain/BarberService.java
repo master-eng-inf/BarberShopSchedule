@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Julio on 23/11/2017.
+ * Updated by Julio on 23/11/2017.
  */
 
 public class BarberService implements Parcelable{
@@ -130,7 +130,7 @@ public class BarberService implements Parcelable{
 
     @Override
     public String toString() {
-        return "Prices{" +
+        return "Service{" +
                 "id=" + service_id +
                 /*", barber_id='" + service_barber_id + '\'' +*/
                 ", name='" + service_name + '\'' +
