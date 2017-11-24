@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberServiceAdapter;
-import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
