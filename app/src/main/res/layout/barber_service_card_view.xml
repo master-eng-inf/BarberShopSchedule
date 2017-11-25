@@ -21,7 +21,7 @@
 
 
         <TextView
-            android:id="@+id/service_name_cv"
+            android:id="@+id/name_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="16sp"
@@ -33,10 +33,10 @@
 
 
         <TextView
-            android:id="@+id/service_price_cv"
+            android:id="@+id/price_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/service_name_cv"
+            android:layout_below="@+id/name_cv"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"
@@ -45,10 +45,10 @@
             tools:ignore="RtlHardcoded"/>
 
         <TextView
-            android:id="@+id/service_duration_cv"
+            android:id="@+id/duration_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/service_price_cv"
+            android:layout_below="@+id/price_cv"
             android:paddingLeft="16sp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"

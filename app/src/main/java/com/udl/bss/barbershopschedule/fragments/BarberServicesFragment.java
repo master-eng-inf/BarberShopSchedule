@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.BarberServiceAdapter;
-import com.udl.bss.barbershopschedule.domain.BarberService;
-import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
+import com.udl.bss.barbershopschedule.domain.Service;
+import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,9 +39,8 @@ import java.util.List;
 
 public class BarberServicesFragment extends Fragment {
 
-
-    private RecyclerView mRecyclerView;
-    private BarberServiceAdapter adapter;
+    private RecyclerView servicesRecyclerView;
+    private ServiceAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,18 +82,16 @@ public class BarberServicesFragment extends Fragment {
         }
 
         if (getView() != null) {
-            mRecyclerView = getView().findViewById(R.id.rv);
+            servicesRecyclerView = getView().findViewById(R.id.rv);
         }
 
-        if (mRecyclerView != null) {
+        if (servicesRecyclerView != null) {
 
-            mRecyclerView.setHasFixedSize(true);
+            servicesRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(llm);
+            servicesRecyclerView.setLayoutManager(llm);
 
             new GetBarberServices().execute();
-
-
 
             /* Swipe down to refresh */
             final SwipeRefreshLayout sr = getView().findViewById(R.id.swiperefresh);
@@ -104,7 +101,7 @@ public class BarberServicesFragment extends Fragment {
                     sr.setRefreshing(false);
 
                     if (adapter == null) {
-                        adapter = (BarberServiceAdapter) mRecyclerView.getAdapter();
+                        adapter = (ServiceAdapter) servicesRecyclerView.getAdapter();
 
                     }
                     adapter.removeAll();
@@ -116,7 +113,6 @@ public class BarberServicesFragment extends Fragment {
                     android.R.color.holo_orange_dark,
                     android.R.color.holo_red_dark);
             /* /Swipe down to refresh */
-
 
         }
     }
@@ -155,7 +151,7 @@ public class BarberServicesFragment extends Fragment {
         protected void onPostExecute (Void aVoid){
             super.onPostExecute(aVoid);
 
-            List<BarberService> barberServicesList = new ArrayList<>();
+            List<Service> servicesList = new ArrayList<>();
 
             try {
                 JSONObject jsonObj =  new JSONObject(jsonStr);
@@ -163,12 +159,15 @@ public class BarberServicesFragment extends Fragment {
                 JSONArray barber_shops = jsonObj.getJSONArray("barber_shops");
 
                 int id;
+                int barber_id;
                 String name;
                 Float price;
                 int duration;
 
 
                 JSONObject root = barber_shops.getJSONObject(0);
+                barber_id = root.getInt("id");
+
                 JSONArray services = root.getJSONArray("services");
 
                 for (int i = 0; i < services.length(); i++) {
@@ -179,12 +178,12 @@ public class BarberServicesFragment extends Fragment {
                     price = (float) service.getDouble("price");
                     duration = Integer.parseInt(service.getString("duration").replaceAll(".*:",""));
 
-                    BarberService barberService = new BarberService(id, name, price, duration);
-                    barberServicesList.add(barberService);
+                    Service barberService = new Service(id, name, barber_id, price, duration);
+                    servicesList.add(barberService);
                 }
 
-                adapter = new BarberServiceAdapter(barberServicesList, new BarberServiceClick(getActivity(), mRecyclerView));
-                mRecyclerView.setAdapter(adapter);
+                adapter = new ServiceAdapter(servicesList, new ServiceClick(getActivity(), servicesRecyclerView));
+                servicesRecyclerView.setAdapter(adapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();

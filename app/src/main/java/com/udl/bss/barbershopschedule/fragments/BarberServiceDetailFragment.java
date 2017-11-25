@@ -3,17 +3,13 @@ package com.udl.bss.barbershopschedule.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.PagerAdapter;
-import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Service;
 
 public class BarberServiceDetailFragment extends Fragment {
 
@@ -23,10 +19,10 @@ public class BarberServiceDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BarberServiceDetailFragment newInstance(BarberService barberService) {
+    public static BarberServiceDetailFragment newInstance(Service service) {
         BarberServiceDetailFragment fragment = new BarberServiceDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("barberService", barberService);
+        args.putParcelable("service", service);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +45,7 @@ public class BarberServiceDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle args = getArguments();
-        BarberService barberService = args.getParcelable("barberService");
+        Service service = args.getParcelable("service");
 
     }
 

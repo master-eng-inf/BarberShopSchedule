@@ -8,17 +8,17 @@ import android.transition.Fade;
 import android.view.View;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.BarberServiceAdapter;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
-public class BarberServiceClick implements OnItemClickListener {
+public class ServiceClick implements OnItemClickListener {
 
     private FragmentActivity activity;
     private RecyclerView recyclerView;
 
-    public BarberServiceClick(FragmentActivity activity, RecyclerView recyclerView) {
+    public ServiceClick(FragmentActivity activity, RecyclerView recyclerView) {
         this.activity = activity;
         this.recyclerView = recyclerView;
     }
@@ -28,12 +28,12 @@ public class BarberServiceClick implements OnItemClickListener {
         //showToast("Clicked element: "+Integer.toString(position));
 
 
-        View service_name_cv = view.findViewById(R.id.service_name_cv);
-        View service_price_cv = view.findViewById(R.id.service_price_cv);
-        View service_duration_cv = view.findViewById(R.id.service_duration_cv);
+        View name_cv = view.findViewById(R.id.name_cv);
+        View price_cv = view.findViewById(R.id.price_cv);
+        View duration_cv = view.findViewById(R.id.duration_cv);
 
 
-        BarberServiceAdapter adapter = (BarberServiceAdapter) recyclerView.getAdapter();
+        ServiceAdapter adapter = (ServiceAdapter) recyclerView.getAdapter();
 
         BarberServiceDetailFragment fragment =
                 BarberServiceDetailFragment.newInstance(adapter.getItem(position));
@@ -44,9 +44,9 @@ public class BarberServiceClick implements OnItemClickListener {
             fragment.setSharedElementReturnTransition(new DetailsTransition());
         }
         startFragmentWithSharedElement(fragment,
-                service_name_cv, activity.getString(R.string.transname_servicename),
-                service_price_cv, activity.getString(R.string.transname_serviceprice),
-                service_duration_cv, activity.getString(R.string.transname_serviceduration));
+                name_cv, activity.getString(R.string.transname_servicename),
+                price_cv, activity.getString(R.string.transname_serviceprice),
+                duration_cv, activity.getString(R.string.transname_serviceduration));
     }
 
     private void startFragmentWithSharedElement(Fragment fragment,
@@ -57,9 +57,6 @@ public class BarberServiceClick implements OnItemClickListener {
             activity.getSupportFragmentManager()
                     .beginTransaction()
                     .addSharedElement(sharedElement1, transitionName1)
-                    //.addSharedElement(sharedElement2, transitionName2)
-                    //.addSharedElement(sharedElement3, transitionName3)
-                    //.addSharedElement(sharedElement4, transitionName4)
                     .replace(R.id.content_home, fragment)
                     .addToBackStack(null)
                     .commit();
