@@ -72,7 +72,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecyclerView.setLayoutManager(llm);
 
-            setPromotionsItems();
+            //setPromotionsItems();
 
         }
     }
@@ -90,6 +90,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
         pricesRecyclerView.setAdapter(adapter);
     }
 
+    /*
     private void setPromotionsItems() {
         List<Promotion> promotionList = new ArrayList<>();
 
@@ -107,4 +108,5 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
         PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView));
         promotionsRecyclerView.setAdapter(adapter);
     }
+    */
 }
