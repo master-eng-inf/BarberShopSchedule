@@ -24,6 +24,7 @@ import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberPromotionsFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberScheduleFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberServicesFragment;
 import com.udl.bss.barbershopschedule.fragments.HomeFragment;
 
@@ -35,7 +36,8 @@ public class HomeActivity extends AppCompatActivity
         BarberHomeFragment.OnFragmentInteractionListener,
         BarberScheduleFragment.OnFragmentInteractionListener,
         BarberServicesFragment.OnFragmentInteractionListener,
-        BarberPromotionsFragment.OnFragmentInteractionListener {
+        BarberPromotionsFragment.OnFragmentInteractionListener,
+        BarberServiceDetailFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecycleView.setLayoutManager(llm);
 
-            setPromotionsItems();
+            //setPromotionsItems();
 
         }
 
@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment {
         appointmentsRecyclerView.setAdapter(adapter);
     }
 
+    /*
     private void setPromotionsItems() {
         List<Promotion> promotionList = new ArrayList<>();
 
@@ -120,6 +121,7 @@ public class HomeFragment extends Fragment {
         PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView));
         promotionsRecycleView.setAdapter(adapter);
     }
+    */
 
 
     public void onButtonPressed(Uri uri) {

@@ -7,21 +7,21 @@ import android.os.Parcelable;
 public class Promotion implements Parcelable{
 
     private int id;
-    private String barberShopName;
-    private String service;
+    private int barber_id;
+    private String name;
     private String description;
 
-    public Promotion(int id, String barberShopName, String service, String description) {
+    public Promotion(int id, int barber_id, String name ,String description) {
         this.id = id;
-        this.barberShopName = barberShopName;
-        this.service = service;
+        this.barber_id = barber_id;
+        this.name = name;
         this.description = description;
     }
 
     private Promotion(Parcel in) {
         this.id = in.readInt();
-        this.barberShopName = in.readString();
-        this.service = in.readString();
+        this.barber_id = in.readInt();
+        this.name = in.readString();
         this.description = in.readString();
     }
 
@@ -39,8 +39,8 @@ public class Promotion implements Parcelable{
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(barberShopName);
-        dest.writeString(service);
+        dest.writeInt(barber_id);
+        dest.writeString(name);
         dest.writeString(description);
     }
 
@@ -49,37 +49,41 @@ public class Promotion implements Parcelable{
         return 0;
     }
 
+    /**********Getters**********/
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getBarberId() {
+        return barber_id;
     }
 
-    public String getBarberShopName() {
-        return barberShopName;
-    }
-
-    public void setBarberShopName(String barberShopName) {
-        this.barberShopName = barberShopName;
-    }
-
-    public String getService() {
-        return service;
-    }
-
-    public void setService(String service) {
-        this.service = service;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
         return description;
     }
 
+
+    /**********Getters**********/
+    public void setId(int promotion_id) {
+        this.id = promotion_id;
+    }
+
+    public void setBarberId(int barber_id) {
+        this.barber_id = barber_id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -89,18 +93,16 @@ public class Promotion implements Parcelable{
         Promotion promotion = (Promotion) o;
 
         if (id != promotion.id) return false;
-        if (barberShopName != null ? !barberShopName.equals(promotion.barberShopName) : promotion.barberShopName != null)
-            return false;
-        if (service != null ? !service.equals(promotion.service) : promotion.service != null)
-            return false;
+        if (barber_id != promotion.barber_id) return false;
+        if (name != null ? name.equals(promotion.name) : promotion.name == null) return false;
         return description != null ? description.equals(promotion.description) : promotion.description == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (barberShopName != null ? barberShopName.hashCode() : 0);
-        result = 31 * result + (service != null ? service.hashCode() : 0);
+        result = 31 * result + barber_id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
@@ -109,8 +111,8 @@ public class Promotion implements Parcelable{
     public String toString() {
         return "Promotion{" +
                 "id=" + id +
-                ", barberShopName='" + barberShopName + '\'' +
-                ", service='" + service + '\'' +
+                ", barber_id='" + barber_id + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

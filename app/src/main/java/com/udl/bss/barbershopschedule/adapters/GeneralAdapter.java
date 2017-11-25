@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -47,17 +47,17 @@ public class GeneralAdapter extends ArrayAdapter<Object> {
 
             switch (this.resource) {
                 case R.layout.barber_services_layout:
-                    BarberService barberService = (BarberService) object;
+                    Service service = (Service) object;
 
                     TextView description_label = (TextView) v.findViewById(R.id.service_desctiption);
                     TextView price_label = (TextView) v.findViewById(R.id.service_price);
 
                     if (description_label != null) {
-                        description_label.setText(barberService.Get_Description());
+                        description_label.setText(service.getName());
                     }
 
                     if (price_label != null) {
-                        price_label.setText(barberService.Get_Price() + " €");
+                        price_label.setText(service.getPrice() + " €");
                     }
 
                     break;

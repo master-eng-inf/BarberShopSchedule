@@ -1,5 +1,6 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/barber_services_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.udl.bss.barbershopschedule.fragments.BarberServicesFragment"
@@ -9,22 +10,23 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/barber_home_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#d3d3d3">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/services"
             android:padding="@dimen/activity_horizontal_margin"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#0000FF"
+            android:background="#AAA"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rv" />
+        <include layout="@layout/recycleview_swipe"/>
 
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+
+
+</FrameLayout>

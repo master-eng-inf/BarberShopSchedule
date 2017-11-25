@@ -57,8 +57,8 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
 
         Promotion p = getIntent().getParcelableExtra("promotion");
 
-        ctl.setTitle(p.getBarberShopName());
-        tv_service.setText(p.getService());
+        //ctl.setTitle(p.getBarberShopName());
+        //tv_service.setText(p.getService());
         tv_description.setText(p.getDescription());
     }
 }

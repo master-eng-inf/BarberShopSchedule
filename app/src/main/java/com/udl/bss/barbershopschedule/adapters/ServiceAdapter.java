@@ -9,50 +9,58 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.domain.Service;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Created by Julio on 23/11/2017.
+ */
 
-public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.ViewHolder> {
+public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
-    private List<Promotion> mDataset;
+    private List<Service> mDataset;
     private OnItemClickListener listener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView name;
-        TextView description;
+        TextView price;
+        TextView duration;
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_view);
             name = itemView.findViewById(R.id.name_cv);
-            description = itemView.findViewById(R.id.description_cv);
+            price = itemView.findViewById(R.id.price_cv);
+            duration = itemView.findViewById(R.id.duration_cv);
         }
     }
 
-    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener) {
+    public ServiceAdapter(List<Service> myDataset, OnItemClickListener listener) {
         mDataset = myDataset;
         this.listener = listener;
     }
 
     @Override
-    public PromotionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                          int viewType) {
+    public ServiceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                        int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.barber_promotion_card_view, parent, false);
+                .inflate(R.layout.barber_service_card_view, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.name.setText(mDataset.get(position).getName());
-        holder.description.setText(mDataset.get(position).getDescription());
+        holder.price.setText(String.valueOf(mDataset.get(position).getPrice()));
+        String duration = String.valueOf(mDataset.get(position).getDuration()) + " minutes";
+        holder.duration.setText(duration);
 
-        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_desc");
-        ViewCompat.setTransitionName(holder.description, String.valueOf(position)+"_desc");
+        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"name");
+        ViewCompat.setTransitionName(holder.price, String.valueOf(position)+"price");
+        ViewCompat.setTransitionName(holder.duration, String.valueOf(position)+"duration");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +68,6 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
                 listener.onItemClick(v, holder.getAdapterPosition());
             }
         });
-
     }
 
     @Override
@@ -68,24 +75,24 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         return mDataset.size();
     }
 
-    public Promotion getItem (int position) {
+    public Service getItem (int position) {
         return mDataset.get(position);
     }
 
     public void removeAll(){
-        Iterator<Promotion> iter = mDataset.iterator();
+        Iterator<Service> iter = mDataset.iterator();
         while(iter.hasNext()){
-            Promotion promotion = iter.next();
-            int position = mDataset.indexOf(promotion);
+            Service service = iter.next();
+            int position = mDataset.indexOf(service);
             iter.remove();
             notifyItemRemoved(position);
         }
     }
 
-    public int add(Promotion promotion){
-        mDataset.add(promotion);
+    public int add(Service service){
+        mDataset.add(service);
         notifyItemInserted(mDataset.size()-1);
         return mDataset.size()-1;
     }
-}
 
+}
