@@ -7,34 +7,49 @@ package com.udl.bss.barbershopschedule.domain;
 public class BarberService {
 
     private int service_id;
-    private String service_description;
-    private int service_price;
+    private int barber_shop_id;
+    private String service_name;
+    private double service_price;
+    private double service_duration;
 
-    public BarberService(int service_id, String service_description, int service_price) {
+    public BarberService(int service_id, int barber_shop_id, String service_name, double service_price, double service_duration) {
         this.service_id = service_id;
-        this.service_description = service_description;
+        this.barber_shop_id = barber_shop_id;
+        this.service_name = service_name;
         this.service_price = service_price;
+        this.service_duration = service_duration;
     }
 
-    public String Get_Description() {
-        return this.service_description;
+    public String Get_Name() {
+        return this.service_name;
     }
 
-    public int Get_Price() {
+    public double Get_Price() {
         return this.service_price;
     }
 
-    public int Get_Id()
-    {
+    public int Get_Id() {
         return this.service_id;
     }
 
-    public void Set_Description(String new_description) {
-        this.service_description = new_description;
+    public double Get_Duration() {
+        return this.service_duration;
     }
 
-    public void Set_Price(int new_price) {
+    public int Get_BarberShopId() {
+        return this.barber_shop_id;
+    }
+
+    public void Set_Name(String new_name) {
+        this.service_name = new_name;
+    }
+
+    public void Set_Price(double new_price) {
         this.service_price = new_price;
+    }
+
+    public void Set_Duration(double new_duration) {
+        this.service_duration = new_duration;
     }
 }
 

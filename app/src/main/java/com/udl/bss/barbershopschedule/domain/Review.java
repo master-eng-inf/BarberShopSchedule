@@ -1,5 +1,7 @@
 package com.udl.bss.barbershopschedule.domain;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,44 +10,55 @@ import java.util.Date;
  */
 
 public class Review {
+    private int barber_shop_id;
+    private int client_id;
     private String description;
-    private int mark;
-    private Time date;
+    private double mark;
+    private Date date;
 
-    public Review(String description, int mark, Time date)
-    {
+    public Review(int client_id, int barber_shop_id, String description, double mark, String date) {
+        this.client_id = client_id;
+        this.barber_shop_id = barber_shop_id;
         this.description = description;
         this.mark = mark;
-        this.date = date;
+
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        try {
+            this.date = format.parse(date);
+        } catch (ParseException e) {
+            this.date = null;
+        }
     }
 
-    public String GetDescription()
-    {
+    public int GetClientId() {
+        return this.client_id;
+    }
+
+    public int GetBarberShopId() {
+        return this.barber_shop_id;}
+
+    public String GetDescription() {
         return this.description;
     }
 
-    public int GetMark()
-    {
+    public double GetMark() {
         return this.mark;
     }
 
-    public Time GetDate()
-    {
-        return this.date;
+    public String GetDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+            return dateFormat.format(this.date);
     }
 
-    public void SetDescription(String new_description)
-    {
+    public void SetDescription(String new_description) {
         this.description = new_description;
     }
 
-    public void SetMark(int new_mark)
-    {
+    public void SetMark(double new_mark) {
         this.mark = new_mark;
     }
 
-    public void SetDate(Time new_date)
-    {
+    public void SetDate(Date new_date) {
         this.date = new_date;
     }
 }
