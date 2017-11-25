@@ -55,7 +55,8 @@ public class BarberServiceAdapter extends RecyclerView.Adapter<BarberServiceAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.service_name.setText(mDataset.get(position).GetName());
         holder.service_price.setText(String.valueOf(mDataset.get(position).GetPrice()));
-        holder.service_duration.setText(String.valueOf(mDataset.get(position).GetDuration()));
+        String duration = String.valueOf(mDataset.get(position).GetDuration()) + " minutes";
+        holder.service_duration.setText(duration);
 
         ViewCompat.setTransitionName(holder.service_name, String.valueOf(position)+"service_name");
         ViewCompat.setTransitionName(holder.service_price, String.valueOf(position)+"service_price");

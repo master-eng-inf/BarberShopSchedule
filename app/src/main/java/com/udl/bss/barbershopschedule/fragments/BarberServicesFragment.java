@@ -45,7 +45,7 @@ public class BarberServicesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    final static String urlBarberServices = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/CreationScripts/barber_shop_list.json";
+    final static String urlBarberServices = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json";
     String jsonStr;
     private String TAG = HomeActivity.class.getSimpleName();
 
@@ -162,40 +162,25 @@ public class BarberServicesFragment extends Fragment {
 
                 JSONArray barber_shops = jsonObj.getJSONArray("barber_shops");
 
-                //JSONObject root = new JSONObject(jsonStr);
-                //JSONArray jsonArray = (JSONArray) root.get("services");
-
                 int id;
                 String name;
                 Float price;
                 int duration;
 
-                for (int i = 0; i < barber_shops.length(); i++) {
-                    JSONObject root = barber_shops.getJSONObject(i);
-                    JSONObject services = root.getJSONObject("services");
 
-                    id = services.getInt("id") ;
-                    name = services.getString("name");
-                    price = (float) services.getDouble("price");
-                    duration = services.getInt("duration");
+                JSONObject root = barber_shops.getJSONObject(0);
+                JSONArray services = root.getJSONArray("services");
+
+                for (int i = 0; i < services.length(); i++) {
+                    JSONObject service = services.getJSONObject(i);
+
+                    id = service.getInt("id") ;
+                    name = service.getString("name");
+                    price = (float) service.getDouble("price");
+                    duration = Integer.parseInt(service.getString("duration").replaceAll(".*:",""));
 
                     BarberService barberService = new BarberService(id, name, price, duration);
                     barberServicesList.add(barberService);
-
-                    //The next comment is another way to get the data from the JSON (not tested)
-                    /*
-                    JSONObject root = new JSONObject(jsonStr);
-                    JSONArray jsonArray = (JSONArray) root.get("services");
-
-                    JSONObject json = jsonArray.getJSONObject(i);
-
-
-                    BarberService barberService = new BarberService(json.getInt("id"),
-                            json.getString("name"),
-                            (float) json.getDouble("price"),
-                            json.getInt("duration"));
-                    barberServicesList.add(barberService);
-                    */
                 }
 
                 adapter = new BarberServiceAdapter(barberServicesList, new BarberServiceClick(getActivity(), mRecyclerView));
