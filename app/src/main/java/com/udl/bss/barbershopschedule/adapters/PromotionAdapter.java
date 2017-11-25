@@ -25,13 +25,11 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         CardView cv;
         TextView name;
         TextView description;
-        TextView service;
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_view);
             name = itemView.findViewById(R.id.name_cv);
             description = itemView.findViewById(R.id.description_cv);
-            service = itemView.findViewById(R.id.service_cv);
         }
     }
 
@@ -44,18 +42,16 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
     public PromotionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                           int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.promotion_card_view, parent, false);
+                .inflate(R.layout.barber_promotion_card_view, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.service.setText(mDataset.get(position).getService());
-        holder.name.setText(mDataset.get(position).getBarberShopName());
+        holder.name.setText(mDataset.get(position).getName());
         holder.description.setText(mDataset.get(position).getDescription());
 
-        ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");
-        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_name");
+        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_desc");
         ViewCompat.setTransitionName(holder.description, String.valueOf(position)+"_desc");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
