@@ -33,6 +33,8 @@
     <string name="barber_new_promotion_button">New Promotion</string>
     <string name="barber_promotion_creation_name">Promotion name</string>
     <string name="barber_promotion_creation_description">Promotion description</string>
+    <string name="transname_promotionname">serviceName</string>
+    <string name="transname_promotiondescription">serviceDescription</string>
 
 
     <string name="barber_create_button">Create</string>

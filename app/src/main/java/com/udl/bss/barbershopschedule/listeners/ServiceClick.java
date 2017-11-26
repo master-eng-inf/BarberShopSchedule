@@ -25,8 +25,6 @@ public class ServiceClick implements OnItemClickListener {
 
     @Override
     public void onItemClick(View view, int position){
-        //showToast("Clicked element: "+Integer.toString(position));
-
 
         View name_cv = view.findViewById(R.id.name_cv);
         View price_cv = view.findViewById(R.id.price_cv);

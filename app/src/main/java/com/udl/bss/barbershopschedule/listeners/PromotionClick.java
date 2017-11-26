@@ -1,17 +1,16 @@
 package com.udl.bss.barbershopschedule.listeners;
 
-import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.view.View;
 
-import com.udl.bss.barbershopschedule.AppointmentDetailsActivity;
-import com.udl.bss.barbershopschedule.PromotionsDetailsActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
+import com.udl.bss.barbershopschedule.fragments.BarberPromotionDetailFragment;
+import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
 public class PromotionClick implements OnItemClickListener {
@@ -29,26 +28,33 @@ public class PromotionClick implements OnItemClickListener {
 
         View name_cv = view.findViewById(R.id.name_cv);
         View description_cv = view.findViewById(R.id.description_cv);
-        View service_cv = view.findViewById(R.id.service_cv);
-        //View fbutton = activity.findViewById(R.id.fab);
 
 
         PromotionAdapter adapter = (PromotionAdapter) recyclerView.getAdapter();
 
-        Intent intent = new Intent(activity, PromotionsDetailsActivity.class);
-        intent.putExtra("promotion", adapter.getItem(position));
+        BarberPromotionDetailFragment fragment =
+                BarberPromotionDetailFragment.newInstance(adapter.getItem(position));
 
-        //Pair<View, String> p1 = Pair.create(fbutton, "fab");
-        Pair<View, String> p1 = Pair.create(description_cv, activity.getString(R.string.transname_barberdesc));
-        Pair<View, String> p2 = Pair.create(name_cv, activity.getString(R.string.transname_barbername));
-        Pair<View, String> p3 = Pair.create(service_cv, activity.getString(R.string.transname_barberaddress));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            fragment.setSharedElementEnterTransition(new DetailsTransition());
+            fragment.setEnterTransition(new Fade());
+            fragment.setSharedElementReturnTransition(new DetailsTransition());
+        }
+        startFragmentWithSharedElement(fragment,
+                name_cv, activity.getString(R.string.transname_promotionname),
+                description_cv, activity.getString(R.string.transname_promotiondescription));
+    }
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2, p3);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            activity.startActivity(intent, options.toBundle());
-        } else {
-            activity.startActivity(intent);
+    private void startFragmentWithSharedElement(Fragment fragment,
+                                                View sharedElement1, String transitionName1,
+                                                View sharedElement2, String transitionName2) {
+        if (fragment != null){
+            activity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(sharedElement1, transitionName1)
+                    .replace(R.id.content_home, fragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

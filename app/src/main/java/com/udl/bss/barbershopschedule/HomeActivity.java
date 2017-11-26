@@ -22,6 +22,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
+import com.udl.bss.barbershopschedule.fragments.BarberPromotionDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberPromotionsFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberScheduleFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
@@ -37,7 +38,8 @@ public class HomeActivity extends AppCompatActivity
         BarberScheduleFragment.OnFragmentInteractionListener,
         BarberServicesFragment.OnFragmentInteractionListener,
         BarberPromotionsFragment.OnFragmentInteractionListener,
-        BarberServiceDetailFragment.OnFragmentInteractionListener{
+        BarberServiceDetailFragment.OnFragmentInteractionListener,
+        BarberPromotionDetailFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
