@@ -10,19 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
-import com.udl.bss.barbershopschedule.domain.Price;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.listeners.PriceClick;
+import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
@@ -84,7 +81,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
         ArrayList<BarberService> services = instance.Get_BarberShopServices(barber.getId());
 
-        ServiceAdapter adapter = new ServiceAdapter(services, new PriceClick(getActivity(), servicesRecyclerView));
+        ServiceAdapter adapter = new ServiceAdapter(services, new BarberServiceClick(getActivity(), servicesRecyclerView));
         servicesRecyclerView.setAdapter(adapter);
     }
 

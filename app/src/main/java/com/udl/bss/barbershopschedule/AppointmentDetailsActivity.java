@@ -69,9 +69,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         Barber barber = instance.Get_BarberShop(a.getBarber_shop_id());
         BarberService service = instance.Get_BarberShopService(a.getService_id());
 
+        //TODO format date
         ctl.setTitle(barber.getName());
-        tv_date.setText(new SimpleDateFormat("HH:mm dd-MM-yyyy",
-                new Locale("es", "ES")).format(a.getDate()));
+        tv_date.setText(a.getDate());
         tv_service.setText(service.Get_Name());
     }
 }

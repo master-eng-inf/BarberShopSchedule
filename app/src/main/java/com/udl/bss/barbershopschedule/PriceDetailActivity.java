@@ -13,6 +13,8 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Price;
 
 public class PriceDetailActivity extends AppCompatActivity {
@@ -56,11 +58,13 @@ public class PriceDetailActivity extends AppCompatActivity {
         TextView tv_service = findViewById(R.id.service_detail);
         CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
-        Price p = getIntent().getParcelableExtra("price");
+        BarberService barber_shop_service = getIntent().getParcelableExtra("service");
 
-        ctl.setTitle(p.getBarberShopName());
-        tv_service.setText(p.getService());
-        String price = Float.toString(p.getPrice()) + "€";
+        BLL instance = new BLL(this);
+
+        ctl.setTitle(instance.Get_BarberShop(barber_shop_service.Get_BarberShopId()).getName());
+        tv_service.setText(barber_shop_service.Get_Name());
+        String price = Double.toString(barber_shop_service.Get_Price()) + "€";
         tv_price.setText(price);
     }
 }

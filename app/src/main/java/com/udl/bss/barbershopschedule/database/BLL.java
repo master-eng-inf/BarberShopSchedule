@@ -30,11 +30,8 @@ public class BLL {
     }
 
     public ArrayList<Barber> Get_BarberShopList(boolean need_refresh) {
-
-        ArrayList<Barber> barbers = this.dal_instance.Get_BarberShopList();
-
         //TODO
-        if (need_refresh || barbers.size() == 0) {
+        if (need_refresh) {
             Delete_AllBarberShops();
             Delete_Appointments();
             Delete_Promotions();
@@ -44,8 +41,6 @@ public class BLL {
             Delete_SpecialDays();
 
             Initialize_Database();
-        } else {
-            return barbers;
         }
 
         return this.dal_instance.Get_BarberShopList();
@@ -59,8 +54,7 @@ public class BLL {
         this.dal_instance.Insert_BarberShop(new_barber_shop);
     }
 
-    public void Insert_BarberShops(ArrayList<Barber> new_barber_shops)
-    {
+    public void Insert_BarberShops(ArrayList<Barber> new_barber_shops) {
         this.dal_instance.Insert_BarberShops(new_barber_shops);
     }
 
@@ -89,7 +83,7 @@ public class BLL {
     }
 
     public void Insert_Reviews(ArrayList<Review> reviews) {
-        this.Insert_Reviews(reviews);
+        this.dal_instance.Insert_Reviews(reviews);
     }
 
     public void Delete_Reviews() {
@@ -165,88 +159,93 @@ public class BLL {
     }
 
     //TODO
-    private void Initialize_Database() {
-        String response = SIL.Get("https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json");
+    public void Initialize_Database() {
 
-        ArrayList<Barber> db_barber_shop_list = new ArrayList<>();
-        ArrayList<BarberService> db_barber_shop_services = new ArrayList<>();
-        ArrayList<Appointment> db_barber_shop_appointments = new ArrayList<>();
-        ArrayList<Review> db_barber_shop_reviews = new ArrayList<>();
-        ArrayList<Schedule> db_barber_shop_schedules = new ArrayList<>();
-        ArrayList<SpecialDay> db_barber_shop_special_days = new ArrayList<>();
-        ArrayList<Promotion> db_barber_shop_promotions = new ArrayList<>();
+        if (Get_BarberShopList(false).size() == 0) {
+            String response = SIL.Get("https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json");
 
-        try {
-            JSONObject root = new JSONObject(response);
-            JSONArray barber_shop_list = root.getJSONArray("barber_shops");
+            if (response != null) {
+                ArrayList<Barber> db_barber_shop_list = new ArrayList<>();
+                ArrayList<BarberService> db_barber_shop_services = new ArrayList<>();
+                ArrayList<Appointment> db_barber_shop_appointments = new ArrayList<>();
+                ArrayList<Review> db_barber_shop_reviews = new ArrayList<>();
+                ArrayList<Schedule> db_barber_shop_schedules = new ArrayList<>();
+                ArrayList<SpecialDay> db_barber_shop_special_days = new ArrayList<>();
+                ArrayList<Promotion> db_barber_shop_promotions = new ArrayList<>();
 
-            // Looping through all barber shops and their related data
-            for (int barber_count = 0; barber_count < barber_shop_list.length(); barber_count++) {
-                JSONObject barber_shop = barber_shop_list.getJSONObject(barber_count);
+                try {
+                    JSONObject root = new JSONObject(response);
+                    JSONArray barber_shop_list = root.getJSONArray("barber_shops");
 
-                db_barber_shop_list.add(new Barber(barber_shop.getInt("id"),
-                        barber_shop.getString("name"), barber_shop.getString("description"),
-                        barber_shop.getString("city"), barber_shop.getString("address"),
-                        barber_shop.getString("phone"), barber_shop.getString("email"), null));
+                    // Looping through all barber shops and their related data
+                    for (int barber_count = 0; barber_count < barber_shop_list.length(); barber_count++) {
+                        JSONObject barber_shop = barber_shop_list.getJSONObject(barber_count);
 
-                JSONArray schedules = barber_shop.getJSONArray("schedule");
-                for (int schedule_count = 0; schedule_count < schedules.length(); schedule_count++) {
-                    JSONObject schedule = schedules.getJSONObject(schedule_count);
-                    db_barber_shop_schedules.add(new Schedule(barber_shop.getInt("id"),
-                            schedule.getInt("day_of_week"), schedule.getString("oppening_1"),
-                            schedule.getString("closing_1"), schedule.getString("oppening_2"),
-                            schedule.getString("closing_2"), schedule.getInt("appointments_at_same_time")));
+                        db_barber_shop_list.add(new Barber(barber_shop.getInt("id"),
+                                barber_shop.getString("name"), barber_shop.getString("description"),
+                                barber_shop.getString("city"), barber_shop.getString("address"),
+                                barber_shop.getString("phone"), barber_shop.getString("email"), null));
+
+                        JSONArray schedules = barber_shop.getJSONArray("schedule");
+                        for (int schedule_count = 0; schedule_count < schedules.length(); schedule_count++) {
+                            JSONObject schedule = schedules.getJSONObject(schedule_count);
+                            db_barber_shop_schedules.add(new Schedule(barber_shop.getInt("id"),
+                                    schedule.getInt("day_of_week"), schedule.getString("oppening_1"),
+                                    schedule.getString("closing_1"), schedule.getString("oppening_2"),
+                                    schedule.getString("closing_2"), schedule.getInt("appointments_at_same_time")));
+                        }
+
+                        JSONArray special_days = barber_shop.getJSONArray("special_days");
+                        for (int special_day_count = 0; special_day_count < special_days.length(); special_day_count++) {
+                            JSONObject special_day = special_days.getJSONObject(special_day_count);
+                            db_barber_shop_special_days.add(new SpecialDay(barber_shop.getInt("id"),
+                                    special_day.getString("date"), special_day.getInt("type_of_day")));
+                        }
+
+                        JSONArray services = barber_shop.getJSONArray("services");
+                        for (int service_count = 0; service_count < services.length(); service_count++) {
+                            JSONObject service = services.getJSONObject(service_count);
+                            db_barber_shop_services.add(new BarberService(service.getInt("id"),
+                                    barber_shop.getInt("id"), service.getString("name"),
+                                    service.getDouble("price"), service.getDouble("duration")));
+                        }
+
+                        JSONArray appointments = barber_shop.getJSONArray("appointments");
+                        for (int appointment_count = 0; appointment_count < appointments.length(); appointment_count++) {
+                            JSONObject appointment = appointments.getJSONObject(appointment_count);
+                            db_barber_shop_appointments.add(new Appointment(appointment.getInt("id"), appointment.getInt("client_id"),
+                                    barber_shop.getInt("id"), appointment.getInt("service_id"),
+                                    appointment.getInt("promotion_id"), appointment.getString("date")));
+                        }
+
+                        JSONArray promotions = barber_shop.getJSONArray("promotions");
+                        for (int promotion_count = 0; promotion_count < promotions.length(); promotion_count++) {
+                            JSONObject promotion = promotions.getJSONObject(promotion_count);
+                            db_barber_shop_promotions.add(new Promotion(promotion.getInt("id"), barber_shop.getInt("id"),
+                                    promotion.getInt("service_id"), promotion.getString("name"), promotion.getString("description")));
+                        }
+
+                        JSONArray reviews = barber_shop.getJSONArray("reviews");
+                        for (int review_count = 0; review_count < reviews.length(); review_count++) {
+                            JSONObject review = reviews.getJSONObject(review_count);
+                            db_barber_shop_reviews.add(new Review(review.getInt("client_id"), barber_shop.getInt("id"),
+                                    review.getString("review_description"), review.getDouble("review_mark"),
+                                    review.getString("review_date")));
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                JSONArray special_days = barber_shop.getJSONArray("special_days");
-                for (int special_day_count = 0; special_day_count < special_days.length(); special_day_count++) {
-                    JSONObject special_day = special_days.getJSONObject(special_day_count);
-                    db_barber_shop_special_days.add(new SpecialDay(barber_shop.getInt("id"),
-                            special_day.getString("date"), special_day.getInt("type_of_day")));
-                }
-
-                JSONArray services = barber_shop.getJSONArray("services");
-                for (int service_count = 0; service_count < services.length(); service_count++) {
-                    JSONObject service = services.getJSONObject(service_count);
-                    db_barber_shop_services.add(new BarberService(service.getInt("id"),
-                            barber_shop.getInt("id"), service.getString("name"),
-                            service.getDouble("price"), service.getDouble("duration")));
-                }
-
-                JSONArray appointments = barber_shop.getJSONArray("appointments");
-                for (int appointment_count = 0; appointment_count < appointments.length(); appointment_count++) {
-                    JSONObject appointment = appointments.getJSONObject(appointment_count);
-                    db_barber_shop_appointments.add(new Appointment(appointment.getInt("id"), appointment.getInt("client_id"),
-                            barber_shop.getInt("id"), appointment.getInt("service_id"),
-                            appointment.getInt("promotion_id"), appointment.getString("date")));
-                }
-
-                JSONArray promotions = barber_shop.getJSONArray("promotions");
-                for (int promotion_count = 0; promotion_count < promotions.length(); promotion_count++) {
-                    JSONObject promotion = promotions.getJSONObject(promotion_count);
-                    db_barber_shop_promotions.add(new Promotion(promotion.getInt("id"), barber_shop.getInt("id"),
-                            promotion.getInt("service_id"), promotion.getString("name"), promotion.getString("description")));
-                }
-
-                JSONArray reviews = barber_shop.getJSONArray("reviews");
-                for (int review_count = 0; review_count < reviews.length(); review_count++) {
-                    JSONObject review = reviews.getJSONObject(review_count);
-                    db_barber_shop_reviews.add(new Review(review.getInt("client_id"), barber_shop.getInt("id"),
-                            review.getString("review_description"), review.getDouble("review_mark"),
-                            review.getString("review_date")));
-                }
+                Insert_BarberShops(db_barber_shop_list);
+                Insert_Appointments(db_barber_shop_appointments);
+                Insert_Reviews(db_barber_shop_reviews);
+                Insert_Services(db_barber_shop_services);
+                Insert_Promotions(db_barber_shop_promotions);
+                Insert_SpecialDays(db_barber_shop_special_days);
+                Insert_Schelues(db_barber_shop_schedules);
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
-        Insert_BarberShops(db_barber_shop_list);
-        Insert_Appointments(db_barber_shop_appointments);
-        Insert_Reviews(db_barber_shop_reviews);
-        Insert_Services(db_barber_shop_services);
-        Insert_Promotions(db_barber_shop_promotions);
-        Insert_SpecialDays(db_barber_shop_special_days);
-        Insert_Schelues(db_barber_shop_schedules);
     }
 }

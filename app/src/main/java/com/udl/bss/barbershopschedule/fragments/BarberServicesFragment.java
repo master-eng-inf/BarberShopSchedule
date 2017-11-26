@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
 import com.udl.bss.barbershopschedule.domain.Price;
-import com.udl.bss.barbershopschedule.listeners.PriceClick;
+import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class BarberServicesFragment extends Fragment {
         pricesList.add(price1);
         pricesList.add(price2);
 
-        PriceAdapter adapter = new PriceAdapter(pricesList, new PriceClick(getActivity(), pricesRecyclerView));
+        PriceAdapter adapter = new PriceAdapter(pricesList, new BarberServiceClick(getActivity(), pricesRecyclerView));
         pricesRecyclerView.setAdapter(adapter);
     }
 

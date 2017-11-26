@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Alex on 22/11/2017.
@@ -19,7 +20,13 @@ public final class SIL {
     private static String response;
 
     public static String Get(String url) {
-        new Getter(url).execute();
+        try {
+            new Getter(url).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return response;
     }
 

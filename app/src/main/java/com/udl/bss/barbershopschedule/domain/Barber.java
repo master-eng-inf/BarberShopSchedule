@@ -36,6 +36,7 @@ public class Barber implements Parcelable {
         this.city = in.readString();
         this.address = in.readString();
         this.phone = in.readString();
+        this.email = in.readString();
         this.image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 

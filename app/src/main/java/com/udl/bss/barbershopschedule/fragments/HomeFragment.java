@@ -23,8 +23,6 @@ import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -32,6 +30,7 @@ public class HomeFragment extends Fragment {
     private int client_id;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView promotionsRecycleView;
+    private BLL instance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,6 +52,8 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             this.client_id = getArguments().getInt(CLIENT_ID);
         }
+        this.instance = new BLL(getContext());
+        this.instance.Initialize_Database();
     }
 
     @Override
@@ -107,8 +108,7 @@ public class HomeFragment extends Fragment {
     private void setAppointmentItems() {
         List<Appointment> appointmentList;
 
-        BLL instance = new BLL(getContext());
-        appointmentList = instance.Get_ClientAppointments(this.client_id);
+        appointmentList = this.instance.Get_ClientAppointments(this.client_id);
 
         AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
         appointmentsRecyclerView.setAdapter(adapter);
@@ -116,11 +116,9 @@ public class HomeFragment extends Fragment {
 
     private void setPromotionsItems() {
         List<Promotion> promotionList;
-        BLL instace = new BLL(getContext());
 
         //TODO
-        promotionList = instace.Get_BarberShopPromotions(0);
-
+        promotionList = this.instance.Get_BarberShopPromotions(0);
         PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
         promotionsRecycleView.setAdapter(adapter);
     }
