@@ -22,6 +22,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
@@ -45,10 +46,9 @@ public class BarberListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private BarberAdapter adapter;
-
+    private BLL instance;
     private OnFragmentInteractionListener mListener;
 
-    final static String urlBarbers = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json";
     String jsonStr;
     private String TAG = HomeActivity.class.getSimpleName();
 
@@ -62,6 +62,7 @@ public class BarberListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.instance = new BLL(getContext());
     }
 
     @Override
@@ -98,8 +99,8 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            new GetBarbers().execute();
-
+            adapter = new BarberAdapter(this.instance.Get_BarberShopList(false), new BarberClick(getActivity(), mRecyclerView));
+            mRecyclerView.setAdapter(adapter);
         }
 
         /* Swipe down to refresh */
@@ -114,7 +115,8 @@ public class BarberListFragment extends Fragment {
 
                 }
                 adapter.removeAll();
-                new GetBarbers().execute();
+                adapter = new BarberAdapter(instance.Get_BarberShopList(true), new BarberClick(getActivity(), mRecyclerView));
+                mRecyclerView.setAdapter(adapter);
             }
         });
         sr.setColorSchemeResources(android.R.color.holo_blue_dark,
@@ -154,7 +156,7 @@ public class BarberListFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class GetBarbers extends AsyncTask<Void, Void, Void> {
+   /* private class GetBarbers extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -246,6 +248,6 @@ public class BarberListFragment extends Fragment {
 
             return null;
         }
-    }
+    }*/
 
 }

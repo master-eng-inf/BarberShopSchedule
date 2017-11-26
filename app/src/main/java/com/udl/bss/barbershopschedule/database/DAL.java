@@ -252,6 +252,25 @@ public class DAL extends SQLiteOpenHelper {
         db.insert(BarberShopEntry.TABLE_NAME, null, values);
     }
 
+    public void Insert_BarberShops(ArrayList<Barber> new_barber_shops) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (Iterator<Barber> iterator = new_barber_shops.iterator(); iterator.hasNext(); ) {
+            Barber new_barber_shop = iterator.next();
+
+            ContentValues values = new ContentValues();
+            values.put(BarberShopEntry._ID, new_barber_shop.getId());
+            values.put(BarberShopEntry.EMAIL, new_barber_shop.getEmail());
+            values.put(BarberShopEntry.PHONE, new_barber_shop.getPhone());
+            values.put(BarberShopEntry.NAME, new_barber_shop.getName());
+            values.put(BarberShopEntry.ADDRESS, new_barber_shop.getAddress());
+            values.put(BarberShopEntry.CITY, new_barber_shop.getCity());
+            values.put(BarberShopEntry.DESCRIPTION, new_barber_shop.getDescription());
+
+            db.insert(BarberShopEntry.TABLE_NAME, null, values);
+        }
+    }
+
     public void Delete_AllBarberShops() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(BarberShopEntry.TABLE_NAME, null, null);

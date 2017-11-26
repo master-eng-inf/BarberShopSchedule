@@ -22,7 +22,7 @@ public class Review {
         this.description = description;
         this.mark = mark;
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
         try {
             this.date = format.parse(date);
         } catch (ParseException e) {

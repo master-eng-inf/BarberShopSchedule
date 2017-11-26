@@ -23,7 +23,7 @@ public class Schedule {
         this.day_of_week = day_of_week;
         this.appointments_at_same_time = appointments_at_same_time;
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat format = new SimpleDateFormat("HH:MM");
         try {
             this.oppening_1 = format.parse(oppening_1);
             this.oppening_2 = format.parse(oppening_2);
