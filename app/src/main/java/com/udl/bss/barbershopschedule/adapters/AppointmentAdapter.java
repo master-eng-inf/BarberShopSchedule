@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,6 +28,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     private List<Appointment> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -38,7 +44,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener) {
+    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
     }
@@ -53,9 +59,22 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.service.setText(mDataset.get(position).getService());
-        holder.name.setText(mDataset.get(position).getName());
-        Date date_obj = mDataset.get(position).getDate();
+        BLL instace = new BLL(this.context);
+        BarberService service = instace.Get_BarberShopService(mDataset.get(position).getService_id());
+        Barber barber = instace.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
+
+        holder.service.setText(service.Get_Name());
+        holder.name.setText(barber.getName());
+
+        Date date_obj = null;
+
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        try {
+            date_obj = format.parse(mDataset.get(position).getDate());
+        } catch (ParseException e) {
+            date_obj = null;
+        }
+
         String date = new SimpleDateFormat("HH:mm dd-MM-yyyy", new Locale("es", "ES")).format(date_obj);
         holder.date.setText(date);
 

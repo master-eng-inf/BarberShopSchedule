@@ -16,6 +16,7 @@ public class PromotionContract {
 
         public final static String _ID = BaseColumns._ID;
         public final static String BARBER_SHOP_ID = "Barber_Shop_Id";
+        public final static String SERVICE_ID = "Service_Id";
         public final static String NAME = "Name";
         public final static String DESCRIPTION = "Description";
     }

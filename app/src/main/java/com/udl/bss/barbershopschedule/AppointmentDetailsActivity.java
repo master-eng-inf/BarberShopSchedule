@@ -13,7 +13,10 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -62,9 +65,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         Appointment a = getIntent().getParcelableExtra("appointment");
 
-        ctl.setTitle(a.getName());
+        BLL instance = new BLL(this);
+        Barber barber = instance.Get_BarberShop(a.getBarber_shop_id());
+        BarberService service = instance.Get_BarberShopService(a.getService_id());
+
+        ctl.setTitle(barber.getName());
         tv_date.setText(new SimpleDateFormat("HH:mm dd-MM-yyyy",
                 new Locale("es", "ES")).format(a.getDate()));
-        tv_service.setText(a.getService());
+        tv_service.setText(service.Get_Name());
     }
 }

@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 
@@ -20,6 +24,7 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
 
     private List<Promotion> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -35,9 +40,10 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         }
     }
 
-    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener) {
+    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -50,8 +56,13 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.service.setText(mDataset.get(position).getService());
-        holder.name.setText(mDataset.get(position).getBarberShopName());
+        BLL instance = new BLL(this.context);
+
+        BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
+        Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
+
+        holder.service.setText(service.Get_Name());
+        holder.name.setText(barber.getName());
         holder.description.setText(mDataset.get(position).getDescription());
 
         ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");

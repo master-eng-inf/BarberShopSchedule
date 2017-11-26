@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
@@ -21,7 +23,8 @@ import java.util.List;
 
 
 public class BarberPromotionsFragment extends Fragment {
-
+    private static final String BARBER_SHOP = "barber_shop";
+    private Barber barber;
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView promotionsRecyclerView;
@@ -30,13 +33,20 @@ public class BarberPromotionsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BarberPromotionsFragment newInstance() {
-        return new BarberPromotionsFragment();
+    public static BarberPromotionsFragment newInstance(Barber barber) {
+        BarberPromotionsFragment fragment = new BarberPromotionsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(BARBER_SHOP, barber);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.barber = getArguments().getParcelable(BARBER_SHOP);
+        }
     }
 
     @Override
@@ -66,20 +76,12 @@ public class BarberPromotionsFragment extends Fragment {
 
 
     private void setPromotionsItems() {
-        List<Promotion> promotionList = new ArrayList<>();
+        List<Promotion> promotionList;
 
-        Promotion promotion1 = new Promotion(1, "Barber1", "Hair cut", "50% off");
-        Promotion promotion2 = new Promotion(2, "Barber1", "Tint","2x1");
-        Promotion promotion3 = new Promotion(1, "Barber1", "Hair cut", "50% off");
-        Promotion promotion4 = new Promotion(2, "Barber1", "Tint","2x1");
+        BLL instance = new BLL(getContext());
+        promotionList = instance.Get_BarberShopPromotions(this.barber.getId());
 
-        promotionList.add(promotion1);
-        promotionList.add(promotion2);
-        promotionList.add(promotion3);
-        promotionList.add(promotion4);
-
-
-        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView));
+        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
         promotionsRecyclerView.setAdapter(adapter);
     }
 

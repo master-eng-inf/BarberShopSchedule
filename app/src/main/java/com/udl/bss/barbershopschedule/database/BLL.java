@@ -17,6 +17,7 @@ import com.udl.bss.barbershopschedule.database.BE.SpecialDayContract;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.domain.Review;
 import com.udl.bss.barbershopschedule.domain.Schedule;
@@ -52,6 +53,22 @@ public class BLL {
         this.dal_instance.Delete_AllBarberShops();
     }
 
+    public ArrayList<Client> Get_ClientList() {
+        return this.dal_instance.Get_ClientList();
+    }
+
+    public Client Get_Client(int client_id) {
+        return this.dal_instance.Get_Client(client_id);
+    }
+
+    public void Insert_Client(Client new_client) {
+        this.dal_instance.Insert_Client(new_client);
+    }
+
+    public void Delete_AllClients() {
+        this.dal_instance.Delete_AllClients();
+    }
+
     public ArrayList<Review> Get_BarberShopReviews(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopReviews(barber_shop_id);
     }
@@ -68,6 +85,10 @@ public class BLL {
         return this.dal_instance.Get_BarberShopServices(barber_shop_id);
     }
 
+    public BarberService Get_BarberShopService(int service_id) {
+        return this.dal_instance.Get_BarberShopService(service_id);
+    }
+
     public void Insert_Services(ArrayList<BarberService> services) {
         this.dal_instance.Insert_Services(services);
     }
@@ -78,6 +99,11 @@ public class BLL {
 
     public ArrayList<Appointment> Get_BarberShopAppointments(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopAppointments(barber_shop_id);
+    }
+
+    public ArrayList<Appointment> Get_ClientAppointments(int client_id)
+    {
+        return this.dal_instance.Get_ClientAppointments(client_id);
     }
 
     public void Insert_Appointments(ArrayList<Appointment> appointments) {
@@ -101,7 +127,7 @@ public class BLL {
     }
 
     public ArrayList<SpecialDay> Get_BarberShopSpecialDays(int barber_shop_id) {
-       return this.dal_instance.Get_BarberShopSpecialDays(barber_shop_id);
+        return this.dal_instance.Get_BarberShopSpecialDays(barber_shop_id);
     }
 
     public void Insert_SpecialDays(ArrayList<SpecialDay> special_days) {

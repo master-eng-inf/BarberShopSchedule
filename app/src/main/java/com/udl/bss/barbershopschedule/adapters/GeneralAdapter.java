@@ -53,7 +53,7 @@ public class GeneralAdapter extends ArrayAdapter<Object> {
                     TextView price_label = (TextView) v.findViewById(R.id.service_price);
 
                     if (description_label != null) {
-                        description_label.setText(barberService.Get_Description());
+                        description_label.setText(barberService.Get_Name());
                     }
 
                     if (price_label != null) {
