@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.domain.Service;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 
 public class BarberServiceDetailFragment extends Fragment {
 
@@ -19,7 +19,7 @@ public class BarberServiceDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BarberServiceDetailFragment newInstance(Service service) {
+    public static BarberServiceDetailFragment newInstance(BarberService service) {
         BarberServiceDetailFragment fragment = new BarberServiceDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable("service", service);
@@ -45,7 +45,7 @@ public class BarberServiceDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle args = getArguments();
-        Service service = args.getParcelable("service");
+        BarberService service = args.getParcelable("service");
 
     }
 

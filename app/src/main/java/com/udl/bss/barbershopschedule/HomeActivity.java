@@ -179,10 +179,7 @@ public class HomeActivity extends AppCompatActivity
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
             startFragment(bsf);
         } else if (id == R.id.show_promotions) {
-            //TODO
-            BLL instance = new BLL(this);
-            Barber barber = instance.Get_BarberShop(0);
-            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance(barber);
+            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
             startFragment(bpf);
         } else if (id == R.id.profile) {
 

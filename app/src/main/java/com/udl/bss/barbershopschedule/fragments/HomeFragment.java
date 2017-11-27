@@ -88,7 +88,6 @@ public class HomeFragment extends Fragment {
             appointmentsRecyclerView.setLayoutManager(llm);
 
             setAppointmentItems();
-
         }
 
         if (promotionsRecycleView != null) {
@@ -96,13 +95,11 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecycleView.setLayoutManager(llm);
 
-            //setPromotionsItems();
-
+            setPromotionsItems();
         }
 
         FloatingActionMenu floatingActionMenu = getActivity().findViewById(R.id.fab_menu);
         floatingActionMenu.setClosedOnTouchOutside(true);
-
     }
 
     private void setAppointmentItems() {
@@ -114,7 +111,7 @@ public class HomeFragment extends Fragment {
         appointmentsRecyclerView.setAdapter(adapter);
     }
 
-    /*
+
     private void setPromotionsItems() {
         List<Promotion> promotionList;
 
@@ -123,7 +120,7 @@ public class HomeFragment extends Fragment {
         PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
         promotionsRecycleView.setAdapter(adapter);
     }
-    */
+
 
 
     public void onButtonPressed(Uri uri) {

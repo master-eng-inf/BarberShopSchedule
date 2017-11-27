@@ -175,11 +175,12 @@ public class BarberPromotionsFragment extends Fragment {
                     name = ("Promotion "+i);
                     description = promotion.getString("description");
 
-                    Promotion barberPromotion = new Promotion(id, barber_id, name ,description);
+                    //TODO service id
+                    Promotion barberPromotion = new Promotion(id, barber_id, 0, name ,description);
                     promotionList.add(barberPromotion);
                 }
 
-                adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView));
+                adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
                 promotionsRecyclerView.setAdapter(adapter);
 
             } catch (JSONException e) {
