@@ -11,14 +11,15 @@ import android.view.View;
 import com.udl.bss.barbershopschedule.PriceDetailActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 
 
-public class PriceClick implements OnItemClickListener {
+public class BarberServiceClick implements OnItemClickListener {
 
     private FragmentActivity activity;
     private RecyclerView recyclerView;
 
-    public PriceClick(FragmentActivity activity, RecyclerView recyclerView) {
+    public BarberServiceClick(FragmentActivity activity, RecyclerView recyclerView) {
         this.activity = activity;
         this.recyclerView = recyclerView;
     }
@@ -31,11 +32,10 @@ public class PriceClick implements OnItemClickListener {
         View service_cv = view.findViewById(R.id.service_cv);
         //View fbutton = activity.findViewById(R.id.fab);
 
-
-        PriceAdapter adapter = (PriceAdapter) recyclerView.getAdapter();
+        ServiceAdapter adapter = (ServiceAdapter) recyclerView.getAdapter();
 
         Intent intent = new Intent(activity, PriceDetailActivity.class);
-        intent.putExtra("price", adapter.getItem(position));
+        intent.putExtra("service", adapter.getItem(position));
 
         //Pair<View, String> p1 = Pair.create(fbutton, "fab");
         Pair<View, String> p1 = Pair.create(price_cv, activity.getString(R.string.transname_barberdesc));

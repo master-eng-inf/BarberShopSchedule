@@ -1,6 +1,5 @@
 package com.udl.bss.barbershopschedule;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Time;
 import com.udl.bss.barbershopschedule.listeners.FreeHourClick;
 
@@ -17,12 +17,16 @@ import java.util.List;
 
 public class BarberFreeHoursActivity extends AppCompatActivity {
 
+    private BarberService barberService;
     private RecyclerView freeHoursRecycleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barber_free_hours);
+
+        barberService = getIntent().getParcelableExtra("service");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -66,7 +70,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
         freeHoursList.add(new Time(2017, 11, 11, 19, 00, true));
         freeHoursList.add(new Time(2017, 11, 11, 19, 30, false));
 
-        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(this, this.freeHoursRecycleView), getApplicationContext());
+        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(this, this.freeHoursRecycleView, this.barberService), this);
         this.freeHoursRecycleView.setAdapter(adapter);
     }
 }

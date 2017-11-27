@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.udl.bss.barbershopschedule.BarberServicePricesActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Time;
 
 /**
@@ -19,10 +20,12 @@ public class FreeHourClick implements OnItemClickListener {
 
     private Activity activity;
     private RecyclerView recyclerView;
+    private BarberService service;
 
-    public FreeHourClick(Activity activity, RecyclerView recyclerView) {
+    public FreeHourClick(Activity activity, RecyclerView recyclerView, BarberService service) {
         this.activity = activity;
         this.recyclerView = recyclerView;
+        this.service = service;
     }
 
     @Override
@@ -32,14 +35,11 @@ public class FreeHourClick implements OnItemClickListener {
         Time time = adapter.getItem(position);
 
         if (!time.GetAvailability()) {
-            Toast.makeText(view.getContext(), R.string.unavailable_time, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.unavailable_time, Toast.LENGTH_SHORT).show();
         }
 
         else {
-            Intent intent = new Intent(activity, BarberServicePricesActivity.class);
-            intent.putExtra("Time", adapter.getItem(position));
-
-            activity.startActivity(intent);
+            Toast.makeText(activity, "This will create an appointment for " + service.Get_Name(), Toast.LENGTH_SHORT).show();
         }
     }
 }

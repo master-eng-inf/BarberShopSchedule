@@ -19,6 +19,8 @@ import android.view.ViewStub;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
@@ -66,7 +68,6 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
 
         String user = getIntent().getStringExtra("user");
@@ -77,7 +78,12 @@ public class HomeActivity extends AppCompatActivity
 
             stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
-            fragment = BarberHomeFragment.newInstance();
+
+            //TODO
+            BLL instance = new BLL(this);
+            Barber barber = instance.Get_BarberShop(0);
+
+            fragment = BarberHomeFragment.newInstance(barber);
             stub.inflate();
 
             FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
@@ -104,7 +110,9 @@ public class HomeActivity extends AppCompatActivity
 
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
-            fragment = HomeFragment.newInstance();
+
+            //TODO
+            fragment = HomeFragment.newInstance(0);
             stub.inflate();
 
         }
@@ -152,10 +160,14 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.home) {
-            HomeFragment hf = HomeFragment.newInstance();
+            //TODO
+            HomeFragment hf = HomeFragment.newInstance(0);
             startFragment(hf);
         } else if (id == R.id.barber_home) {
-            BarberHomeFragment bhf = BarberHomeFragment.newInstance();
+            //TODO
+            BLL instance = new BLL(this);
+            Barber barber = instance.Get_BarberShop(0);
+            BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
             startFragment(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
@@ -167,7 +179,10 @@ public class HomeActivity extends AppCompatActivity
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
             startFragment(bsf);
         } else if (id == R.id.show_promotions) {
-            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
+            //TODO
+            BLL instance = new BLL(this);
+            Barber barber = instance.Get_BarberShop(0);
+            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance(barber);
             startFragment(bpf);
         } else if (id == R.id.profile) {
 

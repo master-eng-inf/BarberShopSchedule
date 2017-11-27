@@ -17,19 +17,20 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-
+    private static final String CLIENT_ID = "client_id";
+    private int client_id;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView promotionsRecycleView;
+    private BLL instance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,13 +38,22 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static HomeFragment newInstance(int client_id) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putInt(CLIENT_ID, client_id);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.client_id = getArguments().getInt(CLIENT_ID);
+        }
+        this.instance = new BLL(getContext());
+        this.instance.Initialize_Database();
     }
 
     @Override
@@ -96,29 +106,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAppointmentItems() {
-        List<Appointment> appointmentList = new ArrayList<>();
+        List<Appointment> appointmentList;
 
-        Appointment appointment1 = new Appointment(1, "Barber shop 1", "Hair cut", new Date("11/20/2017 15:30"));
-        Appointment appointment2 = new Appointment(2, "Barber shop 2", "Tint", new Date("11/5/2017 20:00"));
+        appointmentList = this.instance.Get_ClientAppointments(this.client_id);
 
-        appointmentList.add(appointment1);
-        appointmentList.add(appointment2);
-
-        AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView));
+        AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
         appointmentsRecyclerView.setAdapter(adapter);
     }
 
     /*
     private void setPromotionsItems() {
-        List<Promotion> promotionList = new ArrayList<>();
+        List<Promotion> promotionList;
 
-        Promotion promotion1 = new Promotion(1, "Barber shop 1", "Hair cut", "50% off");
-        Promotion promotion2 = new Promotion(2, "Barber shop 2", "Tint","2x1");
-
-        promotionList.add(promotion1);
-        promotionList.add(promotion2);
-
-        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView));
+        //TODO
+        promotionList = this.instance.Get_BarberShopPromotions(0);
+        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
         promotionsRecycleView.setAdapter(adapter);
     }
     */

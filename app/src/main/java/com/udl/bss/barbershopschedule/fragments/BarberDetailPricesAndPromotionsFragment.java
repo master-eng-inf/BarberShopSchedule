@@ -10,23 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
-import com.udl.bss.barbershopschedule.domain.Price;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.listeners.PriceClick;
+import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
     private static final String BARBER_SHOP = "barber_shop";
     private Barber barber;
     private RecyclerView promotionsRecyclerView;
-    private RecyclerView pricesRecyclerView;
+    private RecyclerView servicesRecyclerView;
 
     public static BarberDetailPricesAndPromotionsFragment newInstance(Barber param1) {
         BarberDetailPricesAndPromotionsFragment fragment = new BarberDetailPricesAndPromotionsFragment();
@@ -54,16 +54,16 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (getView() != null) {
-            pricesRecyclerView = getView().findViewById(R.id.rv);
+            servicesRecyclerView = getView().findViewById(R.id.rv);
             promotionsRecyclerView = getView().findViewById(R.id.rv2);
         }
 
-        if (pricesRecyclerView != null) {
-            pricesRecyclerView.setHasFixedSize(true);
+        if (servicesRecyclerView != null) {
+            servicesRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
-            pricesRecyclerView.setLayoutManager(llm);
+            servicesRecyclerView.setLayoutManager(llm);
 
-            setPricesItems();
+            setServicesItems();
 
         }
 
@@ -72,41 +72,25 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecyclerView.setLayoutManager(llm);
 
-            //setPromotionsItems();
-
+            setPromotionsItems();
         }
     }
 
-    private void setPricesItems() {
-        List<Price> pricesList = new ArrayList<>();
+    private void setServicesItems() {
+        BLL instance = new BLL(getContext());
 
-        Price price1 = new Price(1, barber.getName(), "Hair cut", 7);
-        Price price2 = new Price(2, barber.getName(), "Tint",12);
+        ArrayList<BarberService> services = instance.Get_BarberShopServices(barber.getId());
 
-        pricesList.add(price1);
-        pricesList.add(price2);
-
-        PriceAdapter adapter = new PriceAdapter(pricesList, new PriceClick(getActivity(), pricesRecyclerView));
-        pricesRecyclerView.setAdapter(adapter);
+        ServiceAdapter adapter = new ServiceAdapter(services, new BarberServiceClick(getActivity(), servicesRecyclerView));
+        servicesRecyclerView.setAdapter(adapter);
     }
 
-    /*
     private void setPromotionsItems() {
-        List<Promotion> promotionList = new ArrayList<>();
+        BLL instance = new BLL(getContext());
 
-        Promotion promotion1 = new Promotion(1, barber.getName(), "Hair cut", "50% off");
-        Promotion promotion2 = new Promotion(2, barber.getName(), "Tint","2x1");
-        Promotion promotion3 = new Promotion(1, barber.getName(), "Hair cut", "50% off");
-        Promotion promotion4 = new Promotion(2, barber.getName(), "Tint","2x1");
+        ArrayList<Promotion> promotions = instance.Get_BarberShopPromotions(barber.getId());
 
-        promotionList.add(promotion1);
-        promotionList.add(promotion2);
-        promotionList.add(promotion3);
-        promotionList.add(promotion4);
-
-
-        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView));
+        PromotionAdapter adapter = new PromotionAdapter(promotions, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
         promotionsRecyclerView.setAdapter(adapter);
     }
-    */
 }

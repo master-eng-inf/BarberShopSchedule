@@ -12,6 +12,7 @@ import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.udl.bss.barbershopschedule.BarberFreeHoursActivity;
+import com.udl.bss.barbershopschedule.BarberServicePricesActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
@@ -57,7 +58,7 @@ public class BarberDetailScheduleFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
                 if (year >= calendar.get(Calendar.YEAR) && month >= calendar.get(Calendar.MONTH) && dayOfMonth >= calendar.get(Calendar.DAY_OF_MONTH)) {
-                    Intent intent = new Intent(getContext(), BarberFreeHoursActivity.class);
+                    Intent intent = new Intent(getContext(), BarberServicePricesActivity.class);
                     intent.putExtra("barber", barber);
 
                     startActivity(intent);
