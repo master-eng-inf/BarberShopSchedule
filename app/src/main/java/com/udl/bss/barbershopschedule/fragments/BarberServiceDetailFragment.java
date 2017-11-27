@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Service;
@@ -46,6 +47,10 @@ public class BarberServiceDetailFragment extends Fragment {
 
         Bundle args = getArguments();
         Service service = args.getParcelable("service");
+        TextView tv = view.findViewById(R.id.name_cv);
+        if (service != null) {
+            tv.setText(service.getName());
+        }
 
     }
 
