@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     private List<BarberService> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -38,9 +40,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         }
     }
 
-    public ServiceAdapter(List<BarberService> myDataset, OnItemClickListener listener) {
+    public ServiceAdapter(List<BarberService> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -54,8 +57,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.name.setText(mDataset.get(position).Get_Name());
-        holder.price.setText(String.valueOf(mDataset.get(position).Get_Price()));
-        String duration = String.valueOf(mDataset.get(position).Get_Duration()) + " minutes";
+        String price = String.valueOf(mDataset.get(position).Get_Price()) + " " + context.getString(R.string.service_price_currency);
+        holder.price.setText(price);
+        String duration = String.valueOf(mDataset.get(position).Get_Duration()) + " " + context.getString(R.string.service_duration);
         holder.duration.setText(duration);
 
         ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"name");

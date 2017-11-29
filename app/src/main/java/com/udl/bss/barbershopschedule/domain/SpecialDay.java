@@ -17,7 +17,7 @@ public class SpecialDay {
         this.barber_shop_id = barber_shop_id;
         this.type_of_day = type_of_day;
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.date = format.parse(date);
             System.out.println(date);

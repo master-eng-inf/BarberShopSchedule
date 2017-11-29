@@ -81,7 +81,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
         ArrayList<BarberService> services = instance.Get_BarberShopServices(barber.getId());
 
-        ServiceAdapter adapter = new ServiceAdapter(services, new BarberServiceClick(getActivity(), servicesRecyclerView));
+        ServiceAdapter adapter = new ServiceAdapter(services, new BarberServiceClick(getActivity(), servicesRecyclerView), getContext());
         servicesRecyclerView.setAdapter(adapter);
     }
 

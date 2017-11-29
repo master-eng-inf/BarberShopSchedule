@@ -22,7 +22,7 @@ public class Appointment implements Parcelable {
         this.service_id = service_id;
         this.promotion_id = promotion_id;
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:MM");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             this.date = format.parse(date);
             System.out.println(date);

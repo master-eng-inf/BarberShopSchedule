@@ -56,6 +56,8 @@ public class PriceDetailActivity extends AppCompatActivity {
 
         TextView tv_price = findViewById(R.id.price_detail);
         TextView tv_service = findViewById(R.id.service_detail);
+        TextView tv_duration = findViewById(R.id.duration_detail);
+
         CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
         BarberService barber_shop_service = getIntent().getParcelableExtra("service");
@@ -64,7 +66,9 @@ public class PriceDetailActivity extends AppCompatActivity {
 
         ctl.setTitle(instance.Get_BarberShop(barber_shop_service.Get_BarberShopId()).getName());
         tv_service.setText(barber_shop_service.Get_Name());
-        String price = Double.toString(barber_shop_service.Get_Price()) + "€";
+        String price = Double.toString(barber_shop_service.Get_Price()) + " " + getResources().getString(R.string.service_price_currency);
         tv_price.setText(price);
+        String duration = Double.toString(barber_shop_service.Get_Duration()) + " " + getResources().getString(R.string.service_duration);
+        tv_duration.setText(duration);
     }
 }

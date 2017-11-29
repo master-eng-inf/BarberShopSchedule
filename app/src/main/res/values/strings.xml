@@ -68,4 +68,6 @@
     <string name="guest">Guest</string>
     <string name="unavailable_date">Date unavailable</string>
     <string name="unavailable_time">Selected time unavailable</string>
+    <string name="service_duration">Minutes</string>
+    <string name="service_price_currency">$</string>
 </resources>

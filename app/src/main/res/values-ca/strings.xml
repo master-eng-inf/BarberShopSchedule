@@ -18,4 +18,7 @@
     <string name="show_barbers">Mostra barbers</string>
     <string name="unavailable_date">Data no disponible</string>
     <string name="unavailable_time">Hora no disponible</string>
+
+    <string name="service_duration">Minuts</string>
+    <string name="service_price_currency">€</string>
 </resources>

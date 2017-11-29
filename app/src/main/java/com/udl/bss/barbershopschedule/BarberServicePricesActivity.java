@@ -53,7 +53,7 @@ public class BarberServicePricesActivity extends AppCompatActivity {
         BLL instance = new BLL(this);
         ArrayList<BarberService> barber_shop_services = instance.Get_BarberShopServices(this.barber_shop.getId());
 
-        ServiceAdapter adapter = new ServiceAdapter(barber_shop_services, new PreAppointmentBarberServiceClick(this, servicesRecyclerView));
+        ServiceAdapter adapter = new ServiceAdapter(barber_shop_services, new PreAppointmentBarberServiceClick(this, servicesRecyclerView), this);
         servicesRecyclerView.setAdapter(adapter);
     }
 }
