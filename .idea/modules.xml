@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BarberShopSchedule.iml" filepath="$PROJECT_DIR$/BarberShopSchedule.iml" />
+      <module fileurl="file://C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule\BarberShopSchedule.iml" filepath="C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule\BarberShopSchedule.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule\app\app.iml" filepath="C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule\app\app.iml" />
     </modules>
   </component>
 </project>
