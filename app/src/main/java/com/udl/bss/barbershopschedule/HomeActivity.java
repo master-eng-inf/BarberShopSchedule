@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.transition.Fade;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -43,6 +45,9 @@ public class HomeActivity extends AppCompatActivity
         BarberServiceDetailFragment.OnFragmentInteractionListener,
         BarberPromotionDetailFragment.OnFragmentInteractionListener{
 
+    private FloatingActionMenu floatingActionMenu;
+    private boolean doubleBack = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +73,6 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
-
         String user = getIntent().getStringExtra("user");
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
@@ -87,6 +90,7 @@ public class HomeActivity extends AppCompatActivity
             stub.inflate();
 
             FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
+            floatingActionMenu = findViewById(R.id.fab_menu);
             fab_new_service.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,6 +118,7 @@ public class HomeActivity extends AppCompatActivity
             //TODO
             fragment = HomeFragment.newInstance(0);
             stub.inflate();
+            floatingActionMenu = findViewById(R.id.fab_menu);
 
         }
 
@@ -124,12 +129,27 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (floatingActionMenu != null && floatingActionMenu.isOpened())
+                floatingActionMenu.close(true);
+            else if (backAction()) super.onBackPressed();
         }
+    }
+
+    public boolean backAction(){
+        if(doubleBack) return true;
+        this.doubleBack = true;
+        Toast.makeText(this, getString(R.string.double_back), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBack = false;
+            }
+        }, 2000);
+        return false;
     }
 
     @Override

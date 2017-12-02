@@ -78,4 +78,5 @@
     <string name="barber">Barber</string>
 
     <string name="field_error">All fields are required</string>
+    <string name="double_back">Click BACK again to exit</string>
 </resources>
