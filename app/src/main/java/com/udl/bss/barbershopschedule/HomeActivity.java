@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity
             if (floatingActionMenu != null && floatingActionMenu.isOpened()) {
                 floatingActionMenu.close(true);
             } else {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                     if (backAction()) super.onBackPressed();
                 }
                 else {
@@ -192,25 +192,25 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.home) {
             //TODO
             HomeFragment hf = HomeFragment.newInstance(0);
-            startFragment(hf);
+            startFragmentBackStack(hf);
         } else if (id == R.id.barber_home) {
             //TODO
             BLL instance = new BLL(this);
             Barber barber = instance.Get_BarberShop(0);
             BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
-            startFragment(bhf);
+            startFragmentBackStack(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
-            startFragment(blf);
+            startFragmentBackStack(blf);
         } else if (id == R.id.show_schedule) {
             BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
-            startFragment(bsf);
+            startFragmentBackStack(bsf);
         } else if (id == R.id.show_services) {
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
-            startFragment(bsf);
+            startFragmentBackStack(bsf);
         } else if (id == R.id.show_promotions) {
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
-            startFragment(bpf);
+            startFragmentBackStack(bpf);
         } else if (id == R.id.profile) {
 
         } else if (id == R.id.log_out) {
@@ -227,6 +227,16 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void startFragment(Fragment fragment) {
+        //Toast.makeText(this,fragment.toString(),Toast.LENGTH_SHORT).show();
+        if (fragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_home, fragment)
+                    .commit();
+        }
+    }
+
+    private void startFragmentBackStack(Fragment fragment) {
         //Toast.makeText(this,fragment.toString(),Toast.LENGTH_SHORT).show();
         if (fragment != null){
             getSupportFragmentManager()
