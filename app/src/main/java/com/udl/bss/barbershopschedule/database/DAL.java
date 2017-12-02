@@ -445,6 +445,55 @@ public class DAL extends SQLiteOpenHelper {
         return barber_shop_reviews;
     }
 
+    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id) {
+        Review review = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                ReviewEntry.CLIENT_ID,
+                ReviewEntry.BARBER_SHOP_ID,
+                ReviewEntry.DESCRIPTION,
+                ReviewEntry.MARK,
+                ReviewEntry.DATE,
+        };
+
+        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + barber_shop_id +
+                " and " + ReviewEntry.CLIENT_ID + " = " + client_id;
+
+        Cursor cursor = db.query(
+                ReviewEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int clientIdColumnIndex = cursor.getColumnIndex(ReviewEntry.CLIENT_ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(ReviewEntry.BARBER_SHOP_ID);
+            int descriptionColumnIndex = cursor.getColumnIndex(ReviewEntry.DESCRIPTION);
+            int markColumnIndex = cursor.getColumnIndex(ReviewEntry.MARK);
+            int dateColumnIndex = cursor.getColumnIndex(ReviewEntry.DATE);
+
+            cursor.moveToFirst();
+            int currentClientId = cursor.getInt(clientIdColumnIndex);
+            int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+            double currentMark = cursor.getDouble(markColumnIndex);
+            String currentDate = cursor.getString(dateColumnIndex);
+
+            review = new Review(currentClientId, currentBarberShopId, currentDescription,
+                    currentMark, currentDate);
+
+        } finally {
+            cursor.close();
+        }
+        return review;
+    }
+
     public void Insert_Reviews(ArrayList<Review> reviews) {
         SQLiteDatabase db = this.getWritableDatabase();
 

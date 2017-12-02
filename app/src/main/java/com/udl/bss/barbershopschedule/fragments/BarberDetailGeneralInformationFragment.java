@@ -1,14 +1,17 @@
 package com.udl.bss.barbershopschedule.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.ReviewsActivity;
 import com.udl.bss.barbershopschedule.domain.Barber;
 
 public class BarberDetailGeneralInformationFragment extends Fragment {
@@ -45,5 +48,16 @@ public class BarberDetailGeneralInformationFragment extends Fragment {
 
         TextView description = (TextView) view.findViewById(R.id.Description);
         description.setText(this.barber.getDescription());
+
+        Button rate = (Button)view.findViewById(R.id.rate_button);
+        rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ReviewsActivity.class);
+                intent.putExtra("barber", barber);
+
+                startActivity(intent);
+            }
+        });
     }
 }

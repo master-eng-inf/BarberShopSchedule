@@ -82,6 +82,11 @@ public class BLL {
         return this.dal_instance.Get_BarberShopReviews(barber_shop_id);
     }
 
+    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id)
+    {
+        return this.dal_instance.Get_ClientReviewForBarberShop(client_id, barber_shop_id);
+    }
+
     public void Insert_Reviews(ArrayList<Review> reviews) {
         this.dal_instance.Insert_Reviews(reviews);
     }

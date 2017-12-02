@@ -70,4 +70,9 @@
     <string name="unavailable_time">Selected time unavailable</string>
     <string name="service_duration">Minutes</string>
     <string name="service_price_currency">$</string>
+    
+    <string name="barber_shop_rating">Rating</string>
+    <string name="barber_shop_rate">Rate</string>
+    <string name="barber_review_edit">Edit</string>
+    <string name="barber_shop_location_show_on_map">Show on map</string>
 </resources>

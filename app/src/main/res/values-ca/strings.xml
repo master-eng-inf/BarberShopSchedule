@@ -21,4 +21,9 @@
 
     <string name="service_duration">Minuts</string>
     <string name="service_price_currency">€</string>
+
+    <string name="barber_shop_rating">Valoració</string>
+    <string name="barber_shop_rate">Valorar</string>
+    <string name="barber_review_edit">Editar</string>
+    <string name="barber_shop_location_show_on_map">Mostrar al mapa</string>
 </resources>
