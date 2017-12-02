@@ -136,9 +136,16 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (floatingActionMenu != null && floatingActionMenu.isOpened())
+            if (floatingActionMenu != null && floatingActionMenu.isOpened()) {
                 floatingActionMenu.close(true);
-            else if (backAction()) super.onBackPressed();
+            } else {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                    if (backAction()) super.onBackPressed();
+                }
+                else {
+                    super.onBackPressed();
+                }
+            }
         }
     }
 
@@ -225,6 +232,7 @@ public class HomeActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_home, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }
