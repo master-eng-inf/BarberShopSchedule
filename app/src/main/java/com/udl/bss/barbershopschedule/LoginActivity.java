@@ -15,6 +15,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         Button login_btn = findViewById(R.id.login_button);
+        Button guest_btn = findViewById(R.id.guest_btn);
+        Button register_btn = findViewById(R.id.register_button);
+
         final EditText username_et = findViewById(R.id.username_et);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -27,13 +30,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button guest_btn = findViewById(R.id.guest_btn);
-
         guest_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra("user", "");
+                startActivity(intent);
+            }
+        });
+
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
             }
         });

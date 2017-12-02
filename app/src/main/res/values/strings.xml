@@ -70,4 +70,12 @@
     <string name="unavailable_time">Selected time unavailable</string>
     <string name="service_duration">Minutes</string>
     <string name="service_price_currency">$</string>
+
+    <string name="accept">Accept</string>
+    <string name="image">Image</string>
+
+    <string name="user">User</string>
+    <string name="barber">Barber</string>
+
+    <string name="field_error">All fields are required</string>
 </resources>
