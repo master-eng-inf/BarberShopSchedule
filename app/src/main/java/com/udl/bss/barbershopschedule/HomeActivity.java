@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
 
-        if (user.equals("b") || user.equals("barber")) {
+        if (user.equals("Barber")) {
 
             stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
@@ -110,7 +110,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
-        } else {
+            startFragment(fragment);
+
+        } else if (user.equals("User")) {
 
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
@@ -120,9 +122,10 @@ public class HomeActivity extends AppCompatActivity
             stub.inflate();
             floatingActionMenu = findViewById(R.id.fab_menu);
 
+            startFragment(fragment);
         }
 
-        startFragment(fragment);
+
 
 
     }

@@ -18,6 +18,9 @@ public class Barber implements Parcelable {
     private String email;
     private Bitmap image;
 
+    private String password;
+    private String placesID;
+
     public Barber(int id, String name, String description, String city, String address, String phone, String email, Bitmap image) {
         this.id = id;
         this.name = name;
@@ -28,6 +31,16 @@ public class Barber implements Parcelable {
         this.email = email;
         this.image = image;
     }
+
+    public Barber(int id, String name, String email, Bitmap image, String placesID, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.image = image;
+        this.placesID = placesID;
+        this.password = password;
+    }
+
 
     private Barber(Parcel in) {
         this.id = in.readInt();
