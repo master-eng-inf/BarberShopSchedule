@@ -53,9 +53,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="10dp"
-                        android:text="Valorar ahora a Barber shop 1" />
+                        android:text="@string/rate_barber_shop_now" />
 
                     <RatingBar
+                        android:id="@+id/user_new_review_mark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -80,13 +81,13 @@
                             android:id="@+id/review_cancel_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cancelar" />
+                            android:text="@string/cancel_button" />
 
                         <Button
                             android:id="@+id/review_next_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Siguiente" />
+                            android:text="@string/next_button" />
 
                     </LinearLayout>
 
@@ -106,9 +107,9 @@
 
                     <EditText
                         android:id="@+id/user_new_review"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Afegeix la teva valoració per continuar..."/>
+                        android:hint="@string/new_review_hint"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -120,13 +121,13 @@
                             android:id="@+id/review_back_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Enrrere" />
+                            android:text="@string/back_button" />
 
                         <Button
                             android:id="@+id/review_upload_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Acceptar" />
+                            android:text="@string/publish_button" />
 
                     </LinearLayout>
 
@@ -148,8 +149,7 @@
                         android:id="@+id/user_review"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Fugiat do do ad velit eiusmod. Enim deserunt aute consequat et et excepteur enim. Est id et ut anim deserunt anim ea laboris tempor consectetur. Duis eu cillum est eu do duis excepteur ad. Eiusmod ea ea esse tempor cillum occaecat consequat pariatur velit ut tempor. Officia ipsum ipsum esse officia mollit ex id ipsum eu elit culpa est elit." />
+                        android:layout_marginBottom="10dp"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -170,8 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:text="27/07/2017" />
+                            android:layout_centerVertical="true"/>
 
                         <ImageView
                             android:id="@+id/edit_user_review"

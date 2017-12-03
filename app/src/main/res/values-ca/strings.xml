@@ -26,4 +26,21 @@
     <string name="barber_shop_rate">Valorar</string>
     <string name="barber_review_edit">Editar</string>
     <string name="barber_shop_location_show_on_map">Mostrar al mapa</string>
+
+    <string name="new_review_hint">Afegeix la teva valoració...</string>
+    <string name="rate_barber_shop_now">Valora ara la perruqueria</string>
+
+    <string name="cancel_button">Cancel·lar</string>
+    <string name="next_button">Següent</string>
+    <string name="back_button">Enrere</string>
+    <string name="publish_button">Publicar</string>
+    <string name="accept_button">Acceptar</string>
+    <string name="delete_review_dialog">Segur que vols eliminar la teva valoració?</string>
+    <string name="delete_review_dialog_title">Atenció</string>
+
+    <string name="rating_1">Molt dolenta</string>
+    <string name="rating_2">Dolenta</string>
+    <string name="rating_3">Normal</string>
+    <string name="rating_4">Bona</string>
+    <string name="rating_5">Molt bona</string>
 </resources>

@@ -488,10 +488,32 @@ public class DAL extends SQLiteOpenHelper {
             review = new Review(currentClientId, currentBarberShopId, currentDescription,
                     currentMark, currentDate);
 
+        } catch (Exception ex) {
         } finally {
             cursor.close();
         }
         return review;
+    }
+
+    public void Insert_or_Update_Review(Review review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ReviewEntry.CLIENT_ID, review.GetClientId());
+        values.put(ReviewEntry.BARBER_SHOP_ID, review.GetBarberShopId());
+        values.put(ReviewEntry.DESCRIPTION, review.GetDescription());
+        values.put(ReviewEntry.MARK, review.GetMark());
+        values.put(ReviewEntry.DATE, review.GetDate());
+
+        try {
+            db.insertOrThrow(ReviewEntry.TABLE_NAME, null, values);
+        } catch (android.database.sqlite.SQLiteConstraintException ex) {
+            String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
+                    " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+
+            db.update(ReviewEntry.TABLE_NAME, values, selection, null);
+        }
     }
 
     public void Insert_Reviews(ArrayList<Review> reviews) {
@@ -514,6 +536,15 @@ public class DAL extends SQLiteOpenHelper {
     public void Delete_Reviews() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ReviewEntry.TABLE_NAME, null, null);
+    }
+
+    public void Delete_Review(Review review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
+                " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+
+        db.delete(ReviewEntry.TABLE_NAME, selection, null);
     }
 
     public ArrayList<BarberService> Get_BarberShopServices(int barber_shop_id) {

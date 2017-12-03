@@ -82,8 +82,7 @@ public class BLL {
         return this.dal_instance.Get_BarberShopReviews(barber_shop_id);
     }
 
-    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id)
-    {
+    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id) {
         return this.dal_instance.Get_ClientReviewForBarberShop(client_id, barber_shop_id);
     }
 
@@ -91,8 +90,16 @@ public class BLL {
         this.dal_instance.Insert_Reviews(reviews);
     }
 
+    public void Insert_or_Update_Review(Review review) {
+        this.dal_instance.Insert_or_Update_Review(review);
+    }
+
     public void Delete_Reviews() {
         this.dal_instance.Delete_Reviews();
+    }
+
+    public void Delete_Review(Review review) {
+        this.dal_instance.Delete_Review(review);
     }
 
     public ArrayList<BarberService> Get_BarberShopServices(int barber_shop_id) {
