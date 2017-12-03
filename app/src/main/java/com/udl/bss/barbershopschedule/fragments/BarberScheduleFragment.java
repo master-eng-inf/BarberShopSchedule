@@ -65,11 +65,9 @@ public class BarberScheduleFragment extends Fragment {
                 BLL instance = new BLL(getContext());
                 Barber barber = instance.Get_BarberShop(0);
                 Log.d(TAG, "onSelectedDayChange: " + barber );
-                BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance(barber);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("date", date);
-                barberScheduleDateListFragment.setArguments(bundle);
+                BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance(barber);
+                barberScheduleDateListFragment.setSelectedDate(date);
 
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()

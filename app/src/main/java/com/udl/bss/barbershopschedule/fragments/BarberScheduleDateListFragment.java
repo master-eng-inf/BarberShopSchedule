@@ -93,4 +93,8 @@ public class BarberScheduleDateListFragment extends Fragment {
         appointmentsRecyclerView.setAdapter(adapter);
         }
     }
+
+    void setSelectedDate(String date){
+        selectedDate = date;
+    }
 }
