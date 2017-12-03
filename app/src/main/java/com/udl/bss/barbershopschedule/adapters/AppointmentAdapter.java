@@ -47,6 +47,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override

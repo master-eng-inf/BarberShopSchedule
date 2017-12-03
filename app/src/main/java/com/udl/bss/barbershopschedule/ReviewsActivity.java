@@ -4,10 +4,12 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.udl.bss.barbershopschedule.adapters.ReviewAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Review;
@@ -18,6 +20,8 @@ import java.util.TimeZone;
 public class ReviewsActivity extends AppCompatActivity {
 
     private Barber barber_shop;
+    private RecyclerView mRecyclerView;
+    private ReviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,5 +163,9 @@ public class ReviewsActivity extends AppCompatActivity {
             ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.GetMark());
             ((TextView) findViewById(R.id.user_rating_date)).setText((review.GetDate()));
         }
+
+        mRecyclerView = findViewById(R.id.reviews_rv);
+        adapter = new ReviewAdapter(instance.Get_BarberShopReviews(barber_shop.getId()), this);
+        mRecyclerView.setAdapter(adapter);
     }
 }

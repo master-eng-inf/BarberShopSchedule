@@ -8,11 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.ReviewsActivity;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Review;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BarberDetailGeneralInformationFragment extends Fragment {
     private static final String BARBER_SHOP = "barber_shop";
@@ -43,13 +49,25 @@ public class BarberDetailGeneralInformationFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BLL instance = new BLL(getContext());
+        ArrayList<Review> reviews = instance.Get_BarberShopReviews(this.barber.getId());
+        double rating = 0.0;
+
+        Iterator<Review> it = reviews.iterator();
+        while (it.hasNext()) {
+            rating += it.next().GetMark();
+        }
+
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.rating_bar);
+        ratingBar.setRating((float) rating / reviews.size());
+
         TextView name = (TextView) view.findViewById(R.id.Name);
         name.setText(this.barber.getName());
 
         TextView description = (TextView) view.findViewById(R.id.Description);
         description.setText(this.barber.getDescription());
 
-        Button rate = (Button)view.findViewById(R.id.rate_button);
+        Button rate = (Button) view.findViewById(R.id.rate_button);
         rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
