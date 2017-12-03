@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 
 import static android.content.ContentValues.TAG;
 
@@ -60,7 +62,11 @@ public class BarberScheduleFragment extends Fragment {
                 String date = year+ "-" + (month+1) + "-" +dayOfMonth;
                 Log.d( TAG, "onSelectedDayChange : started." + date );
 
-                BarberScheduleDateListFragment barberScheduleDateListFragment = new BarberScheduleDateListFragment();
+                BLL instance = new BLL(getContext());
+                Barber barber = instance.Get_BarberShop(0);
+                Log.d(TAG, "onSelectedDayChange: " + barber );
+                BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance(barber);
+
                 Bundle bundle = new Bundle();
                 bundle.putString("date", date);
                 barberScheduleDateListFragment.setArguments(bundle);
