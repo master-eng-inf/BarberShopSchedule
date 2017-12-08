@@ -167,8 +167,8 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
         mRecyclerView = findViewById(R.id.reviews_rv);
-        //mRecyclerView.setNestedScrollingEnabled(true);
-        //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setFocusable(false);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(llm);
 

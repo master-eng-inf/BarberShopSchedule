@@ -92,4 +92,6 @@
     <string name="rating_3">Normal</string>
     <string name="rating_4">Good</string>
     <string name="rating_5">Very good</string>
+
+    <string name="people_reviews">People reviews</string>
 </resources>
