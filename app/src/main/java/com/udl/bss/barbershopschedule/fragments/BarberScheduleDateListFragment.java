@@ -57,12 +57,11 @@ public class BarberScheduleDateListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
+       /* Bundle bundle = getArguments();
         if (bundle!= null){
             selectedDate = bundle.getString("date");
-            Log.d(TAG, "onCreateView: "+ selectedDate);
         }
-
+        */
         return inflater.inflate(R.layout.fragment_barber_schedule_date_list, container, false);
     }
 
@@ -85,12 +84,30 @@ public class BarberScheduleDateListFragment extends Fragment {
 
     private void setAppointmentsItems(){
         BLL instance = new BLL(getContext());
-
+        //Dates from appointments
+        String splitedDate[];
+        String timeOfAppointment = "";
+        String dateOfAppointment = "";
         if (barber != null){
-        ArrayList<Appointment> services = instance.Get_BarberShopAppointments(this.barber.getId());
+            ArrayList<Appointment> services = instance.Get_BarberShopAppointments(this.barber.getId());
 
-        AppointmentAdapter adapter = new AppointmentAdapter(services, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
-        appointmentsRecyclerView.setAdapter(adapter);
+            for (int i = services.size()-1; i>=0; i--) {
+                splitedDate = services.get(i).getDate().split(" ");
+                dateOfAppointment = splitedDate[0];
+
+                Log.d(TAG, "setAppointmentsItems: " + dateOfAppointment + " " + selectedDate);
+
+                if (!selectedDate.equals(dateOfAppointment)){
+                    Log.d(TAG, "setAppointmentsItems: " + i);
+                    services.remove(i);
+                }else   {
+                    Log.d(TAG, "setAppointmentsItems: " + (selectedDate != dateOfAppointment));
+                }
+            }
+
+            Log.d(TAG, "setAppointmentsItems: services after removing" + services);
+            AppointmentAdapter adapter = new AppointmentAdapter(services, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
+            appointmentsRecyclerView.setAdapter(adapter);
         }
     }
 

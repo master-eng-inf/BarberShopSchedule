@@ -59,12 +59,24 @@ public class BarberScheduleFragment extends Fragment {
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String date = year+ "-" + (month+1) + "-" +dayOfMonth;
-                Log.d( TAG, "onSelectedDayChange : started." + date );
+                String date = "";
+                date = year + "-" + (month + 1) + "-" + dayOfMonth;
+
+                if ((month+1)<10) {
+                    date = year + "-0" + (month + 1) + "-" + dayOfMonth;
+                }
+                if ((dayOfMonth)<10) {
+                    date = year + "-" + (month + 1) + "-0" + dayOfMonth;
+                }
+                if ((dayOfMonth)<10 && (month+1)<10) {
+                    date = year + "-0" + (month + 1) + "-0" + dayOfMonth;
+                }
+                Log.d(TAG, "onSelectedDayChange: "+ date);
+
 
                 BLL instance = new BLL(getContext());
                 Barber barber = instance.Get_BarberShop(0);
-                Log.d(TAG, "onSelectedDayChange: " + barber );
+                //Log.d(TAG, "onSelectedDayChange: " + barber );
 
                 BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance(barber);
                 barberScheduleDateListFragment.setSelectedDate(date);
@@ -75,7 +87,6 @@ public class BarberScheduleFragment extends Fragment {
                         commit();
             }
         });
-
         // Inflate the layout for this fragment
         return view;
     }
