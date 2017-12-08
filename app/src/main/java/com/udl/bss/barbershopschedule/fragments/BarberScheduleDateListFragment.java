@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
+import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
@@ -90,23 +91,17 @@ public class BarberScheduleDateListFragment extends Fragment {
         String dateOfAppointment = "";
         if (barber != null){
             ArrayList<Appointment> services = instance.Get_BarberShopAppointments(this.barber.getId());
-
+            Log.d(TAG, "setAppointmentsItems: " + services);
             for (int i = services.size()-1; i>=0; i--) {
                 splitedDate = services.get(i).getDate().split(" ");
                 dateOfAppointment = splitedDate[0];
 
-                Log.d(TAG, "setAppointmentsItems: " + dateOfAppointment + " " + selectedDate);
-
                 if (!selectedDate.equals(dateOfAppointment)){
-                    Log.d(TAG, "setAppointmentsItems: " + i);
                     services.remove(i);
-                }else   {
-                    Log.d(TAG, "setAppointmentsItems: " + (selectedDate != dateOfAppointment));
                 }
             }
 
-            Log.d(TAG, "setAppointmentsItems: services after removing" + services);
-            AppointmentAdapter adapter = new AppointmentAdapter(services, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
+            BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(services, getContext());
             appointmentsRecyclerView.setAdapter(adapter);
         }
     }

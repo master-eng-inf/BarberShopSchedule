@@ -1,6 +1,7 @@
 package com.udl.bss.barbershopschedule.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
@@ -67,8 +68,20 @@ public class BLL {
     }
 
     public Client Get_Client(int client_id) {
+        Log.d("", "Get_Client: client id " + client_id);
         return this.dal_instance.Get_Client(client_id);
     }
+    /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
+    public Promotion Get_Promotion(int promotion_id) {
+        if (promotion_id != -1){
+            return this.dal_instance.Get_Promotion(promotion_id);
+        }
+        else
+            return null;
+    }
+    /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
     public void Insert_Client(Client new_client) {
         this.dal_instance.Insert_Client(new_client);

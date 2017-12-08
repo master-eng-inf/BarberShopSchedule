@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.database.BE.BarberShopContract.BarberShopEntry;
@@ -374,6 +375,7 @@ public class DAL extends SQLiteOpenHelper {
         } finally {
             cursor.close();
         }
+
         return client;
     }
 
@@ -775,6 +777,56 @@ public class DAL extends SQLiteOpenHelper {
             db.insert(PromotionEntry.TABLE_NAME, null, values);
         }
     }
+    //////////////////////////////////////////////////////////
+    public Promotion Get_Promotion(int promotion_id) {
+        Promotion promotion = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                PromotionEntry._ID,
+                PromotionEntry.BARBER_SHOP_ID,
+                PromotionEntry.SERVICE_ID,
+                PromotionEntry.NAME,
+                PromotionEntry.DESCRIPTION,
+
+        };
+
+        String selection = PromotionEntry._ID + " = " + promotion_id;
+
+        Cursor cursor = db.query(
+                PromotionEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(PromotionEntry._ID);
+            int BarberIdColumnIndex = cursor.getColumnIndex(PromotionEntry.BARBER_SHOP_ID);
+            int ServiceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
+            int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
+            int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+
+            cursor.moveToFirst();
+            int currentId = cursor.getInt(idColumnIndex);
+            int currentBarberID = cursor.getInt(BarberIdColumnIndex);
+            int currentServiceID = cursor.getInt(ServiceIdColumnIndex);
+            String currentName = cursor.getString(nameColumnIndex);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+
+            promotion= new Promotion(currentId, currentBarberID, currentServiceID, currentName,
+                    currentDescription);
+
+        } finally {
+            cursor.close();
+        }
+        return promotion;
+    }
+///////////////////////////////////////////////////////////////////////
 
     public void Delete_Promotions() {
         SQLiteDatabase db = this.getWritableDatabase();
