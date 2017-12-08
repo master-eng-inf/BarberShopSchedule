@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RatingBar;
@@ -14,6 +15,7 @@ import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Review;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -165,6 +167,11 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
         mRecyclerView = findViewById(R.id.reviews_rv);
+        //mRecyclerView.setNestedScrollingEnabled(true);
+        //mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(llm);
+
         adapter = new ReviewAdapter(instance.Get_BarberShopReviews(barber_shop.getId()), this);
         mRecyclerView.setAdapter(adapter);
     }

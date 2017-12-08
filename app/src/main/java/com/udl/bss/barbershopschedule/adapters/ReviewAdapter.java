@@ -54,10 +54,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ReviewAdapter.ViewHolder holder, int position) {
-        BLL instace = new BLL(this.context);
-        Client client = instace.Get_Client(mDataset.get(position).GetClientId());
+        String client_name;
 
-        holder.username.setText(client.getName());
+        try
+        {
+            BLL instance = new BLL(this.context);
+            Client client = instance.Get_Client(mDataset.get(position).GetClientId());
+            client_name = client.getName();
+        }
+
+        catch (Exception ex)
+        {
+            client_name = "Could not get username";
+        }
+
+        holder.username.setText(client_name);
         holder.date.setText(mDataset.get(position).GetDate());
         holder.user_review.setText(mDataset.get(position).GetDescription());
         holder.rating_bar.setRating((float)mDataset.get(position).GetMark());

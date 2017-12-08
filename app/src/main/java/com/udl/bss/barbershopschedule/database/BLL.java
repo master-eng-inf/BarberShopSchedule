@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Alex on 24/11/2017.
@@ -118,8 +119,12 @@ public class BLL {
         this.dal_instance.Delete_Services();
     }
 
-    public ArrayList<Appointment> Get_BarberShopAppointments(int barber_shop_id) {
-        return this.dal_instance.Get_BarberShopAppointments(barber_shop_id);
+    public ArrayList<Appointment> Get_AllBarberShopAppointments(int barber_shop_id) {
+        return this.dal_instance.Get_AllBarberShopAppointments(barber_shop_id);
+    }
+
+    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Date date) {
+        return this.dal_instance.Get_BarberShopAppointmentsForSpecificDate(barber_shop_id, date);
     }
 
     public ArrayList<Appointment> Get_ClientAppointments(int client_id) {
@@ -160,6 +165,11 @@ public class BLL {
 
     public ArrayList<Schedule> Get_BarberShopSchedules(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopSchedules(barber_shop_id);
+    }
+
+    public Schedule Get_BarberShopScheduleForSpecificDay(int barber_shop_id, int day)
+    {
+        return this.dal_instance.Get_BarberShopScheduleForSpecificDay(barber_shop_id, day);
     }
 
     public void Insert_Schelues(ArrayList<Schedule> schedules) {

@@ -60,6 +60,7 @@ public class BarberDetailScheduleFragment extends Fragment {
                 if (year >= calendar.get(Calendar.YEAR) && month >= calendar.get(Calendar.MONTH) && dayOfMonth >= calendar.get(Calendar.DAY_OF_MONTH)) {
                     Intent intent = new Intent(getContext(), BarberServicePricesActivity.class);
                     intent.putExtra("barber", barber);
+                    intent.putExtra("date", new Date(year, month, dayOfMonth));
 
                     startActivity(intent);
                 }
