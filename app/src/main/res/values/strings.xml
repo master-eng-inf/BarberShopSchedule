@@ -93,5 +93,7 @@
     <string name="rating_4">Good</string>
     <string name="rating_5">Very good</string>
 
-    <string name="people_reviews">People reviews</string>
+    <string name="people_reviews">Reviews</string>
+    <string name="free_hour_click_title">Warning</string>
+    <string name="free_hour_click_dialog" formatted="false">Are you sure you want to create an appointment for %1$s for the %2$s at %3$s?</string>
 </resources>

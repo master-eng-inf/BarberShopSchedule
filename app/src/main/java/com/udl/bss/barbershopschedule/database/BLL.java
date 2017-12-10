@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -123,7 +124,7 @@ public class BLL {
         return this.dal_instance.Get_AllBarberShopAppointments(barber_shop_id);
     }
 
-    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Date date) {
+    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Calendar date) {
         return this.dal_instance.Get_BarberShopAppointmentsForSpecificDate(barber_shop_id, date);
     }
 
@@ -135,12 +136,20 @@ public class BLL {
         this.dal_instance.Insert_Appointments(appointments);
     }
 
+    public void Insert_Appointment(Appointment appointment) {
+        this.dal_instance.Insert_Appointment(appointment);
+    }
+
     public void Delete_Appointments() {
         this.dal_instance.Delete_Appointments();
     }
 
     public ArrayList<Promotion> Get_BarberShopPromotions(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopPromotions(barber_shop_id);
+    }
+
+    public Promotion Get_BarberShopPromotionForService(int barber_shop_id, int service_id) {
+        return this.dal_instance.Get_BarberShopPromotionForService(barber_shop_id, service_id);
     }
 
     public void Insert_Promotions(ArrayList<Promotion> promotions) {
@@ -167,8 +176,7 @@ public class BLL {
         return this.dal_instance.Get_BarberShopSchedules(barber_shop_id);
     }
 
-    public Schedule Get_BarberShopScheduleForSpecificDay(int barber_shop_id, int day)
-    {
+    public Schedule Get_BarberShopScheduleForSpecificDay(int barber_shop_id, int day) {
         return this.dal_instance.Get_BarberShopScheduleForSpecificDay(barber_shop_id, day);
     }
 

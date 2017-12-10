@@ -25,44 +25,8 @@ public class Time implements Parcelable {
         this.available = available;
     }
 
-    public int GetYear() {
-        return this.year;
-    }
-
-    public int GetMonth() {
-        return this.month;
-    }
-
-    public int GetDay() {
-        return this.day;
-    }
-
-    public int GetHour() {
-        return this.hour;
-    }
-
-    public int GetMinutes() {
-        return this.minutes;
-    }
-
     public boolean GetAvailability() {
         return this.available;
-    }
-
-    public void SetMonth(int new_month) {
-        this.month = new_month;
-    }
-
-    public void SetDay(int new_day) {
-        this.day = new_day;
-    }
-
-    public void SetHour(int new_hour) {
-        this.hour = new_hour;
-    }
-
-    public void SetMinutes(int new_minutes) {
-        this.minutes = new_minutes;
     }
 
     public void SetAvailability(boolean new_availability) {

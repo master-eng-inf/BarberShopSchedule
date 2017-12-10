@@ -25,7 +25,10 @@ import com.udl.bss.barbershopschedule.domain.Review;
 import com.udl.bss.barbershopschedule.domain.Schedule;
 import com.udl.bss.barbershopschedule.domain.SpecialDay;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -718,7 +721,7 @@ public class DAL extends SQLiteOpenHelper {
         return barber_shop_appointments;
     }
 
-    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Date date) {
+    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Calendar date) {
         ArrayList<Appointment> barber_shop_appointments = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -731,8 +734,10 @@ public class DAL extends SQLiteOpenHelper {
                 AppointmentEntry.DATE
         };
 
+        DecimalFormat mFormat= new DecimalFormat("00");
+
         String selection = AppointmentEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " + AppointmentEntry.DATE
-                + " like " + date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
+                + " LIKE '%" + date.get(Calendar.YEAR) + "-" + mFormat.format((date.get(Calendar.MONTH) + 1)) + "-" + mFormat.format(date.get(Calendar.DAY_OF_MONTH)) + "%'";
 
         Cursor cursor = db.query(
                 AppointmentEntry.TABLE_NAME,
@@ -828,7 +833,7 @@ public class DAL extends SQLiteOpenHelper {
             Appointment current_appointment = iterator.next();
             ContentValues values = new ContentValues();
 
-            values.put(AppointmentEntry._ID, current_appointment.getId());
+            //values.put(AppointmentEntry._ID, current_appointment.getId());
             values.put(AppointmentEntry.CLIENT_ID, current_appointment.getClient_id());
             values.put(AppointmentEntry.BARBER_SHOP_ID, current_appointment.getBarber_shop_id());
             values.put(AppointmentEntry.SERVICE_ID, current_appointment.getService_id());
@@ -837,6 +842,23 @@ public class DAL extends SQLiteOpenHelper {
 
             db.insert(AppointmentEntry.TABLE_NAME, null, values);
         }
+    }
+
+    public void Insert_Appointment(Appointment appointment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        String tmp = appointment.getDate();
+
+        //values.put(AppointmentEntry._ID, appointment.getId());
+        values.put(AppointmentEntry.CLIENT_ID, appointment.getClient_id());
+        values.put(AppointmentEntry.BARBER_SHOP_ID, appointment.getBarber_shop_id());
+        values.put(AppointmentEntry.SERVICE_ID, appointment.getService_id());
+        values.put(AppointmentEntry.PROMOTION_ID, appointment.getPromotion_id());
+        values.put(AppointmentEntry.DATE, appointment.getDate());
+
+        db.insertOrThrow(AppointmentEntry.TABLE_NAME, null, values);
     }
 
     public void Delete_Appointments() {
@@ -890,6 +912,56 @@ public class DAL extends SQLiteOpenHelper {
             cursor.close();
         }
         return barber_shop_promotions;
+    }
+
+    public Promotion Get_BarberShopPromotionForService(int barber_shop_id, int service_id) {
+        Promotion promotion = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                PromotionEntry._ID,
+                PromotionEntry.BARBER_SHOP_ID,
+                PromotionEntry.SERVICE_ID,
+                PromotionEntry.NAME,
+                PromotionEntry.DESCRIPTION
+        };
+
+        String selection = PromotionEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " +
+                PromotionEntry.SERVICE_ID + " = " + service_id;
+
+        Cursor cursor = db.query(
+                PromotionEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(PromotionEntry._ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(PromotionEntry.BARBER_SHOP_ID);
+            int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
+            int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
+            int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+
+            cursor.moveToFirst();
+            int currentId = cursor.getInt(idColumnIndex);
+            int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+            int currentServiceId = cursor.getInt(serviceIdColumnIndex);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+            String currentName = cursor.getString(nameColumnIndex);
+
+            promotion = new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription);
+
+        } catch (Exception ex) {
+
+        } finally {
+            cursor.close();
+        }
+        return promotion;
     }
 
     public void Insert_Promotions(ArrayList<Promotion> promotions) {

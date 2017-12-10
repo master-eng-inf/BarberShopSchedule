@@ -54,9 +54,9 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
     @Override
     public void onBindViewHolder(final FreeHoursAdapter.ViewHolder holder, int position) {
         Time time = mDataset.get(position);
-        String text = time.GetHour() + ":" + time.GetMinutes();
+        String text = time.getHour() + ":" + time.getMinutes();
 
-        if (time.GetMinutes() == 0) {
+        if (time.getMinutes() == 0) {
             text += "0";
         }
 

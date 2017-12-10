@@ -43,4 +43,8 @@
     <string name="rating_3">Normal</string>
     <string name="rating_4">Bona</string>
     <string name="rating_5">Molt bona</string>
+
+    <string name="people_reviews">Valoracions</string>
+    <string name="free_hour_click_title">Atenció</string>
+    <string name="free_hour_click_dialog1" formatted="false">Estàs segur de crearuna cita per a %1$s per el %2$s a les %3$s?</string>
 </resources>

@@ -19,10 +19,12 @@ import com.udl.bss.barbershopschedule.domain.Barber;
 public class PreAppointmentBarberServiceClick implements OnItemClickListener {
     private RecyclerView recyclerView;
     private Activity activity;
+    private String date;
 
-    public PreAppointmentBarberServiceClick(Activity activity, RecyclerView recyclerView) {
+    public PreAppointmentBarberServiceClick(Activity activity, RecyclerView recyclerView, String date) {
         this.activity = activity;
         this.recyclerView = recyclerView;
+        this.date = date;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class PreAppointmentBarberServiceClick implements OnItemClickListener {
 
         Intent intent = new Intent(activity, BarberFreeHoursActivity.class);
         intent.putExtra("service", adapter.getItem(position));
+        intent.putExtra("date", this.date);
 
         activity.startActivity(intent);
     }

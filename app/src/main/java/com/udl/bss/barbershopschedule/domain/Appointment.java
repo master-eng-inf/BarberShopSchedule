@@ -116,7 +116,7 @@ public class Appointment implements Parcelable {
     }
 
     public String getDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return dateFormat.format(this.date);
     }
 

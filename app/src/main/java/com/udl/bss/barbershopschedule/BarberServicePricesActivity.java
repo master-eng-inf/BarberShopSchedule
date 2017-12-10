@@ -16,18 +16,21 @@ import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.PreAppointmentBarberServiceClick;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BarberServicePricesActivity extends AppCompatActivity {
 
-    private Barber barber_shop;
+    private int barber_shop_id;
     private RecyclerView servicesRecyclerView;
+    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barber_service_prices);
 
-        barber_shop = getIntent().getParcelableExtra("barber");
+        date = getIntent().getStringExtra("date");
+        barber_shop_id = getIntent().getIntExtra("barber_shop_id",-1);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,9 +54,9 @@ public class BarberServicePricesActivity extends AppCompatActivity {
 
     private void setPricesItems() {
         BLL instance = new BLL(this);
-        ArrayList<BarberService> barber_shop_services = instance.Get_BarberShopServices(this.barber_shop.getId());
+        ArrayList<BarberService> barber_shop_services = instance.Get_BarberShopServices(barber_shop_id);
 
-        ServiceAdapter adapter = new ServiceAdapter(barber_shop_services, new PreAppointmentBarberServiceClick(this, servicesRecyclerView), this);
+        ServiceAdapter adapter = new ServiceAdapter(barber_shop_services, new PreAppointmentBarberServiceClick(this, servicesRecyclerView, date), this);
         servicesRecyclerView.setAdapter(adapter);
     }
 }
