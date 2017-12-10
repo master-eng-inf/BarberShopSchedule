@@ -23,6 +23,7 @@ import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -107,10 +108,11 @@ public class HomeFragment extends Fragment {
 
         appointmentList = this.instance.Get_ClientAppointments(this.client_id);
 
+        Collections.sort(appointmentList);
+
         AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
         appointmentsRecyclerView.setAdapter(adapter);
     }
-
 
     private void setPromotionsItems() {
         List<Promotion> promotionList;
@@ -143,7 +145,6 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
