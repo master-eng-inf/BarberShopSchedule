@@ -56,8 +56,8 @@ public class FreeHoursAdapter extends RecyclerView.Adapter<FreeHoursAdapter.View
         Time time = mDataset.get(position);
         String text = time.getHour() + ":" + time.getMinutes();
 
-        if (time.getMinutes() == 0) {
-            text += "0";
+        if (time.getMinutes() < 10) {
+            text = time.getHour() + ":0" + time.getMinutes();
         }
 
         holder.date.setText(text);
