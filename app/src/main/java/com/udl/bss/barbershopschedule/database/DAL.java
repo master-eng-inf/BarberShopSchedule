@@ -101,6 +101,7 @@ public class DAL extends SQLiteOpenHelper {
                 PromotionEntry.BARBER_SHOP_ID + " INTEGER, " +
                 PromotionEntry.SERVICE_ID + " INTEGER, " +
                 PromotionEntry.NAME + " TEXT, " +
+                PromotionEntry.IS_PROMOTIONAL + " INTEGER, " +
                 PromotionEntry.DESCRIPTION + " TEXT);";
 
         String SQL_CREATE_SPECIAL_DAY_TABLE = "CREATE TABLE " + SpecialDayEntry.TABLE_NAME + "(" +
@@ -866,6 +867,57 @@ public class DAL extends SQLiteOpenHelper {
         db.delete(AppointmentEntry.TABLE_NAME, null, null);
     }
 
+    public ArrayList<Promotion> Get_PromotionalPromotions() {
+        ArrayList<Promotion> barber_shop_promotions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                PromotionEntry._ID,
+                PromotionEntry.BARBER_SHOP_ID,
+                PromotionEntry.SERVICE_ID,
+                PromotionEntry.NAME,
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL
+        };
+
+        String selection = PromotionEntry.IS_PROMOTIONAL + " = " + 1;
+
+        Cursor cursor = db.query(
+                PromotionEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(PromotionEntry._ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(PromotionEntry.BARBER_SHOP_ID);
+            int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
+            int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
+            int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
+
+            while (cursor.moveToNext()) {
+                int currentId = cursor.getInt(idColumnIndex);
+                int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+                int currentServiceId = cursor.getInt(serviceIdColumnIndex);
+                String currentDescription = cursor.getString(descriptionColumnIndex);
+                String currentName = cursor.getString(nameColumnIndex);
+                int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
+
+                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional));
+            }
+
+        } finally {
+            cursor.close();
+        }
+        return barber_shop_promotions;
+    }
+
     public ArrayList<Promotion> Get_BarberShopPromotions(int barber_shop_id) {
         ArrayList<Promotion> barber_shop_promotions = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -875,7 +927,8 @@ public class DAL extends SQLiteOpenHelper {
                 PromotionEntry.BARBER_SHOP_ID,
                 PromotionEntry.SERVICE_ID,
                 PromotionEntry.NAME,
-                PromotionEntry.DESCRIPTION
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL
         };
 
         String selection = PromotionEntry.BARBER_SHOP_ID + " = " + barber_shop_id;
@@ -897,6 +950,7 @@ public class DAL extends SQLiteOpenHelper {
             int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
             int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
 
             while (cursor.moveToNext()) {
                 int currentId = cursor.getInt(idColumnIndex);
@@ -904,8 +958,9 @@ public class DAL extends SQLiteOpenHelper {
                 int currentServiceId = cursor.getInt(serviceIdColumnIndex);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
+                int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
 
-                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription));
+                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional));
             }
 
         } finally {
@@ -923,7 +978,8 @@ public class DAL extends SQLiteOpenHelper {
                 PromotionEntry.BARBER_SHOP_ID,
                 PromotionEntry.SERVICE_ID,
                 PromotionEntry.NAME,
-                PromotionEntry.DESCRIPTION
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL,
         };
 
         String selection = PromotionEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " +
@@ -946,6 +1002,7 @@ public class DAL extends SQLiteOpenHelper {
             int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
             int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
 
             cursor.moveToFirst();
             int currentId = cursor.getInt(idColumnIndex);
@@ -953,8 +1010,9 @@ public class DAL extends SQLiteOpenHelper {
             int currentServiceId = cursor.getInt(serviceIdColumnIndex);
             String currentDescription = cursor.getString(descriptionColumnIndex);
             String currentName = cursor.getString(nameColumnIndex);
+            int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
 
-            promotion = new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription);
+            promotion = new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional);
 
         } catch (Exception ex) {
 
@@ -976,6 +1034,7 @@ public class DAL extends SQLiteOpenHelper {
             values.put(PromotionEntry.SERVICE_ID, current_promotion.getService_id());
             values.put(PromotionEntry.NAME, current_promotion.getName());
             values.put(PromotionEntry.DESCRIPTION, current_promotion.getDescription());
+            values.put(PromotionEntry.IS_PROMOTIONAL, current_promotion.getIs_Promotional());
 
             db.insert(PromotionEntry.TABLE_NAME, null, values);
         }

@@ -19,5 +19,6 @@ public class PromotionContract {
         public final static String SERVICE_ID = "Service_Id";
         public final static String NAME = "Name";
         public final static String DESCRIPTION = "Description";
+        public final static String IS_PROMOTIONAL = "IsPromotional";
     }
 }

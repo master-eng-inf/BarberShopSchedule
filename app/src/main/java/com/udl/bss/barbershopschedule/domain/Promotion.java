@@ -4,20 +4,22 @@ package com.udl.bss.barbershopschedule.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Promotion implements Parcelable{
+public class Promotion implements Parcelable {
 
     private int id;
     private int barber_shop_id;
     private int service_id;
     private String name;
     private String description;
+    private int is_promotional;
 
-    public Promotion(int id, int barber_shop_id, int service_id, String name, String description) {
+    public Promotion(int id, int barber_shop_id, int service_id, String name, String description, int is_promotional) {
         this.id = id;
         this.barber_shop_id = barber_shop_id;
         this.service_id = service_id;
         this.name = name;
         this.description = description;
+        this.is_promotional = is_promotional;
     }
 
     private Promotion(Parcel in) {
@@ -26,6 +28,7 @@ public class Promotion implements Parcelable{
         this.service_id = in.readInt();
         this.name = in.readString();
         this.description = in.readString();
+        this.is_promotional = in.readInt();
     }
 
     public static final Parcelable.Creator<Promotion> CREATOR = new Parcelable.Creator<Promotion>() {
@@ -46,6 +49,7 @@ public class Promotion implements Parcelable{
         dest.writeInt(service_id);
         dest.writeString(name);
         dest.writeString(description);
+        dest.writeInt(is_promotional);
     }
 
     @Override
@@ -93,6 +97,14 @@ public class Promotion implements Parcelable{
         this.description = description;
     }
 
+    public int getIs_Promotional() {
+        return is_promotional;
+    }
+
+    public void setIs_promotional(int is_promotional) {
+        this.is_promotional = is_promotional;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,6 +113,7 @@ public class Promotion implements Parcelable{
         Promotion promotion = (Promotion) o;
 
         if (id != promotion.id) return false;
+        if (is_promotional != promotion.is_promotional) return false;
         if (barber_shop_id != promotion.barber_shop_id) return false;
         if (service_id != promotion.service_id) return false;
         if (name != null ? !name.equals(promotion.name) : promotion.name != null)

@@ -117,8 +117,7 @@ public class HomeFragment extends Fragment {
     private void setPromotionsItems() {
         List<Promotion> promotionList;
 
-        //TODO
-        promotionList = this.instance.Get_BarberShopPromotions(0);
+        promotionList = this.instance.Get_PromotionalPromotions();
         PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
         promotionsRecycleView.setAdapter(adapter);
     }

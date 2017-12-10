@@ -120,6 +120,10 @@ public class BLL {
         this.dal_instance.Delete_Services();
     }
 
+    public ArrayList<Promotion> Get_PromotionalPromotions() {
+        return  this.dal_instance.Get_PromotionalPromotions();
+    }
+
     public ArrayList<Appointment> Get_AllBarberShopAppointments(int barber_shop_id) {
         return this.dal_instance.Get_AllBarberShopAppointments(barber_shop_id);
     }
@@ -252,7 +256,8 @@ public class BLL {
                         for (int promotion_count = 0; promotion_count < promotions.length(); promotion_count++) {
                             JSONObject promotion = promotions.getJSONObject(promotion_count);
                             db_barber_shop_promotions.add(new Promotion(promotion.getInt("id"), barber_shop.getInt("id"),
-                                    promotion.getInt("service_id"), promotion.getString("name"), promotion.getString("description")));
+                                    promotion.getInt("service_id"), promotion.getString("name"),
+                                    promotion.getString("description"), promotion.getInt("is_promotional")));
                         }
 
                         JSONArray reviews = barber_shop.getJSONArray("reviews");
