@@ -182,7 +182,11 @@ public class HomeActivity extends AppCompatActivity
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
             startFragment(bpf);
         } else if (id == R.id.profile) {
-
+            //Intent intent = new Intent(this, BarberSettingsActivity.class);
+            //startActivity(intent);
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(this, BarberSettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.log_out) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

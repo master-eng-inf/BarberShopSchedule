@@ -44,6 +44,14 @@
             android:label="@string/title_activity_barber_free_hours"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BarberScheduleDayActivity" />
+        <activity
+            android:name=".BarberSettingsActivity"
+            android:label="@string/title_activity_barber_settings"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.udl.bss.barbershopschedule.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
