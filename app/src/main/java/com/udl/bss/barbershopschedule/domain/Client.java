@@ -1,5 +1,7 @@
 package com.udl.bss.barbershopschedule.domain;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Alex on 11/11/2017.
  */
@@ -12,6 +14,7 @@ public class Client {
     private String gender;
     private int age;
     private String password;
+    private Bitmap image;
 
     public Client(int id, String name, String phone, String email, String gender, int age)
     {
@@ -23,12 +26,16 @@ public class Client {
         this.age = age;
     }
 
-    public Client(int id, String name, String email, String password)
+    public Client(int id, String name, String email, String password, String phone, String gender, int age, Bitmap image)
     {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phone = phone;
+        this.gender = gender;
+        this.age = age;
+        this.image = image;
     }
 
     public int getAge() {

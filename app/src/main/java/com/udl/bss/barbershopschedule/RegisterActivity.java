@@ -54,18 +54,21 @@ public class RegisterActivity extends AppCompatActivity
 
     private boolean isBarber;
     private ImageView imageView;
-    private EditText et_name, et_pass, et_mail;
-    private TextView textViewFormImage;
+    private EditText et_name, et_pass, et_mail, et_phone, et_desc, et_age;
+    private TextView textViewDesc, textViewAge;
     private Bitmap bitmap;
     private Button btn_img;
     private Button btn_placesID;
     private String placesID;
     private byte[] image;
+    private Spinner spinner_gender;
 
     private long id;
     private SharedPreferences sharedPreferences;
     private BarbersSQLiteHelper bsh;
     private UsersSQLiteHelper ush;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +84,15 @@ public class RegisterActivity extends AppCompatActivity
         et_name = findViewById(R.id.editText_register_name);
         et_mail = findViewById(R.id.editText_register_mail);
         et_pass = findViewById(R.id.editText_register_password);
+        et_phone = findViewById(R.id.editText_register_phone);
+        et_desc = findViewById(R.id.editText_register_desc);
+        et_age = findViewById(R.id.editText_register_age);
         btn_img = findViewById(R.id.button_form_image);
         Button btn_ok = findViewById(R.id.button_register_ok);
         btn_placesID = findViewById(R.id.button_selectPlacesID);
         imageView = findViewById(R.id.image_form);
-        textViewFormImage = findViewById(R.id.textView_form_image);
+        textViewDesc = findViewById(R.id.textView_register_desc);
+        textViewAge = findViewById(R.id.textView_register_age);
 
         Spinner spinner = findViewById(R.id.mode_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -94,6 +101,13 @@ public class RegisterActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        spinner_gender = findViewById(R.id.gender_spinner);
+        ArrayAdapter<CharSequence> adapter_gender = ArrayAdapter.createFromResource(
+                this, R.array.gender_spinner_items, android.R.layout.simple_spinner_item
+        );
+        adapter_gender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_gender.setAdapter(adapter_gender);
 
 
         btn_img.setOnClickListener(new View.OnClickListener() {
@@ -138,13 +152,17 @@ public class RegisterActivity extends AppCompatActivity
         if (item.equals(getString(R.string.user))) {
             isBarber = false;
             btn_placesID.setVisibility(View.INVISIBLE);
-            btn_img.setVisibility(View.INVISIBLE);
-            textViewFormImage.setVisibility(View.INVISIBLE);
+            et_age.setVisibility(View.VISIBLE);
+            textViewAge.setVisibility(View.VISIBLE);
+            et_desc.setVisibility(View.INVISIBLE);
+            textViewDesc.setVisibility(View.INVISIBLE);
         } else if (item.equals(getString(R.string.barber))) {
             isBarber = true;
             btn_placesID.setVisibility(View.VISIBLE);
-            btn_img.setVisibility(View.VISIBLE);
-            textViewFormImage.setVisibility(View.VISIBLE);
+            et_age.setVisibility(View.INVISIBLE);
+            textViewAge.setVisibility(View.INVISIBLE);
+            et_desc.setVisibility(View.VISIBLE);
+            textViewDesc.setVisibility(View.VISIBLE);
         }
     }
 
@@ -157,13 +175,16 @@ public class RegisterActivity extends AppCompatActivity
         if (isBarber){
             return et_name != null && et_mail != null && et_pass != null && image != null
                     && placesID != null && !et_name.getText().toString().equals("")
-                    && !et_pass.toString().equals("") && !et_mail.getText().toString().equals("")
-                    && bitmap != null;
+                    && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
+                    && bitmap != null && et_phone != null && !et_phone.getText().toString().equals("")
+                    && et_desc != null && !et_desc.getText().toString().equals("");
         }
 
-        return et_name != null && et_mail != null && et_pass != null
-                && !et_name.getText().toString().equals("") && !et_pass.toString().equals("")
-                && !et_mail.getText().toString().equals("");
+        return et_name != null && et_mail != null && et_pass != null && image != null
+                && !et_name.getText().toString().equals("") && !et_pass.getText().toString().equals("")
+                && !et_mail.getText().toString().equals("") && bitmap != null
+                && et_phone != null && !et_phone.getText().toString().equals("")
+                && et_age != null && !et_age.getText().toString().equals("");
 
     }
 
@@ -175,12 +196,17 @@ public class RegisterActivity extends AppCompatActivity
             data.put("name", et_name.getText().toString());
             data.put("mail", et_mail.getText().toString());
             data.put("password", et_pass.getText().toString());
+            byte[] image = BitmapUtils.bitmapToByteArray(bitmap);
+            data.put("image", image);
+            data.put("phone", et_phone.getText().toString());
+            data.put("gender", ((TextView)spinner_gender.getSelectedView()).getText().toString());
 
 
             if (isBarber) {
-                byte[] image = BitmapUtils.bitmapToByteArray(bitmap);
-                data.put("image", image);
                 data.put("placesID", placesID);
+                data.put("description", et_desc.getText().toString());
+            } else {
+                data.put("age", et_age.getText().toString());
             }
 
             save(data);

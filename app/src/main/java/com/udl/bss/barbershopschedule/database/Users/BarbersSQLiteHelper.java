@@ -12,12 +12,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BarbersSQLiteHelper extends SQLiteOpenHelper {
 
     String sqlCreate = "CREATE TABLE Barbers " +
-            "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "name TEXT, " +
-            "password TEXT, " +
+            "(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "password TEXT," +
             "mail TEXT," +
-            "image BLOB, " +
-            "placesID TEXT)";
+            "image BLOB," +
+            "placesID TEXT," +
+            "phone TEXT," +
+            "gender TEXT," +
+            "description TEXT)";
 
     public BarbersSQLiteHelper(Context context, String name,
                                  SQLiteDatabase.CursorFactory factory,

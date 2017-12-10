@@ -43,10 +43,13 @@ public class UsersSQLiteManager {
                 Barber b = new Barber(
                         c.getInt(0),
                         c.getString(1),
+                        c.getString(3),
+                        BitmapUtils.byteArrayToBitmap(c.getBlob(4)),
+                        c.getString(5),
                         c.getString(2),
-                        BitmapUtils.byteArrayToBitmap(c.getBlob(3)),
-                        c.getString(4),
-                        c.getString(5));
+                        c.getString(6),
+                        c.getString(7),
+                        c.getString(8));
                 barberList.add(b);
             } while (c.moveToNext());
         }
@@ -65,8 +68,12 @@ public class UsersSQLiteManager {
                 Client cl = new Client(
                         c.getInt(0),
                         c.getString(1),
+                        c.getString(3),
                         c.getString(2),
-                        c.getString(3));
+                        c.getString(4),
+                        c.getString(5),
+                        c.getInt(6),
+                        BitmapUtils.byteArrayToBitmap(c.getBlob(7)));
                 clientList.add(cl);
             } while (c.moveToNext());
         }

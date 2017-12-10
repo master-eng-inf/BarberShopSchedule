@@ -11,10 +11,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class UsersSQLiteHelper extends SQLiteOpenHelper {
 
     String sqlCreate = "CREATE TABLE Users " +
-            "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "name TEXT, " +
+            "(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
             "password TEXT," +
-            "mail TEXT)";
+            "mail TEXT," +
+            "phone TEXT," +
+            "gender TEXT," +
+            "age INTEGER," +
+            "image BLOB)";
 
     public UsersSQLiteHelper(Context context, String name,
                                SQLiteDatabase.CursorFactory factory,
