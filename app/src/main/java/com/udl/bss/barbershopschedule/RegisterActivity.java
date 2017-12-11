@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,6 +37,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.udl.bss.barbershopschedule.database.Users.BarbersSQLiteHelper;
 import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteHelper;
 import com.udl.bss.barbershopschedule.utils.BitmapUtils;
@@ -55,13 +63,13 @@ public class RegisterActivity extends AppCompatActivity
     private boolean isBarber;
     private ImageView imageView;
     private EditText et_name, et_pass, et_mail, et_phone, et_desc, et_age;
-    private TextView textViewDesc, textViewAge;
     private Bitmap bitmap;
     private Button btn_img;
     private Button btn_placesID;
     private String placesID;
     private byte[] image;
     private Spinner spinner_gender;
+    private CardView cv_desc, cv_age, cv_place;
 
     private long id;
     private SharedPreferences sharedPreferences;
@@ -91,8 +99,9 @@ public class RegisterActivity extends AppCompatActivity
         Button btn_ok = findViewById(R.id.button_register_ok);
         btn_placesID = findViewById(R.id.button_selectPlacesID);
         imageView = findViewById(R.id.image_form);
-        textViewDesc = findViewById(R.id.textView_register_desc);
-        textViewAge = findViewById(R.id.textView_register_age);
+        cv_desc = findViewById(R.id.cardview_desc);
+        cv_age = findViewById(R.id.cardview_age);
+        cv_place = findViewById(R.id.cardview_place);
 
         Spinner spinner = findViewById(R.id.mode_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -152,17 +161,15 @@ public class RegisterActivity extends AppCompatActivity
         if (item.equals(getString(R.string.user))) {
             isBarber = false;
             btn_placesID.setVisibility(View.INVISIBLE);
-            et_age.setVisibility(View.VISIBLE);
-            textViewAge.setVisibility(View.VISIBLE);
-            et_desc.setVisibility(View.INVISIBLE);
-            textViewDesc.setVisibility(View.INVISIBLE);
+            cv_age.setVisibility(View.VISIBLE);
+            cv_desc.setVisibility(View.GONE);
+            cv_place.setVisibility(View.GONE);
         } else if (item.equals(getString(R.string.barber))) {
             isBarber = true;
             btn_placesID.setVisibility(View.VISIBLE);
-            et_age.setVisibility(View.INVISIBLE);
-            textViewAge.setVisibility(View.INVISIBLE);
-            et_desc.setVisibility(View.VISIBLE);
-            textViewDesc.setVisibility(View.VISIBLE);
+            cv_age.setVisibility(View.GONE);
+            cv_desc.setVisibility(View.VISIBLE);
+            cv_place.setVisibility(View.VISIBLE);
         }
     }
 
@@ -277,11 +284,39 @@ public class RegisterActivity extends AppCompatActivity
             case PLACE_PICKER_REQUEST:
                 if(resultCode == RESULT_OK && intent != null){
                     placesID = PlacePicker.getPlace(this, intent).getId();
+
+                    setMap(PlacePicker.getPlace(this, intent).getName().toString(),
+                            PlacePicker.getPlace(this, intent).getLatLng());
+                    TextView tv_no_place = findViewById(R.id.textView_no_place);
+                    tv_no_place.setVisibility(View.GONE);
                 }
                 break;
         }
     }
 
+    private void setMap(String name, LatLng location) {
+        ViewHolder holder = new ViewHolder();
+        holder.mapView = findViewById(R.id.lite_listrow_map);
+        holder.title = findViewById(R.id.textView_register_place);
+
+        holder.mapView.setVisibility(View.VISIBLE);
+
+        holder.initializeMapView();
+        NamedLocation item = new NamedLocation(name, location);
+        holder.mapView.setTag(item);
+
+        if (holder.map != null) {
+            setMapLocation(holder.map, item);
+        }
+        holder.title.setText(item.name);
+    }
+
+
+    private static void setMapLocation(GoogleMap map, NamedLocation data) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(data.location, 13f));
+        map.addMarker(new MarkerOptions().position(data.location));
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
 
 
     private void displayPlacePicker() {
@@ -337,6 +372,44 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {
+
+    }
+
+
+    private static class NamedLocation {
+
+        public final String name;
+        final LatLng location;
+
+        NamedLocation(String name, LatLng location) {
+            this.name = name;
+            this.location = location;
+        }
+    }
+
+
+    class ViewHolder implements OnMapReadyCallback {
+
+        MapView mapView;
+        TextView title;
+        GoogleMap map;
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            MapsInitializer.initialize(getApplicationContext());
+            map = googleMap;
+            NamedLocation data = (NamedLocation) mapView.getTag();
+            if (data != null) {
+                setMapLocation(map, data);
+            }
+        }
+
+        void initializeMapView() {
+            if (mapView != null) {
+                mapView.onCreate(null);
+                mapView.getMapAsync(this);
+            }
+        }
 
     }
 
