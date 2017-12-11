@@ -84,6 +84,9 @@ public class HomeActivity extends AppCompatActivity
 
             //TODO
             BLL instance = new BLL(this);
+
+            instance.Initialize_Database();
+
             Barber barber = instance.Get_BarberShop(0);
 
             fragment = BarberHomeFragment.newInstance(barber);
