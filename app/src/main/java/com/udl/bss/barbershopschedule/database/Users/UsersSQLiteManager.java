@@ -84,11 +84,11 @@ public class UsersSQLiteManager {
     public boolean isBarberRegistered(String user, String password) {
         SQLiteDatabase db = bsh.getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT * FROM Barbers;", null);
+        Cursor c = db.rawQuery("SELECT name, password FROM Barbers;", null);
         if (c.moveToFirst()) {
             do {
-                if (c.getString(1).equals(user) &&
-                        c.getString(2).equals(password))
+                if (c.getString(0).equals(user) &&
+                        c.getString(1).equals(password))
                     return true;
             } while (c.moveToNext());
         }
@@ -99,11 +99,11 @@ public class UsersSQLiteManager {
     public boolean isUserRegistered(String user, String password) {
         SQLiteDatabase db = ush.getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT * FROM Users;", null);
+        Cursor c = db.rawQuery("SELECT name, password FROM Users;", null);
         if (c.moveToFirst()) {
             do {
-                if (c.getString(1).equals(user) &&
-                        c.getString(2).equals(password))
+                if (c.getString(0).equals(user) &&
+                        c.getString(1).equals(password))
                     return true;
             } while (c.moveToNext());
         }
