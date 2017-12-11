@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.Menu;
+import android.view.View;
 
 import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
