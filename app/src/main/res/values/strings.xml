@@ -79,4 +79,32 @@
 
     <string name="field_error">All fields are required</string>
     <string name="double_back">Click BACK again to exit</string>
+
+    <string name="barber_shop_rating">Rating</string>
+    <string name="barber_shop_rate">Rate</string>
+    <string name="barber_review_edit">Edit</string>
+    <string name="barber_shop_location_show_on_map">Show on map</string>
+
+    <string name="new_review_hint">Add your review...</string>
+    <string name="rate_barber_shop_now">Rate now barber shop</string>
+
+    <string name="cancel_button">Cancel</string>
+    <string name="next_button">Next</string>
+    <string name="back_button">Back</string>
+    <string name="publish_button">Publish</string>
+    <string name="accept_button">Accept</string>
+    <string name="delete_review_dialog">Are you sure you want to delete your review?</string>
+    <string name="delete_review_dialog_title">Warning</string>
+
+    <string name="rating_1">Very bad</string>
+    <string name="rating_2">Bad</string>
+    <string name="rating_3">Normal</string>
+    <string name="rating_4">Good</string>
+    <string name="rating_5">Very good</string>
+
+    <string name="people_reviews">Reviews</string>
+    <string name="free_hour_click_title">Warning</string>
+    <string name="free_hour_click_dialog" formatted="false">Are you sure you want to create an appointment for %1$s for the %2$s at %3$s?</string>
+    <string name="free_hour_click_not_enough_time_title">Warning</string>
+    <string name="free_hour_click_not_enough_time_dialog" formatted="false">The estimated time for %1$s is %2$s minutes, but with your selection there is only %3$s minutes at most. The appointment has to be validated by the barber shop. Do you want to continue? </string>
 </resources>

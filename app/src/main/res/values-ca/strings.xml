@@ -21,4 +21,33 @@
 
     <string name="service_duration">Minuts</string>
     <string name="service_price_currency">€</string>
+
+    <string name="barber_shop_rating">Valoració</string>
+    <string name="barber_shop_rate">Valorar</string>
+    <string name="barber_review_edit">Editar</string>
+    <string name="barber_shop_location_show_on_map">Mostrar al mapa</string>
+
+    <string name="new_review_hint">Afegeix la teva valoració...</string>
+    <string name="rate_barber_shop_now">Valora ara la perruqueria</string>
+
+    <string name="cancel_button">Cancel·lar</string>
+    <string name="next_button">Següent</string>
+    <string name="back_button">Enrere</string>
+    <string name="publish_button">Publicar</string>
+    <string name="accept_button">Acceptar</string>
+    <string name="delete_review_dialog">Segur que vols eliminar la teva valoració?</string>
+    <string name="delete_review_dialog_title">Atenció</string>
+
+    <string name="rating_1">Molt dolenta</string>
+    <string name="rating_2">Dolenta</string>
+    <string name="rating_3">Normal</string>
+    <string name="rating_4">Bona</string>
+    <string name="rating_5">Molt bona</string>
+
+    <string name="people_reviews">Valoracions</string>
+    <string name="free_hour_click_title">Atenció</string>
+    <string name="free_hour_click_dialog1" formatted="false">Estàs segur de crear una cita per a %1$s per el %2$s a les %3$s?</string>
+    <string name="free_hour_click_not_enough_time_title">Atenció</string>
+    <string name="free_hour_click_not_enough_time_dialog" formatted="false">El temps estimat per %1$s és de %2$s minutes, però amb la teva selecció només es disposa de %3$s minuts com a molt. La cita haurà de ser validada per la perruqueria. Vols continuar? </string>
+
 </resources>

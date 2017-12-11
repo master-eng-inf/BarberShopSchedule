@@ -22,7 +22,7 @@ public class Review {
         this.description = description;
         this.mark = mark;
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.date = format.parse(date);
         } catch (ParseException e) {
@@ -46,7 +46,7 @@ public class Review {
     }
 
     public String GetDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             return dateFormat.format(this.date);
     }
 

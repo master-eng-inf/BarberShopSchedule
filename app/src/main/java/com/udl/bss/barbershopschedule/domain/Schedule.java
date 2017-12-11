@@ -23,7 +23,7 @@ public class Schedule {
         this.day_of_week = day_of_week;
         this.appointments_at_same_time = appointments_at_same_time;
 
-        SimpleDateFormat format = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         try {
             this.oppening_1 = format.parse(oppening_1);
             this.oppening_2 = format.parse(oppening_2);
@@ -73,7 +73,7 @@ public class Schedule {
     }
 
     public String GetOppening1() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(this.oppening_1);
     }
 
@@ -82,7 +82,7 @@ public class Schedule {
     }
 
     public String GetOppening2() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(this.oppening_2);
     }
 
@@ -91,7 +91,7 @@ public class Schedule {
     }
 
     public String GetClosing1() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(this.closing_1);
     }
 
@@ -100,7 +100,7 @@ public class Schedule {
     }
 
     public String GetClosing2() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(this.closing_2);
     }
 

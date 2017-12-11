@@ -47,6 +47,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -59,9 +60,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        BLL instace = new BLL(this.context);
-        BarberService service = instace.Get_BarberShopService(mDataset.get(position).getService_id());
-        Barber barber = instace.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
+        BLL instance = new BLL(this.context);
+        BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
+        Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
 
         holder.service.setText(service.Get_Name());
         holder.name.setText(barber.getName());

@@ -23,7 +23,7 @@
             android:paddingLeft="5dp"
             android:scaleType="fitCenter"
             tools:ignore="ContentDescription"
-            android:src="@drawable/ic_euro_symbol_white_24dp"/>
+            android:src="@drawable/ic_content_cut_white_24dp"/>
 
         <TextView
             android:id="@+id/service_cv"

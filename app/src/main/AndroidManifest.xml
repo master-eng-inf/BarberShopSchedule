@@ -51,7 +51,8 @@
             android:label="@string/title_activity_barber_free_hours"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".BarberScheduleDayActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ReviewsActivity" />
+        <activity android:name=".RegisterActivity" />
     </application>
 
 </manifest>
