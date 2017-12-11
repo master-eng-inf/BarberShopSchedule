@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -179,17 +180,25 @@ public class RegisterActivity extends AppCompatActivity
     }
 
     private boolean registerOk () {
+
+        if (bitmap == null) {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+            bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            image = BitmapUtils.bitmapToByteArray(bitmap);
+        }
+
         if (isBarber){
+
             return et_name != null && et_mail != null && et_pass != null && image != null
                     && placesID != null && !et_name.getText().toString().equals("")
                     && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
-                    && bitmap != null && et_phone != null && !et_phone.getText().toString().equals("")
+                    && et_phone != null && !et_phone.getText().toString().equals("")
                     && et_desc != null && !et_desc.getText().toString().equals("");
         }
 
         return et_name != null && et_mail != null && et_pass != null && image != null
                 && !et_name.getText().toString().equals("") && !et_pass.getText().toString().equals("")
-                && !et_mail.getText().toString().equals("") && bitmap != null
+                && !et_mail.getText().toString().equals("")
                 && et_phone != null && !et_phone.getText().toString().equals("")
                 && et_age != null && !et_age.getText().toString().equals("");
 
