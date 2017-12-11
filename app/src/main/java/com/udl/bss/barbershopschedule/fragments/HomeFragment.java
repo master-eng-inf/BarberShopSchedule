@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class HomeFragment extends Fragment {
         }
         this.instance = new BLL(getContext());
         this.instance.Initialize_Database();
+        //this.instance.Initialize_Clients();
+        //Log.d("", "onCreate: pozvananaaa");
     }
 
     @Override

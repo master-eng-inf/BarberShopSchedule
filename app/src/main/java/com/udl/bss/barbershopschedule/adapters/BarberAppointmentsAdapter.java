@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,9 +67,11 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         BLL instace = new BLL(this.context);
 
         BarberService service = instace.Get_BarberShopService(mDataset.get(position).getService_id());
-        //Client client = instace.Get_Client(mDataset.get(position).getClient_id());
+        //Client client = instace.Get_Client(0);//mDataset.get(position).getClient_id()
         Promotion promotion = instace.Get_Promotion(mDataset.get(position).getPromotion_id());//
 
+
+        //Log.d("", "onBindViewHolder: "+ client);
 
 
         holder.service_name.setText(service.Get_Name());

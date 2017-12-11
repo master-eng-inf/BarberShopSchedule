@@ -47,12 +47,28 @@ public class BLL {
         return this.dal_instance.Get_BarberShopList();
     }
 
+    public ArrayList<Client> Get_ClientList(boolean need_refresh) {
+        //TODO
+        if (need_refresh) {
+            Delete_AllClients();
+            Initialize_Clients();
+        }
+
+        return this.dal_instance.Get_ClientList();
+    }
+
     public Barber Get_BarberShop(int barber_shop_id) {
         return this.dal_instance.Get_BarberShop(barber_shop_id);
     }
 
     public void Insert_BarberShop(Barber new_barber_shop) {
         this.dal_instance.Insert_BarberShop(new_barber_shop);
+    }
+
+
+    public boolean Update_BarberShop(int id, String email,String phone,String name,
+                                  String adress,String city,String desc) {
+        return this.dal_instance.Update_BarberShop( id, email,phone,name, adress,city,desc);
     }
 
     public void Insert_BarberShops(ArrayList<Barber> new_barber_shops) {
@@ -63,9 +79,6 @@ public class BLL {
         this.dal_instance.Delete_AllBarberShops();
     }
 
-    public ArrayList<Client> Get_ClientList() {
-        return this.dal_instance.Get_ClientList();
-    }
 
     public Client Get_Client(int client_id) {
         Log.d("", "Get_Client: client id " + client_id);
@@ -173,7 +186,6 @@ public class BLL {
 
     //TODO
     public void Initialize_Database() {
-
         if (Get_BarberShopList(false).size() == 0) {
             String response = SIL.Get("https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json");
 
@@ -258,6 +270,37 @@ public class BLL {
                 Insert_Promotions(db_barber_shop_promotions);
                 Insert_SpecialDays(db_barber_shop_special_days);
                 Insert_Schelues(db_barber_shop_schedules);
+            }
+        }
+    }
+
+    public void Initialize_Clients() {
+        Log.d("", "Initialize_Clients: pozvana");
+         if (Get_ClientList(false).size() == 0) {
+            String responseClient = SIL.Get("https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/clients.json");
+
+           if (responseClient!= null) {
+            ArrayList<Client> db_client_list = new ArrayList<>();
+
+            try {
+                JSONObject root = new JSONObject(responseClient);
+                JSONArray client_list = root.getJSONArray("clients");
+
+                // Looping through all clients and their related data
+                for (int client_count= 0; client_count< client_list.length(); client_count++) {
+                    JSONObject client = client_list.getJSONObject(client_count);
+
+                    db_client_list.add(new Client(client.getInt("id"),
+                            client.getString("name"), client.getString("phone"),
+                            client.getString("email"), client.getString("gender"),
+                            client.getInt("age")));
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+                dal_instance.Insert_Clients(db_client_list);
             }
         }
     }

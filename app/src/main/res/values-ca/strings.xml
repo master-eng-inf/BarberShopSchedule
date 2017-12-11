@@ -21,4 +21,5 @@
 
     <string name="service_duration">Minuts</string>
     <string name="service_price_currency">€</string>
+    <string name="savePreferences" />
 </resources>

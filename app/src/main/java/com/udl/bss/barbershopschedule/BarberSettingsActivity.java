@@ -3,6 +3,7 @@ package com.udl.bss.barbershopschedule;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -12,13 +13,19 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toast;
+
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 
 import java.util.List;
 
@@ -120,7 +127,17 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setupActionBar();
+        /*Preference button = findPreference(getString(R.string.savePreferences));
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(BarberSettingsActivity.this, "Saving is not possible yet", Toast.LENGTH_SHORT).show();
+                //code for what you want it to do
+                return true;
+            }
+        });*/
     }
 
     /**
@@ -180,18 +197,74 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+        Preference pName = null;
+        Preference pEmail = null;
+        Preference pPhone = null;
+        Preference pPassword = null;
+        Preference pAddress = null;
+        Preference pCity = null;
+        Preference pDescription = null;
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("example_text"));
-            bindPreferenceSummaryToValue(findPreference("example_list"));
+            pName = findPreference("save_name");
+            pEmail= findPreference("save_mail");
+            pPhone = findPreference("save_phone");
+            pPassword = findPreference("save_password");
+            pAddress = findPreference("save_address");
+            pDescription= findPreference("save_description");
+            pCity = findPreference("save_city");
+
+            final BLL instance = new BLL(getContext());
+            final Barber barber = instance.Get_BarberShop(0);
+
+
+
+            pName.setSummary(barber.getName());
+            pEmail.setSummary(barber.getEmail());
+            pPhone.setSummary(barber.getPhone());
+            pPassword.setSummary("");
+            pAddress.setSummary(barber.getAddress());
+            pCity.setSummary(barber.getCity());
+            pDescription.setSummary(barber.getDescription());
+
+            //bindPreferenceSummaryToValue(pName);
+            //bindPreferenceSummaryToValue(pEmail);
+            //bindPreferenceSummaryToValue(pPhone);
+            //bindPreferenceSummaryToValue(pAddress);
+            //bindPreferenceSummaryToValue(pDescription);
+            //bindPreferenceSummaryToValue(findPreference("save_description"));
+            //shannonchambers@ovolo.com
+            Preference button = findPreference(getString(R.string.savePreferences));
+            button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    //code for what you want it to do
+
+
+                    //bindPreferenceSummaryToValue(pName);
+                    //bindPreferenceSummaryToValue(pEmail);
+                    //bindPreferenceSummaryToValue(findPreference("save_phone"));
+                    //bindPreferenceSummaryToValue(findPreference("save_password"));
+                    //bindPreferenceSummaryToValue(findPreference("save_address"));
+                    //bindPreferenceSummaryToValue(findPreference("save_city"));
+                    //bindPreferenceSummaryToValue(findPreference("save_description"));
+
+                    if(instance.Update_BarberShop(barber.getId(),"shannonchambers@avolo.com",barber.getPhone(),
+                            barber.getName(),barber.getAddress(),barber.getCity(),barber.getDescription()) == true)
+                    {
+                        Toast.makeText(getActivity(),"Data saved!",Toast.LENGTH_SHORT).show();
+                    }else
+                        Toast.makeText(getActivity(),"Data not saved!",Toast.LENGTH_SHORT).show();
+
+                    return true;
+                }
+            });
         }
 
         @Override

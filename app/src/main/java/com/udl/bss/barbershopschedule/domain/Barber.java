@@ -112,11 +112,11 @@ public class Barber implements Parcelable {
         return email;
     }
 
-    public void setEmail(String phone) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPhone() {
+    public String   getPhone() {
         return phone;
     }
 

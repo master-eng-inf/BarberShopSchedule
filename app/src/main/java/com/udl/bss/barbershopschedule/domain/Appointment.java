@@ -2,6 +2,7 @@ package com.udl.bss.barbershopschedule.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,7 +117,9 @@ public class Appointment implements Parcelable {
     }
 
     public String getDate() {
+        //setAppointmentsItems: datum 2018-11-323 this is what is returned before
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+
         return dateFormat.format(this.date);
     }
 
