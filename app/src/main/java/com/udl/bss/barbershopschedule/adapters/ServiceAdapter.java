@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.domain.Service;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 
 import java.util.Iterator;
@@ -21,8 +22,9 @@ import java.util.List;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
-    private List<Service> mDataset;
+    private List<BarberService> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -38,9 +40,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         }
     }
 
-    public ServiceAdapter(List<Service> myDataset, OnItemClickListener listener) {
+    public ServiceAdapter(List<BarberService> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -53,9 +56,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.name.setText(mDataset.get(position).getName());
-        holder.price.setText(String.valueOf(mDataset.get(position).getPrice()));
-        String duration = String.valueOf(mDataset.get(position).getDuration()) + " minutes";
+        holder.name.setText(mDataset.get(position).Get_Name());
+        String price = String.valueOf(mDataset.get(position).Get_Price()) + " " + context.getString(R.string.service_price_currency);
+        holder.price.setText(price);
+        String duration = String.valueOf((int)mDataset.get(position).Get_Duration()) + " " + context.getString(R.string.service_duration);
         holder.duration.setText(duration);
 
         ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"name");
@@ -75,21 +79,21 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         return mDataset.size();
     }
 
-    public Service getItem (int position) {
+    public BarberService getItem (int position) {
         return mDataset.get(position);
     }
 
     public void removeAll(){
-        Iterator<Service> iter = mDataset.iterator();
+        Iterator<BarberService> iter = mDataset.iterator();
         while(iter.hasNext()){
-            Service service = iter.next();
+            BarberService service = iter.next();
             int position = mDataset.indexOf(service);
             iter.remove();
             notifyItemRemoved(position);
         }
     }
 
-    public int add(Service service){
+    public int add(BarberService service){
         mDataset.add(service);
         notifyItemInserted(mDataset.size()-1);
         return mDataset.size()-1;

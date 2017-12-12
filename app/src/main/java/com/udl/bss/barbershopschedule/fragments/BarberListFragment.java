@@ -1,10 +1,7 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +18,12 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteManager;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,10 +31,9 @@ public class BarberListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private BarberAdapter adapter;
-
+    private BLL instance;
     private OnFragmentInteractionListener mListener;
 
-    final static String urlBarbers = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json";
     String jsonStr;
     private String TAG = HomeActivity.class.getSimpleName();
 
@@ -62,6 +47,7 @@ public class BarberListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.instance = new BLL(getContext());
     }
 
     @Override
@@ -84,6 +70,9 @@ public class BarberListFragment extends Fragment {
             getActivity().getWindow().setExitTransition(fade);
         }
 
+        final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
+        List<Barber> barberList = usm.getRegisteredBarbers();
+
         if (getView() != null) {
             mRecyclerView = getView().findViewById(R.id.rv);
         }
@@ -98,8 +87,8 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            new GetBarbers().execute();
-
+            adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
+            mRecyclerView.setAdapter(adapter);
         }
 
         /* Swipe down to refresh */
@@ -114,7 +103,9 @@ public class BarberListFragment extends Fragment {
 
                 }
                 adapter.removeAll();
-                new GetBarbers().execute();
+                List<Barber> barberList = usm.getRegisteredBarbers();
+                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
+                mRecyclerView.setAdapter(adapter);
             }
         });
         sr.setColorSchemeResources(android.R.color.holo_blue_dark,
@@ -153,97 +144,4 @@ public class BarberListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    private class GetBarbers extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            List<Barber> barberList = new ArrayList<>();
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-            try {
-                JSONObject root = new JSONObject(jsonStr);
-                JSONArray jsonarr = (JSONArray) root.get("barber_shops");
-
-                for (int i = 0; i < jsonarr.length(); i++) {
-                    JSONObject json = jsonarr.getJSONObject(i);
-
-                    Barber barber = new Barber(json.getInt("id"),
-                            json.getString("name"),
-                            json.getString("description"),
-                            json.getString("city"),
-                            json.getString("address"), bitmap);
-                    barberList.add(barber);
-                }
-
-                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
-                mRecyclerView.setAdapter(adapter);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            HttpURLConnection conn=null;
-            InputStream inputStream;
-            BufferedReader reader=null;
-
-            try {
-
-                URL url = new URL(urlBarbers);
-
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-
-                inputStream = conn.getInputStream();
-
-                StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    return null;
-                }
-
-                jsonStr = buffer.toString();
-
-                // Print json string
-                // Log.e(TAG, "Response from url: " + jsonStr);
-
-            } catch (MalformedURLException e) {
-                Log.e(TAG, "MalformedURLException: " + e.getMessage());
-            }catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                if (conn != null) {
-                    conn.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e(TAG, "Error closing stream", e);
-                    }
-                }
-
-            }
-
-            return null;
-        }
-    }
-
 }

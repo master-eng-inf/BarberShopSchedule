@@ -11,14 +11,15 @@ import android.view.View;
 import com.udl.bss.barbershopschedule.PriceDetailActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PriceAdapter;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 
 
-public class PriceClick implements OnItemClickListener {
+public class BarberServiceClick implements OnItemClickListener {
 
     private FragmentActivity activity;
     private RecyclerView recyclerView;
 
-    public PriceClick(FragmentActivity activity, RecyclerView recyclerView) {
+    public BarberServiceClick(FragmentActivity activity, RecyclerView recyclerView) {
         this.activity = activity;
         this.recyclerView = recyclerView;
     }
@@ -28,21 +29,20 @@ public class PriceClick implements OnItemClickListener {
 
         //View name_cv = view.findViewById(R.id.name_cv);
         View price_cv = view.findViewById(R.id.price_cv);
-        View service_cv = view.findViewById(R.id.service_cv);
-        //View fbutton = activity.findViewById(R.id.fab);
+        View service_cv = view.findViewById(R.id.name_cv);
+        View duration_cv = activity.findViewById(R.id.duration_cv);
 
-
-        PriceAdapter adapter = (PriceAdapter) recyclerView.getAdapter();
+        ServiceAdapter adapter = (ServiceAdapter) recyclerView.getAdapter();
 
         Intent intent = new Intent(activity, PriceDetailActivity.class);
-        intent.putExtra("price", adapter.getItem(position));
+        intent.putExtra("service", adapter.getItem(position));
 
         //Pair<View, String> p1 = Pair.create(fbutton, "fab");
-        Pair<View, String> p1 = Pair.create(price_cv, activity.getString(R.string.transname_barberdesc));
-        //Pair<View, String> p2 = Pair.create(name_cv, activity.getString(R.string.transname_barbername));
-        Pair<View, String> p2 = Pair.create(service_cv, activity.getString(R.string.transname_barberaddress));
+        Pair<View, String> p1 = Pair.create(price_cv, activity.getString(R.string.transname_serviceprice));
+        Pair<View, String> p2 = Pair.create(duration_cv, activity.getString(R.string.transname_serviceduration));
+        Pair<View, String> p3 = Pair.create(service_cv, activity.getString(R.string.transname_servicename));
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2, p3);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             activity.startActivity(intent, options.toBundle());

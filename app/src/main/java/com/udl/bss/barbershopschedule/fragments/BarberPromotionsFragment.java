@@ -162,6 +162,7 @@ public class BarberPromotionsFragment extends Fragment {
                 int barber_id;
                 String name;
                 String description;
+                int is_promotional;
 
                 JSONObject root = barber_shops.getJSONObject(0);
                 barber_id = root.getInt("id");
@@ -174,12 +175,14 @@ public class BarberPromotionsFragment extends Fragment {
                     id = promotion.getInt("id") ;
                     name = ("Promotion "+i);
                     description = promotion.getString("description");
+                    is_promotional = promotion.getInt("is_promotional");
 
-                    Promotion barberPromotion = new Promotion(id, barber_id, name ,description);
+                    //TODO service id
+                    Promotion barberPromotion = new Promotion(id, barber_id, 0, name ,description, is_promotional);
                     promotionList.add(barberPromotion);
                 }
 
-                adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView));
+                adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
                 promotionsRecyclerView.setAdapter(adapter);
 
             } catch (JSONException e) {

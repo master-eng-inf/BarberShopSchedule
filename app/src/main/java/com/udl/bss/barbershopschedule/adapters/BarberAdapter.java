@@ -1,5 +1,8 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
+import com.udl.bss.barbershopschedule.utils.BitmapUtils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +25,7 @@ public class BarberAdapter extends RecyclerView.Adapter<BarberAdapter.ViewHolder
 
     private List<Barber> mDataset;
     private OnItemClickListener listener;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -38,9 +43,10 @@ public class BarberAdapter extends RecyclerView.Adapter<BarberAdapter.ViewHolder
         }
     }
 
-    public BarberAdapter(List<Barber> myDataset, OnItemClickListener listener) {
+    public BarberAdapter(List<Barber> myDataset, OnItemClickListener listener, Context context) {
         mDataset = myDataset;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -54,9 +60,15 @@ public class BarberAdapter extends RecyclerView.Adapter<BarberAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.description.setText(mDataset.get(position).getDescription());
-        holder.image.setImageBitmap(mDataset.get(position).getImage());
+
+        Bitmap bitmap = mDataset.get(position).getImagePath() == null ?
+                BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher) :
+                BitmapUtils.loadImageFromStorage(mDataset.get(position).getImagePath(),
+                        mDataset.get(position).getName());
+
+        holder.image.setImageBitmap(bitmap);
         holder.name.setText(mDataset.get(position).getName());
-        String address = mDataset.get(position).getAddress() + ", " + mDataset.get(position).getCity();
+        String address = mDataset.get(position).getAddress();
         holder.address.setText(address);
 
         ViewCompat.setTransitionName(holder.image, String.valueOf(position)+"_image");

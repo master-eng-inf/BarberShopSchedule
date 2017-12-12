@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionMenu;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.List;
 
 
 public class BarberHomeFragment extends Fragment {
+    private static final String BARBER_SHOP = "barber_shop";
+    private Barber barber;
 
     private OnFragmentInteractionListener mListener;
 
@@ -34,13 +38,20 @@ public class BarberHomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BarberHomeFragment newInstance() {
-        return new BarberHomeFragment();
+    public static BarberHomeFragment newInstance(Barber barber) {
+        BarberHomeFragment fragment = new BarberHomeFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(BARBER_SHOP, barber);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.barber = getArguments().getParcelable(BARBER_SHOP);
+        }
     }
 
     @Override
@@ -68,34 +79,26 @@ public class BarberHomeFragment extends Fragment {
             appointmentsRecyclerView = getView().findViewById(R.id.rv);
         }
 
-
         if (appointmentsRecyclerView != null) {
             appointmentsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             appointmentsRecyclerView.setLayoutManager(llm);
 
             setAppointmentItems();
-
         }
 
         FloatingActionMenu floatingActionMenu = getActivity().findViewById(R.id.fab_menu);
         floatingActionMenu.setClosedOnTouchOutside(true);
-
     }
 
     private void setAppointmentItems() {
-        List<Appointment> appointmentList = new ArrayList<>();
+        BLL instance = new BLL(getContext());
 
-        Appointment appointment1 = new Appointment(1, "User 1", "Hair cut", new Date("11/20/2017 15:30"));
-        Appointment appointment2 = new Appointment(2, "User 2", "Tint", new Date("11/5/2017 20:00"));
+        List<Appointment> appointmentList = instance.Get_AllBarberShopAppointments(this.barber.getId());
 
-        appointmentList.add(appointment1);
-        appointmentList.add(appointment2);
-
-        AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView));
+        AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
         appointmentsRecyclerView.setAdapter(adapter);
     }
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

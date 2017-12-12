@@ -13,49 +13,57 @@
     android:focusable="true">
 
     <RelativeLayout
-        style="@style/CardView.Light"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?android:selectableItemBackground">
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/image_cv"
+            android:layout_width="55dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"
+            android:src="@drawable/ic_content_cut_white_24dp"/>
 
         <TextView
             android:id="@+id/name_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="16sp"
+            android:layout_toRightOf="@+id/image_cv"
+            android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"
-            android:textColor="#000"
-            android:textSize="18sp"
-            tools:ignore="RtlHardcoded" />
-
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:transitionName="@string/transname_servicename"/>
 
         <TextView
             android:id="@+id/price_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name_cv"
+            android:layout_toRightOf="@+id/image_cv"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textSize="15sp"
-            tools:ignore="RtlHardcoded"/>
+            android:transitionName="@string/transname_serviceprice"/>
 
         <TextView
             android:id="@+id/duration_cv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/price_cv"
+            android:layout_toRightOf="@+id/image_cv"
             android:paddingLeft="16sp"
             android:paddingRight="16dp"
             android:paddingTop="5dp"
-            android:textColor="#000"
+            android:paddingBottom="5dp"
+            android:textColor="#fff"
             android:textSize="15sp"
-            tools:ignore="RtlHardcoded"/>
-
+            android:transitionName="@string/transname_serviceduration"/>
 
     </RelativeLayout>
 

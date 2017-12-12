@@ -21,7 +21,17 @@
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:transitionName="@string/transname_barberaddress" />
+            android:transitionName="@string/transname_servicename" />
+
+        <TextView
+            android:id="@+id/duration_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:transitionName="@string/transname_serviceduration" />
 
         <TextView
             android:id="@+id/price_detail"
@@ -31,7 +41,7 @@
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:transitionName="@string/transname_barberdesc" />
+            android:transitionName="@string/transname_serviceprice" />
 
     </LinearLayout>
 

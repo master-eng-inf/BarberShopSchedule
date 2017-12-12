@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
-import com.udl.bss.barbershopschedule.domain.Service;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 
 import org.json.JSONArray;
@@ -148,21 +148,21 @@ public class BarberServicesFragment extends Fragment {
     private class GetBarberServices extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPostExecute (Void aVoid){
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            List<Service> servicesList = new ArrayList<>();
+            List<BarberService> servicesList = new ArrayList<>();
 
             try {
-                JSONObject jsonObj =  new JSONObject(jsonStr);
+                JSONObject jsonObj = new JSONObject(jsonStr);
 
                 JSONArray barber_shops = jsonObj.getJSONArray("barber_shops");
 
                 int id;
                 int barber_id;
                 String name;
-                Float price;
-                int duration;
+                Double price;
+                Double duration;
 
 
                 JSONObject root = barber_shops.getJSONObject(0);
@@ -173,16 +173,16 @@ public class BarberServicesFragment extends Fragment {
                 for (int i = 0; i < services.length(); i++) {
                     JSONObject service = services.getJSONObject(i);
 
-                    id = service.getInt("id") ;
+                    id = service.getInt("id");
                     name = service.getString("name");
-                    price = (float) service.getDouble("price");
-                    duration = Integer.parseInt(service.getString("duration").replaceAll(".*:",""));
+                    price = (double) service.getDouble("price");
+                    duration = Double.parseDouble(service.getString("duration").replaceAll(".*:", ""));
 
-                    Service barberService = new Service(id, name, barber_id, price, duration);
+                    BarberService barberService = new BarberService(id, barber_id, name, price, duration);
                     servicesList.add(barberService);
                 }
 
-                adapter = new ServiceAdapter(servicesList, new ServiceClick(getActivity(), servicesRecyclerView));
+                adapter = new ServiceAdapter(servicesList, new ServiceClick(getActivity(), servicesRecyclerView), getContext());
                 servicesRecyclerView.setAdapter(adapter);
 
             } catch (JSONException e) {
@@ -193,9 +193,9 @@ public class BarberServicesFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            HttpURLConnection conn=null;
+            HttpURLConnection conn = null;
             InputStream inputStream;
-            BufferedReader reader=null;
+            BufferedReader reader = null;
 
             try {
 
@@ -228,9 +228,9 @@ public class BarberServicesFragment extends Fragment {
 
             } catch (MalformedURLException e) {
                 Log.e(TAG, "MalformedURLException: " + e.getMessage());
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 if (conn != null) {
                     conn.disconnect();
                 }
