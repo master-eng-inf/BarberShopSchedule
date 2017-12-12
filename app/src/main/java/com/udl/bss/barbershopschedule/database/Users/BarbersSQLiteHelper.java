@@ -16,11 +16,12 @@ public class BarbersSQLiteHelper extends SQLiteOpenHelper {
             "name TEXT," +
             "password TEXT," +
             "mail TEXT," +
-            "image BLOB," +
+            "image TEXT," +
             "placesID TEXT," +
             "phone TEXT," +
             "gender TEXT," +
-            "description TEXT)";
+            "description TEXT," +
+            "address TEXT)";
 
     public BarbersSQLiteHelper(Context context, String name,
                                  SQLiteDatabase.CursorFactory factory,

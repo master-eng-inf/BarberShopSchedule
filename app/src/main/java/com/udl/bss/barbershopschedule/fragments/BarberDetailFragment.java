@@ -1,6 +1,8 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import com.udl.bss.barbershopschedule.adapters.PagerAdapter;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.utils.BitmapUtils;
 
 public class BarberDetailFragment extends Fragment {
 
@@ -56,13 +59,17 @@ public class BarberDetailFragment extends Fragment {
         Bundle args = getArguments();
         Barber barber = args.getParcelable("barber");
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.barber_shop_image);
+        ImageView imageView = view.findViewById(R.id.barber_shop_image);
 
         if (barber != null) {
 
-            if (barber.getImage() != null) {
-                imageView.setImageBitmap(barber.getImage());
-            }
+
+            Bitmap bitmap = barber.getImagePath() == null ?
+                  BitmapFactory.decodeResource(getContext().getResources(),R.mipmap.ic_launcher) :
+                  BitmapUtils.loadImageFromStorage(barber.getImagePath(), barber.getName());
+
+            imageView.setImageBitmap(bitmap);
+
 
             final ViewPager viewPager = (ViewPager) view.findViewById(R.id.container);
             final PagerAdapter adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount(), barber);
