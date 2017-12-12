@@ -59,7 +59,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.name.setText(mDataset.get(position).Get_Name());
         String price = String.valueOf(mDataset.get(position).Get_Price()) + " " + context.getString(R.string.service_price_currency);
         holder.price.setText(price);
-        String duration = String.valueOf(mDataset.get(position).Get_Duration()) + " " + context.getString(R.string.service_duration);
+        String duration = String.valueOf((int)mDataset.get(position).Get_Duration()) + " " + context.getString(R.string.service_duration);
         holder.duration.setText(duration);
 
         ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"name");

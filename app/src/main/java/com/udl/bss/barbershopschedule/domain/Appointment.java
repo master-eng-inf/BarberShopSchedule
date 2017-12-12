@@ -2,13 +2,15 @@ package com.udl.bss.barbershopschedule.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
-public class Appointment implements Parcelable {
+public class Appointment implements Parcelable, Comparable<Appointment> {
     private int id;
     private int client_id;
     private int barber_shop_id;
@@ -117,9 +119,7 @@ public class Appointment implements Parcelable {
     }
 
     public String getDate() {
-        //setAppointmentsItems: datum 2018-11-323 this is what is returned before
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return dateFormat.format(this.date);
     }
 
@@ -163,5 +163,50 @@ public class Appointment implements Parcelable {
         result = 31 * result + (promotion_id);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull Appointment o) {
+        Calendar internal = Calendar.getInstance();
+        Calendar external = Calendar.getInstance();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            internal.setTime(format.parse(getDate()));
+            external.setTime(format.parse(o.getDate()));
+        } catch (ParseException e) {
+            return 0;
+        }
+
+        if (internal.get(Calendar.YEAR) > external.get(Calendar.YEAR)) {
+            return 1;
+        }
+        if (internal.get(Calendar.YEAR) < external.get(Calendar.YEAR)) {
+            return -1;
+        }
+        if (internal.get(Calendar.YEAR) == external.get(Calendar.YEAR)) {
+            if (internal.get(Calendar.MONTH) > external.get(Calendar.MONTH)) {
+                return 1;
+            }
+
+            if (internal.get(Calendar.MONTH) < external.get(Calendar.MONTH)) {
+                return -1;
+            }
+
+            if (internal.get(Calendar.MONTH) == external.get(Calendar.MONTH)) {
+                if (internal.get(Calendar.DAY_OF_MONTH) > external.get(Calendar.DAY_OF_MONTH)) {
+                    return 1;
+                }
+
+                if (internal.get(Calendar.DAY_OF_MONTH) < external.get(Calendar.DAY_OF_MONTH)) {
+                    return -1;
+                }
+
+                if (internal.get(Calendar.DAY_OF_MONTH) == external.get(Calendar.DAY_OF_MONTH)) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
     }
 }

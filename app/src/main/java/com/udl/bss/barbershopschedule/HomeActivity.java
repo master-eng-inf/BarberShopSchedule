@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.transition.Fade;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -43,6 +45,9 @@ public class HomeActivity extends AppCompatActivity
         BarberServiceDetailFragment.OnFragmentInteractionListener,
         BarberPromotionDetailFragment.OnFragmentInteractionListener{
 
+    private FloatingActionMenu floatingActionMenu;
+    private boolean doubleBack = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,25 +73,27 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final FloatingActionMenu floatingActionMenu = findViewById(R.id.fab_menu);
-
         String user = getIntent().getStringExtra("user");
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
 
-        if (user.equals("b") || user.equals("barber")) {
+        if (user.equals("Barber")) {
 
             stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
 
             //TODO
             BLL instance = new BLL(this);
+
+            instance.Initialize_Database();
+
             Barber barber = instance.Get_BarberShop(0);
 
             fragment = BarberHomeFragment.newInstance(barber);
             stub.inflate();
 
             FloatingActionButton fab_new_service = findViewById(R.id.fab_barber_new_service);
+            floatingActionMenu = findViewById(R.id.fab_menu);
             fab_new_service.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,30 +113,51 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
 
-        } else {
+            startFragment(fragment);
 
+        } else if (user.equals("User")) {
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
 
             //TODO
             fragment = HomeFragment.newInstance(0);
             stub.inflate();
-
+            floatingActionMenu = findViewById(R.id.fab_menu);
+            floatingActionMenu.setVisibility(View.GONE);
+            startFragment(fragment);
         }
-
-        startFragment(fragment);
-
-
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (floatingActionMenu != null && floatingActionMenu.isOpened()) {
+                floatingActionMenu.close(true);
+            } else {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    if (backAction()) super.onBackPressed();
+                }
+                else {
+                    super.onBackPressed();
+                }
+            }
         }
+    }
+
+    public boolean backAction(){
+        if(doubleBack) return true;
+        this.doubleBack = true;
+        Toast.makeText(this, getString(R.string.double_back), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBack = false;
+            }
+        }, 2000);
+        return false;
     }
 
     @Override
@@ -162,25 +190,25 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.home) {
             //TODO
             HomeFragment hf = HomeFragment.newInstance(0);
-            startFragment(hf);
+            startFragmentBackStack(hf);
         } else if (id == R.id.barber_home) {
             //TODO
             BLL instance = new BLL(this);
             Barber barber = instance.Get_BarberShop(0);
             BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
-            startFragment(bhf);
+            startFragmentBackStack(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
-            startFragment(blf);
+            startFragmentBackStack(blf);
         } else if (id == R.id.show_schedule) {
             BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
-            startFragment(bsf);
+            startFragmentBackStack(bsf);
         } else if (id == R.id.show_services) {
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
-            startFragment(bsf);
+            startFragmentBackStack(bsf);
         } else if (id == R.id.show_promotions) {
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
-            startFragment(bpf);
+            startFragmentBackStack(bpf);
         } else if (id == R.id.profile) {
             //Intent intent = new Intent(this, BarberSettingsActivity.class);
             //startActivity(intent);
@@ -206,6 +234,17 @@ public class HomeActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_home, fragment)
+                    .commit();
+        }
+    }
+
+    private void startFragmentBackStack(Fragment fragment) {
+        //Toast.makeText(this,fragment.toString(),Toast.LENGTH_SHORT).show();
+        if (fragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_home, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }

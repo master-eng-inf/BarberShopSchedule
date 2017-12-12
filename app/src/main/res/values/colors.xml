@@ -10,4 +10,6 @@
 
     <color name="freeHourAvailable">#008080</color>
     <color name="freeHourUnavailable">#b0b0b0</color>
+
+    <color name="reviewsBackgroundColor">#e0e0d1</color>
 </resources>

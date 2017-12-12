@@ -18,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Alex on 24/11/2017.
@@ -108,12 +110,24 @@ public class BLL {
         return this.dal_instance.Get_BarberShopReviews(barber_shop_id);
     }
 
+    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id) {
+        return this.dal_instance.Get_ClientReviewForBarberShop(client_id, barber_shop_id);
+    }
+
     public void Insert_Reviews(ArrayList<Review> reviews) {
         this.dal_instance.Insert_Reviews(reviews);
     }
 
+    public void Insert_or_Update_Review(Review review) {
+        this.dal_instance.Insert_or_Update_Review(review);
+    }
+
     public void Delete_Reviews() {
         this.dal_instance.Delete_Reviews();
+    }
+
+    public void Delete_Review(Review review) {
+        this.dal_instance.Delete_Review(review);
     }
 
     public ArrayList<BarberService> Get_BarberShopServices(int barber_shop_id) {
@@ -132,8 +146,16 @@ public class BLL {
         this.dal_instance.Delete_Services();
     }
 
-    public ArrayList<Appointment> Get_BarberShopAppointments(int barber_shop_id) {
-        return this.dal_instance.Get_BarberShopAppointments(barber_shop_id);
+    public ArrayList<Promotion> Get_PromotionalPromotions() {
+        return  this.dal_instance.Get_PromotionalPromotions();
+    }
+
+    public ArrayList<Appointment> Get_AllBarberShopAppointments(int barber_shop_id) {
+        return this.dal_instance.Get_AllBarberShopAppointments(barber_shop_id);
+    }
+
+    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Calendar date) {
+        return this.dal_instance.Get_BarberShopAppointmentsForSpecificDate(barber_shop_id, date);
     }
 
     public ArrayList<Appointment> Get_ClientAppointments(int client_id) {
@@ -144,12 +166,20 @@ public class BLL {
         this.dal_instance.Insert_Appointments(appointments);
     }
 
+    public void Insert_Appointment(Appointment appointment) {
+        this.dal_instance.Insert_Appointment(appointment);
+    }
+
     public void Delete_Appointments() {
         this.dal_instance.Delete_Appointments();
     }
 
     public ArrayList<Promotion> Get_BarberShopPromotions(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopPromotions(barber_shop_id);
+    }
+
+    public Promotion Get_BarberShopPromotionForService(int barber_shop_id, int service_id) {
+        return this.dal_instance.Get_BarberShopPromotionForService(barber_shop_id, service_id);
     }
 
     public void Insert_Promotions(ArrayList<Promotion> promotions) {
@@ -174,6 +204,10 @@ public class BLL {
 
     public ArrayList<Schedule> Get_BarberShopSchedules(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopSchedules(barber_shop_id);
+    }
+
+    public Schedule Get_BarberShopScheduleForSpecificDay(int barber_shop_id, int day) {
+        return this.dal_instance.Get_BarberShopScheduleForSpecificDay(barber_shop_id, day);
     }
 
     public void Insert_Schelues(ArrayList<Schedule> schedules) {
@@ -247,7 +281,8 @@ public class BLL {
                         for (int promotion_count = 0; promotion_count < promotions.length(); promotion_count++) {
                             JSONObject promotion = promotions.getJSONObject(promotion_count);
                             db_barber_shop_promotions.add(new Promotion(promotion.getInt("id"), barber_shop.getInt("id"),
-                                    promotion.getInt("service_id"), promotion.getString("name"), promotion.getString("description")));
+                                    promotion.getInt("service_id"), promotion.getString("name"),
+                                    promotion.getString("description"), promotion.getInt("is_promotional")));
                         }
 
                         JSONArray reviews = barber_shop.getJSONArray("reviews");

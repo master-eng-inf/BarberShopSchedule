@@ -94,7 +94,7 @@ public class BarberHomeFragment extends Fragment {
     private void setAppointmentItems() {
         BLL instance = new BLL(getContext());
 
-        List<Appointment> appointmentList = instance.Get_BarberShopAppointments(this.barber.getId());
+        List<Appointment> appointmentList = instance.Get_AllBarberShopAppointments(this.barber.getId());
 
         AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
         appointmentsRecyclerView.setAdapter(adapter);

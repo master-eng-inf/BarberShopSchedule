@@ -26,7 +26,11 @@ import com.udl.bss.barbershopschedule.domain.Review;
 import com.udl.bss.barbershopschedule.domain.Schedule;
 import com.udl.bss.barbershopschedule.domain.SpecialDay;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -98,6 +102,7 @@ public class DAL extends SQLiteOpenHelper {
                 PromotionEntry.BARBER_SHOP_ID + " INTEGER, " +
                 PromotionEntry.SERVICE_ID + " INTEGER, " +
                 PromotionEntry.NAME + " TEXT, " +
+                PromotionEntry.IS_PROMOTIONAL + " INTEGER, " +
                 PromotionEntry.DESCRIPTION + " TEXT);";
 
         String SQL_CREATE_SPECIAL_DAY_TABLE = "CREATE TABLE " + SpecialDayEntry.TABLE_NAME + "(" +
@@ -482,6 +487,77 @@ public class DAL extends SQLiteOpenHelper {
         return barber_shop_reviews;
     }
 
+    public Review Get_ClientReviewForBarberShop(int client_id, int barber_shop_id) {
+        Review review = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                ReviewEntry.CLIENT_ID,
+                ReviewEntry.BARBER_SHOP_ID,
+                ReviewEntry.DESCRIPTION,
+                ReviewEntry.MARK,
+                ReviewEntry.DATE,
+        };
+
+        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + barber_shop_id +
+                " and " + ReviewEntry.CLIENT_ID + " = " + client_id;
+
+        Cursor cursor = db.query(
+                ReviewEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int clientIdColumnIndex = cursor.getColumnIndex(ReviewEntry.CLIENT_ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(ReviewEntry.BARBER_SHOP_ID);
+            int descriptionColumnIndex = cursor.getColumnIndex(ReviewEntry.DESCRIPTION);
+            int markColumnIndex = cursor.getColumnIndex(ReviewEntry.MARK);
+            int dateColumnIndex = cursor.getColumnIndex(ReviewEntry.DATE);
+
+            cursor.moveToFirst();
+            int currentClientId = cursor.getInt(clientIdColumnIndex);
+            int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+            double currentMark = cursor.getDouble(markColumnIndex);
+            String currentDate = cursor.getString(dateColumnIndex);
+
+            review = new Review(currentClientId, currentBarberShopId, currentDescription,
+                    currentMark, currentDate);
+
+        } catch (Exception ex) {
+        } finally {
+            cursor.close();
+        }
+        return review;
+    }
+
+    public void Insert_or_Update_Review(Review review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ReviewEntry.CLIENT_ID, review.GetClientId());
+        values.put(ReviewEntry.BARBER_SHOP_ID, review.GetBarberShopId());
+        values.put(ReviewEntry.DESCRIPTION, review.GetDescription());
+        values.put(ReviewEntry.MARK, review.GetMark());
+        values.put(ReviewEntry.DATE, review.GetDate());
+
+        try {
+            db.insertOrThrow(ReviewEntry.TABLE_NAME, null, values);
+        } catch (android.database.sqlite.SQLiteConstraintException ex) {
+            String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
+                    " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+
+            db.update(ReviewEntry.TABLE_NAME, values, selection, null);
+        }
+    }
+
     public void Insert_Reviews(ArrayList<Review> reviews) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -502,6 +578,15 @@ public class DAL extends SQLiteOpenHelper {
     public void Delete_Reviews() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ReviewEntry.TABLE_NAME, null, null);
+    }
+
+    public void Delete_Review(Review review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
+                " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+
+        db.delete(ReviewEntry.TABLE_NAME, selection, null);
     }
 
     public ArrayList<BarberService> Get_BarberShopServices(int barber_shop_id) {
@@ -623,7 +708,7 @@ public class DAL extends SQLiteOpenHelper {
         db.delete(ServiceEntry.TABLE_NAME, null, null);
     }
 
-    public ArrayList<Appointment> Get_BarberShopAppointments(int barber_shop_id) {
+    public ArrayList<Appointment> Get_AllBarberShopAppointments(int barber_shop_id) {
         ArrayList<Appointment> barber_shop_appointments = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -637,6 +722,60 @@ public class DAL extends SQLiteOpenHelper {
         };
 
         String selection = AppointmentEntry.BARBER_SHOP_ID + " = " + barber_shop_id;
+
+        Cursor cursor = db.query(
+                AppointmentEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(AppointmentEntry._ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(AppointmentEntry.BARBER_SHOP_ID);
+            int clientIdColumnIndex = cursor.getColumnIndex(AppointmentEntry.CLIENT_ID);
+            int serviceIdColumnIndex = cursor.getColumnIndex(AppointmentEntry.SERVICE_ID);
+            int promotionIdColumnIndex = cursor.getColumnIndex(AppointmentEntry.PROMOTION_ID);
+            int dateColumnIndex = cursor.getColumnIndex(AppointmentEntry.DATE);
+
+            while (cursor.moveToNext()) {
+                int currentId = cursor.getInt(idColumnIndex);
+                int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+                int currentClientId = cursor.getInt(clientIdColumnIndex);
+                int currentServiceId = cursor.getInt(serviceIdColumnIndex);
+                int currentPromotionId = cursor.getInt(promotionIdColumnIndex);
+                String currentDate = cursor.getString(dateColumnIndex);
+
+                barber_shop_appointments.add(new Appointment(currentId, currentClientId, currentBarberShopId, currentServiceId, currentPromotionId, currentDate));
+            }
+
+        } finally {
+            cursor.close();
+        }
+        return barber_shop_appointments;
+    }
+
+    public ArrayList<Appointment> Get_BarberShopAppointmentsForSpecificDate(int barber_shop_id, Calendar date) {
+        ArrayList<Appointment> barber_shop_appointments = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                AppointmentEntry._ID,
+                AppointmentEntry.CLIENT_ID,
+                AppointmentEntry.BARBER_SHOP_ID,
+                AppointmentEntry.SERVICE_ID,
+                AppointmentEntry.PROMOTION_ID,
+                AppointmentEntry.DATE
+        };
+
+        DecimalFormat mFormat= new DecimalFormat("00");
+
+        String selection = AppointmentEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " + AppointmentEntry.DATE
+                + " LIKE '%" + date.get(Calendar.YEAR) + "-" + mFormat.format((date.get(Calendar.MONTH) + 1)) + "-" + mFormat.format(date.get(Calendar.DAY_OF_MONTH)) + "%'";
 
         Cursor cursor = db.query(
                 AppointmentEntry.TABLE_NAME,
@@ -732,7 +871,7 @@ public class DAL extends SQLiteOpenHelper {
             Appointment current_appointment = iterator.next();
             ContentValues values = new ContentValues();
 
-            values.put(AppointmentEntry._ID, current_appointment.getId());
+            //values.put(AppointmentEntry._ID, current_appointment.getId());
             values.put(AppointmentEntry.CLIENT_ID, current_appointment.getClient_id());
             values.put(AppointmentEntry.BARBER_SHOP_ID, current_appointment.getBarber_shop_id());
             values.put(AppointmentEntry.SERVICE_ID, current_appointment.getService_id());
@@ -743,9 +882,77 @@ public class DAL extends SQLiteOpenHelper {
         }
     }
 
+    public void Insert_Appointment(Appointment appointment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        String tmp = appointment.getDate();
+
+        //values.put(AppointmentEntry._ID, appointment.getId());
+        values.put(AppointmentEntry.CLIENT_ID, appointment.getClient_id());
+        values.put(AppointmentEntry.BARBER_SHOP_ID, appointment.getBarber_shop_id());
+        values.put(AppointmentEntry.SERVICE_ID, appointment.getService_id());
+        values.put(AppointmentEntry.PROMOTION_ID, appointment.getPromotion_id());
+        values.put(AppointmentEntry.DATE, appointment.getDate());
+
+        db.insertOrThrow(AppointmentEntry.TABLE_NAME, null, values);
+    }
+
     public void Delete_Appointments() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(AppointmentEntry.TABLE_NAME, null, null);
+    }
+
+    public ArrayList<Promotion> Get_PromotionalPromotions() {
+        ArrayList<Promotion> barber_shop_promotions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                PromotionEntry._ID,
+                PromotionEntry.BARBER_SHOP_ID,
+                PromotionEntry.SERVICE_ID,
+                PromotionEntry.NAME,
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL
+        };
+
+        String selection = PromotionEntry.IS_PROMOTIONAL + " = " + 1;
+
+        Cursor cursor = db.query(
+                PromotionEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(PromotionEntry._ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(PromotionEntry.BARBER_SHOP_ID);
+            int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
+            int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
+            int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
+
+            while (cursor.moveToNext()) {
+                int currentId = cursor.getInt(idColumnIndex);
+                int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+                int currentServiceId = cursor.getInt(serviceIdColumnIndex);
+                String currentDescription = cursor.getString(descriptionColumnIndex);
+                String currentName = cursor.getString(nameColumnIndex);
+                int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
+
+                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional));
+            }
+
+        } finally {
+            cursor.close();
+        }
+        return barber_shop_promotions;
     }
 
     public ArrayList<Promotion> Get_BarberShopPromotions(int barber_shop_id) {
@@ -757,7 +964,8 @@ public class DAL extends SQLiteOpenHelper {
                 PromotionEntry.BARBER_SHOP_ID,
                 PromotionEntry.SERVICE_ID,
                 PromotionEntry.NAME,
-                PromotionEntry.DESCRIPTION
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL
         };
 
         String selection = PromotionEntry.BARBER_SHOP_ID + " = " + barber_shop_id;
@@ -779,6 +987,7 @@ public class DAL extends SQLiteOpenHelper {
             int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
             int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
 
             while (cursor.moveToNext()) {
                 int currentId = cursor.getInt(idColumnIndex);
@@ -786,14 +995,68 @@ public class DAL extends SQLiteOpenHelper {
                 int currentServiceId = cursor.getInt(serviceIdColumnIndex);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
+                int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
 
-                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription));
+                barber_shop_promotions.add(new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional));
             }
 
         } finally {
             cursor.close();
         }
         return barber_shop_promotions;
+    }
+
+    public Promotion Get_BarberShopPromotionForService(int barber_shop_id, int service_id) {
+        Promotion promotion = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                PromotionEntry._ID,
+                PromotionEntry.BARBER_SHOP_ID,
+                PromotionEntry.SERVICE_ID,
+                PromotionEntry.NAME,
+                PromotionEntry.DESCRIPTION,
+                PromotionEntry.IS_PROMOTIONAL,
+        };
+
+        String selection = PromotionEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " +
+                PromotionEntry.SERVICE_ID + " = " + service_id;
+
+        Cursor cursor = db.query(
+                PromotionEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int idColumnIndex = cursor.getColumnIndex(PromotionEntry._ID);
+            int barberShopIdColumnIndex = cursor.getColumnIndex(PromotionEntry.BARBER_SHOP_ID);
+            int serviceIdColumnIndex = cursor.getColumnIndex(PromotionEntry.SERVICE_ID);
+            int nameColumnIndex = cursor.getColumnIndex(PromotionEntry.NAME);
+            int descriptionColumnIndex = cursor.getColumnIndex(PromotionEntry.DESCRIPTION);
+            int is_promotionalColumnIndex = cursor.getColumnIndex(PromotionEntry.IS_PROMOTIONAL);
+
+            cursor.moveToFirst();
+            int currentId = cursor.getInt(idColumnIndex);
+            int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+            int currentServiceId = cursor.getInt(serviceIdColumnIndex);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+            String currentName = cursor.getString(nameColumnIndex);
+            int currentIsPromotional = cursor.getInt(is_promotionalColumnIndex);
+
+            promotion = new Promotion(currentId, currentBarberShopId, currentServiceId, currentName, currentDescription, currentIsPromotional);
+
+        } catch (Exception ex) {
+
+        } finally {
+            cursor.close();
+        }
+        return promotion;
     }
 
     public void Insert_Promotions(ArrayList<Promotion> promotions) {
@@ -808,6 +1071,7 @@ public class DAL extends SQLiteOpenHelper {
             values.put(PromotionEntry.SERVICE_ID, current_promotion.getService_id());
             values.put(PromotionEntry.NAME, current_promotion.getName());
             values.put(PromotionEntry.DESCRIPTION, current_promotion.getDescription());
+            values.put(PromotionEntry.IS_PROMOTIONAL, current_promotion.getIs_Promotional());
 
             db.insert(PromotionEntry.TABLE_NAME, null, values);
         }
@@ -984,6 +1248,64 @@ public class DAL extends SQLiteOpenHelper {
             cursor.close();
         }
         return barber_shop_schedules;
+    }
+
+    public Schedule Get_BarberShopScheduleForSpecificDay(int barber_shop_id, int day) {
+        Schedule schedule = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                ScheduleEntry.BARBER_SHOP_ID,
+                ScheduleEntry.DAY_OF_WEEK,
+                ScheduleEntry.OPPENING_1,
+                ScheduleEntry.CLOSING_1,
+                ScheduleEntry.OPPENING_2,
+                ScheduleEntry.CLOSING_2,
+                ScheduleEntry.APPOINTMENTS_AT_SAME_TIME
+        };
+
+        String selection = ScheduleEntry.BARBER_SHOP_ID + " = " + barber_shop_id + " and " + ScheduleEntry.DAY_OF_WEEK + " = " + day;
+
+        Cursor cursor = db.query(
+                ScheduleEntry.TABLE_NAME,
+                projection,
+                selection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            int barberShopIdColumnIndex = cursor.getColumnIndex(ScheduleEntry.BARBER_SHOP_ID);
+            int dayOfWeekColumnIndex = cursor.getColumnIndex(ScheduleEntry.DAY_OF_WEEK);
+            int oppening1ColumnIndex = cursor.getColumnIndex(ScheduleEntry.OPPENING_1);
+            int closing1ColumnIndex = cursor.getColumnIndex(ScheduleEntry.CLOSING_1);
+            int oppening2ColumnIndex = cursor.getColumnIndex(ScheduleEntry.OPPENING_2);
+            int closing2ColumnIndex = cursor.getColumnIndex(ScheduleEntry.CLOSING_2);
+            int appointments_at_same_timeColumnIndex = cursor.getColumnIndex(ScheduleEntry.APPOINTMENTS_AT_SAME_TIME);
+
+            cursor.moveToFirst();
+
+            int currentBarberShopId = cursor.getInt(barberShopIdColumnIndex);
+            int currentDayOfWeek = cursor.getInt(dayOfWeekColumnIndex);
+            String currentOpening1 = cursor.getString(oppening1ColumnIndex);
+            String currentClosing1 = cursor.getString(closing1ColumnIndex);
+            String currentOpening2 = cursor.getString(oppening2ColumnIndex);
+            String currentClosing2 = cursor.getString(closing2ColumnIndex);
+            int currentAppointment_at_same_time = cursor.getInt(appointments_at_same_timeColumnIndex);
+
+            schedule = new Schedule(currentBarberShopId, currentDayOfWeek,
+                    currentOpening1, currentClosing1, currentOpening2, currentClosing2,
+                    currentAppointment_at_same_time);
+
+        } catch (Exception ex) {
+
+        } finally {
+            cursor.close();
+        }
+        return schedule;
     }
 
     public void Insert_Schelues(ArrayList<Schedule> schedules) {

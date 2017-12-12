@@ -59,11 +59,11 @@ public class BarberDetailScheduleFragment extends Fragment {
 
                 if (year >= calendar.get(Calendar.YEAR) && month >= calendar.get(Calendar.MONTH) && dayOfMonth >= calendar.get(Calendar.DAY_OF_MONTH)) {
                     Intent intent = new Intent(getContext(), BarberServicePricesActivity.class);
-                    intent.putExtra("barber", barber);
+                    intent.putExtra("barber_shop_id", barber.getId());
+                    intent.putExtra("date", String.valueOf(year) + "-" + String.valueOf(month+1) + "-" + String.valueOf(dayOfMonth));
 
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), R.string.unavailable_date, Toast.LENGTH_SHORT).show();
                 }
             }
