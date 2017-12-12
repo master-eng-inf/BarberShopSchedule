@@ -16,7 +16,7 @@ public class BarbersSQLiteHelper extends SQLiteOpenHelper {
             "name TEXT," +
             "password TEXT," +
             "mail TEXT," +
-            "image BLOB," +
+            "image TEXT," +
             "placesID TEXT," +
             "phone TEXT," +
             "gender TEXT," +

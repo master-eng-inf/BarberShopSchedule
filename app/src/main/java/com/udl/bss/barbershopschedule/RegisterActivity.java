@@ -7,11 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -38,15 +35,9 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.udl.bss.barbershopschedule.database.Users.BarbersSQLiteHelper;
 import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteHelper;
+import com.udl.bss.barbershopschedule.listeners.GoogleMaps;
 import com.udl.bss.barbershopschedule.utils.BitmapUtils;
 
 public class RegisterActivity extends AppCompatActivity
@@ -68,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity
     private Button btn_img;
     private Button btn_placesID;
     private String placesID;
-    private byte[] image;
+    private String imagePath;
     private Spinner spinner_gender;
     private CardView cv_desc, cv_age, cv_place;
 
@@ -76,6 +67,8 @@ public class RegisterActivity extends AppCompatActivity
     private SharedPreferences sharedPreferences;
     private BarbersSQLiteHelper bsh;
     private UsersSQLiteHelper ush;
+
+    private GoogleMaps googleMaps;
 
 
 
@@ -153,6 +146,8 @@ public class RegisterActivity extends AppCompatActivity
             }
         });
 
+        googleMaps = new GoogleMaps(this);
+
     }
 
     @Override
@@ -181,24 +176,17 @@ public class RegisterActivity extends AppCompatActivity
 
     private boolean registerOk () {
 
-        if (bitmap == null) {
-            imageView.setImageResource(R.mipmap.ic_launcher);
-            bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            image = BitmapUtils.bitmapToByteArray(bitmap);
-        }
-
         if (isBarber){
 
-            return et_name != null && et_mail != null && et_pass != null && image != null
+            return et_name != null && et_mail != null && et_pass != null
                     && placesID != null && !et_name.getText().toString().equals("")
                     && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
                     && et_phone != null && !et_phone.getText().toString().equals("")
                     && et_desc != null && !et_desc.getText().toString().equals("");
         }
 
-        return et_name != null && et_mail != null && et_pass != null && image != null
-                && !et_name.getText().toString().equals("") && !et_pass.getText().toString().equals("")
-                && !et_mail.getText().toString().equals("")
+        return et_name != null && et_mail != null && et_pass != null && !et_name.getText().toString().equals("")
+                && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
                 && et_phone != null && !et_phone.getText().toString().equals("")
                 && et_age != null && !et_age.getText().toString().equals("");
 
@@ -208,12 +196,15 @@ public class RegisterActivity extends AppCompatActivity
 
         if (registerOk()) {
 
+            if (bitmap != null)
+                imagePath = BitmapUtils.saveToInternalStorage(bitmap,
+                        et_name.getText().toString(), getApplicationContext());
+
             ContentValues data = new ContentValues();
             data.put("name", et_name.getText().toString());
             data.put("mail", et_mail.getText().toString());
             data.put("password", et_pass.getText().toString());
-            byte[] image = BitmapUtils.bitmapToByteArray(bitmap);
-            data.put("image", image);
+            data.put("image", imagePath);
             data.put("phone", et_phone.getText().toString());
             data.put("gender", ((TextView)spinner_gender.getSelectedView()).getText().toString());
 
@@ -270,23 +261,11 @@ public class RegisterActivity extends AppCompatActivity
             case PICK_IMAGE:
                 if(resultCode == Activity.RESULT_OK){
                     Uri selectedImage = intent.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    if (cursor != null) {
-                        cursor.moveToFirst();
-
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        String filePath = cursor.getString(columnIndex);
-                        cursor.close();
-
-
-                        bitmap = BitmapFactory.decodeFile(filePath);
-                        if (BitmapUtils.sizeOfBitmap(bitmap) > 9999999) bitmap = BitmapUtils.reduceSize(bitmap);
-
+                    if (selectedImage != null) {
+                        bitmap = BitmapUtils.getImageFromUri(intent.getData(), this);
                         imageView.setImageBitmap(bitmap);
-                        image = BitmapUtils.bitmapToByteArray(bitmap);
                     }
+
                 }
                 break;
 
@@ -294,37 +273,13 @@ public class RegisterActivity extends AppCompatActivity
                 if(resultCode == RESULT_OK && intent != null){
                     placesID = PlacePicker.getPlace(this, intent).getId();
 
-                    setMap(PlacePicker.getPlace(this, intent).getName().toString(),
+                    googleMaps.setMap(PlacePicker.getPlace(this, intent).getName().toString(),
                             PlacePicker.getPlace(this, intent).getLatLng());
                     TextView tv_no_place = findViewById(R.id.textView_no_place);
                     tv_no_place.setVisibility(View.GONE);
                 }
                 break;
         }
-    }
-
-    private void setMap(String name, LatLng location) {
-        ViewHolder holder = new ViewHolder();
-        holder.mapView = findViewById(R.id.lite_listrow_map);
-        holder.title = findViewById(R.id.textView_register_place);
-
-        holder.mapView.setVisibility(View.VISIBLE);
-
-        holder.initializeMapView();
-        NamedLocation item = new NamedLocation(name, location);
-        holder.mapView.setTag(item);
-
-        if (holder.map != null) {
-            setMapLocation(holder.map, item);
-        }
-        holder.title.setText(item.name);
-    }
-
-
-    private static void setMapLocation(GoogleMap map, NamedLocation data) {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(data.location, 13f));
-        map.addMarker(new MarkerOptions().position(data.location));
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
 
@@ -381,44 +336,6 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {
-
-    }
-
-
-    private static class NamedLocation {
-
-        public final String name;
-        final LatLng location;
-
-        NamedLocation(String name, LatLng location) {
-            this.name = name;
-            this.location = location;
-        }
-    }
-
-
-    class ViewHolder implements OnMapReadyCallback {
-
-        MapView mapView;
-        TextView title;
-        GoogleMap map;
-
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            MapsInitializer.initialize(getApplicationContext());
-            map = googleMap;
-            NamedLocation data = (NamedLocation) mapView.getTag();
-            if (data != null) {
-                setMapLocation(map, data);
-            }
-        }
-
-        void initializeMapView() {
-            if (mapView != null) {
-                mapView.onCreate(null);
-                mapView.getMapAsync(this);
-            }
-        }
 
     }
 

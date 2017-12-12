@@ -1,10 +1,7 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,22 +19,11 @@ import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteManager;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -85,6 +70,9 @@ public class BarberListFragment extends Fragment {
             getActivity().getWindow().setExitTransition(fade);
         }
 
+        final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
+        List<Barber> barberList = usm.getRegisteredBarbers();
+
         if (getView() != null) {
             mRecyclerView = getView().findViewById(R.id.rv);
         }
@@ -99,7 +87,7 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            adapter = new BarberAdapter(this.instance.Get_BarberShopList(false), new BarberClick(getActivity(), mRecyclerView));
+            adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
             mRecyclerView.setAdapter(adapter);
         }
 
@@ -115,7 +103,8 @@ public class BarberListFragment extends Fragment {
 
                 }
                 adapter.removeAll();
-                adapter = new BarberAdapter(instance.Get_BarberShopList(true), new BarberClick(getActivity(), mRecyclerView));
+                List<Barber> barberList = usm.getRegisteredBarbers();
+                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
                 mRecyclerView.setAdapter(adapter);
             }
         });

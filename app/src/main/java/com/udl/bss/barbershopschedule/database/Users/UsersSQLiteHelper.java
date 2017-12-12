@@ -18,7 +18,7 @@ public class UsersSQLiteHelper extends SQLiteOpenHelper {
             "phone TEXT," +
             "gender TEXT," +
             "age INTEGER," +
-            "image BLOB)";
+            "image TEXT)";
 
     public UsersSQLiteHelper(Context context, String name,
                                SQLiteDatabase.CursorFactory factory,

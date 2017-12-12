@@ -3,7 +3,10 @@ package com.udl.bss.barbershopschedule.database.Users;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.utils.BitmapUtils;
@@ -40,11 +43,14 @@ public class UsersSQLiteManager {
         Cursor c = db.rawQuery("SELECT * FROM Barbers;", null);
         if (c.moveToFirst()) {
             do {
+                Bitmap bitmap = c.getString(4) == null ?
+                        BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher) :
+                        BitmapUtils.loadImageFromStorage(c.getString(4), c.getString(1));
                 Barber b = new Barber(
                         c.getInt(0),
                         c.getString(1),
                         c.getString(3),
-                        BitmapUtils.byteArrayToBitmap(c.getBlob(4)),
+                        bitmap,
                         c.getString(5),
                         c.getString(2),
                         c.getString(6),
@@ -65,6 +71,9 @@ public class UsersSQLiteManager {
         Cursor c = db.rawQuery("SELECT * FROM Users;", null);
         if (c.moveToFirst()) {
             do {
+                Bitmap bitmap = c.getString(7) == null ?
+                        BitmapFactory.decodeResource(context.getApplicationContext().getResources(),R.mipmap.ic_launcher) :
+                        BitmapUtils.loadImageFromStorage(c.getString(7), c.getString(1));
                 Client cl = new Client(
                         c.getInt(0),
                         c.getString(1),
@@ -73,7 +82,7 @@ public class UsersSQLiteManager {
                         c.getString(4),
                         c.getString(5),
                         c.getInt(6),
-                        BitmapUtils.byteArrayToBitmap(c.getBlob(7)));
+                        bitmap);
                 clientList.add(cl);
             } while (c.moveToNext());
         }
