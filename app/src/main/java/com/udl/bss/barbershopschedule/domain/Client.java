@@ -15,6 +15,7 @@ public class Client {
     private int age;
     private String password;
     private Bitmap image;
+    private String imagePath;
 
     public Client(int id, String name, String phone, String email, String gender, int age)
     {
@@ -26,7 +27,8 @@ public class Client {
         this.age = age;
     }
 
-    public Client(int id, String name, String email, String password, String phone, String gender, int age, Bitmap image)
+    public Client(int id, String name, String email, String password, String phone, String gender,
+                  int age, String imagePath)
     {
         this.id = id;
         this.name = name;
@@ -35,7 +37,7 @@ public class Client {
         this.phone = phone;
         this.gender = gender;
         this.age = age;
-        this.image = image;
+        this.imagePath = imagePath;
     }
 
     public int getAge() {
@@ -92,5 +94,9 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 }

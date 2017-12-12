@@ -236,9 +236,13 @@ public class RegisterActivity extends AppCompatActivity
         if (isBarber) {
             db = bsh.getWritableDatabase();
             id = db.insert("Barbers", null, data);
+            db.close();
+            bsh.close();
         } else {
             db = ush.getWritableDatabase();
             id = db.insert("Users", null, data);
+            db.close();
+            ush.close();
         }
 
     }

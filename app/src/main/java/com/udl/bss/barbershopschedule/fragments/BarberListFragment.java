@@ -87,7 +87,7 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
+            adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
             mRecyclerView.setAdapter(adapter);
         }
 
@@ -104,7 +104,7 @@ public class BarberListFragment extends Fragment {
                 }
                 adapter.removeAll();
                 List<Barber> barberList = usm.getRegisteredBarbers();
-                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView));
+                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
                 mRecyclerView.setAdapter(adapter);
             }
         });
