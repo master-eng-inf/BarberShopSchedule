@@ -53,6 +53,14 @@
         <activity android:name=".BarberScheduleDayActivity" />
         <activity android:name=".ReviewsActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".BarberSettingsActivity"
+            android:label="@string/title_activity_barber_settings"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.udl.bss.barbershopschedule.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

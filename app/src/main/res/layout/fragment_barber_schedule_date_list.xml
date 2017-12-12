@@ -1,0 +1,32 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udl.bss.barbershopschedule.fragments.BarberDetailPricesAndPromotionsFragment"
+    android:background="#d3d3d3">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/barber_home_fragment"
+        android:orientation="vertical"
+        tools:context="com.udl.bss.barbershopschedule.fragments.BarberScheduleDateListFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list_appointments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

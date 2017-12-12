@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BarberShopSchedule.iml" filepath="$PROJECT_DIR$/BarberShopSchedule.iml" />
+      <module fileurl="file://C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule_profile\BarberShopSchedule.iml" filepath="C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule_profile\BarberShopSchedule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BarberShopSchedule-part4.iml" filepath="$PROJECT_DIR$/BarberShopSchedule-part4.iml" />
+      <module fileurl="file://C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule-part4\BarberShopSchedule_profile.iml" filepath="C:\Users\DejanLojpur\Desktop\BarberShopSchedule\BarberShopSchedule-part4\BarberShopSchedule_profile.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
