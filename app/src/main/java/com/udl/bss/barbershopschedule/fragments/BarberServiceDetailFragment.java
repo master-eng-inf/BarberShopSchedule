@@ -49,7 +49,7 @@ public class BarberServiceDetailFragment extends Fragment {
         BarberService service = args.getParcelable("service");
         TextView tv = view.findViewById(R.id.name_cv);
         if (service != null) {
-            tv.setText(service.getName());
+            tv.setText(service.Get_Name());
         }
 
     }
