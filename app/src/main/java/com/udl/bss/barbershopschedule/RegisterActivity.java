@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity
     private Bitmap bitmap;
     private Button btn_img;
     private Button btn_placesID;
-    private String placesID;
+    private String placesID, address;
     private String imagePath;
     private Spinner spinner_gender;
     private CardView cv_desc, cv_age, cv_place;
@@ -211,6 +211,7 @@ public class RegisterActivity extends AppCompatActivity
 
             if (isBarber) {
                 data.put("placesID", placesID);
+                data.put("address", address);
                 data.put("description", et_desc.getText().toString());
             } else {
                 data.put("age", et_age.getText().toString());
@@ -272,6 +273,7 @@ public class RegisterActivity extends AppCompatActivity
             case PLACE_PICKER_REQUEST:
                 if(resultCode == RESULT_OK && intent != null){
                     placesID = PlacePicker.getPlace(this, intent).getId();
+                    address = (String) PlacePicker.getPlace(this, intent).getAddress();
 
                     googleMaps.setMap(PlacePicker.getPlace(this, intent).getName().toString(),
                             PlacePicker.getPlace(this, intent).getLatLng());

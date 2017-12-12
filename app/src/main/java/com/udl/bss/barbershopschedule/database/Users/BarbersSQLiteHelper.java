@@ -20,7 +20,8 @@ public class BarbersSQLiteHelper extends SQLiteOpenHelper {
             "placesID TEXT," +
             "phone TEXT," +
             "gender TEXT," +
-            "description TEXT)";
+            "description TEXT," +
+            "address TEXT)";
 
     public BarbersSQLiteHelper(Context context, String name,
                                  SQLiteDatabase.CursorFactory factory,

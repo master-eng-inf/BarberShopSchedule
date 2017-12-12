@@ -56,7 +56,7 @@ public class BarberAdapter extends RecyclerView.Adapter<BarberAdapter.ViewHolder
         holder.description.setText(mDataset.get(position).getDescription());
         holder.image.setImageBitmap(mDataset.get(position).getImage());
         holder.name.setText(mDataset.get(position).getName());
-        String address = mDataset.get(position).getAddress() + ", " + mDataset.get(position).getCity();
+        String address = mDataset.get(position).getAddress();
         holder.address.setText(address);
 
         ViewCompat.setTransitionName(holder.image, String.valueOf(position)+"_image");
