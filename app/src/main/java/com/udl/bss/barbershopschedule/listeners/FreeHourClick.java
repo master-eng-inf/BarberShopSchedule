@@ -119,7 +119,7 @@ public class FreeHourClick implements OnItemClickListener {
 
                         Intent intent = new Intent(activity, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("user", "");
+                        intent.putExtra("user", "User");
                         activity.startActivity(intent);
                     }
                 });

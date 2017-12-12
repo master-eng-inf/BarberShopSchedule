@@ -116,7 +116,6 @@ public class HomeActivity extends AppCompatActivity
             startFragment(fragment);
 
         } else if (user.equals("User")) {
-
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
 
@@ -124,13 +123,9 @@ public class HomeActivity extends AppCompatActivity
             fragment = HomeFragment.newInstance(0);
             stub.inflate();
             floatingActionMenu = findViewById(R.id.fab_menu);
-
+            floatingActionMenu.setVisibility(View.GONE);
             startFragment(fragment);
         }
-
-
-
-
     }
 
     @Override
