@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -197,13 +198,13 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
-        Preference pName = null;
-        Preference pEmail = null;
-        Preference pPhone = null;
-        Preference pPassword = null;
-        Preference pAddress = null;
-        Preference pCity = null;
-        Preference pDescription = null;
+        EditTextPreference pName = null;
+        EditTextPreference pEmail = null;
+        EditTextPreference pPhone = null;
+        EditTextPreference pPassword = null;
+        EditTextPreference pAddress = null;
+        EditTextPreference pCity = null;
+        EditTextPreference pDescription = null;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
@@ -212,18 +213,16 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            pName = findPreference("save_name");
-            pEmail= findPreference("save_mail");
-            pPhone = findPreference("save_phone");
-            pPassword = findPreference("save_password");
-            pAddress = findPreference("save_address");
-            pDescription= findPreference("save_description");
-            pCity = findPreference("save_city");
+            pName = (EditTextPreference) findPreference("save_name");
+            pEmail= (EditTextPreference) findPreference("save_mail");
+            pPhone = (EditTextPreference) findPreference("save_phone");
+            pPassword = (EditTextPreference) findPreference("save_password");
+            pAddress = (EditTextPreference) findPreference("save_address");
+            pDescription= (EditTextPreference)findPreference("save_description");
+            pCity = (EditTextPreference) findPreference("save_city");
 
             final BLL instance = new BLL(getContext());
             final Barber barber = instance.Get_BarberShop(0);
-
-
 
             pName.setSummary(barber.getName());
             pEmail.setSummary(barber.getEmail());
@@ -233,35 +232,42 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
             pCity.setSummary(barber.getCity());
             pDescription.setSummary(barber.getDescription());
 
-            //bindPreferenceSummaryToValue(pName);
-            //bindPreferenceSummaryToValue(pEmail);
-            //bindPreferenceSummaryToValue(pPhone);
-            //bindPreferenceSummaryToValue(pAddress);
-            //bindPreferenceSummaryToValue(pDescription);
-            //bindPreferenceSummaryToValue(findPreference("save_description"));
-            //shannonchambers@ovolo.com
+            pName.setText(barber.getName());
+            pEmail.setText(barber.getEmail());
+            pPhone.setText(barber.getPhone());
+            //pPassword.setText("");
+            pAddress.setText(barber.getAddress());
+            pCity.setText(barber.getCity());
+            pDescription.setText(barber.getDescription());
+
+            bindPreferenceSummaryToValue(pName);
+            bindPreferenceSummaryToValue(pEmail);
+            bindPreferenceSummaryToValue(pPhone);
+            bindPreferenceSummaryToValue(pAddress);
+            bindPreferenceSummaryToValue(pDescription);
+            bindPreferenceSummaryToValue(findPreference("save_description"));
+
             Preference button = findPreference(getString(R.string.savePreferences));
             button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     //code for what you want it to do
 
+                    bindPreferenceSummaryToValue(pName);
+                    bindPreferenceSummaryToValue(pEmail);
+                    bindPreferenceSummaryToValue(pPhone);
+                    bindPreferenceSummaryToValue(pAddress);
+                    bindPreferenceSummaryToValue(pDescription);
+                    bindPreferenceSummaryToValue(pCity);
 
-                    //bindPreferenceSummaryToValue(pName);
-                    //bindPreferenceSummaryToValue(pEmail);
-                    //bindPreferenceSummaryToValue(findPreference("save_phone"));
-                    //bindPreferenceSummaryToValue(findPreference("save_password"));
-                    //bindPreferenceSummaryToValue(findPreference("save_address"));
-                    //bindPreferenceSummaryToValue(findPreference("save_city"));
-                    //bindPreferenceSummaryToValue(findPreference("save_description"));
 
-                    if(instance.Update_BarberShop(barber.getId(),"shannonchambers@avolo.com",barber.getPhone(),
-                            barber.getName(),barber.getAddress(),barber.getCity(),barber.getDescription()) == true)
+                    if(instance.Update_BarberShop(barber.getId(),pEmail.getText(),pPhone.getText(),
+                            pName.getText(),pAddress.getText(),pCity.getText(),pDescription.getText()) == true)
                     {
                         Toast.makeText(getActivity(),"Data saved!",Toast.LENGTH_SHORT).show();
                     }else
                         Toast.makeText(getActivity(),"Data not saved!",Toast.LENGTH_SHORT).show();
-
+                    
                     return true;
                 }
             });

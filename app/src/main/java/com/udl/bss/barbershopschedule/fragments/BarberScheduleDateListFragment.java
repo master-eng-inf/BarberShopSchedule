@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
@@ -90,12 +91,11 @@ public class BarberScheduleDateListFragment extends Fragment {
         String timeOfAppointment = "";
         String dateOfAppointment = "";
         if (barber != null){
-            ArrayList<Appointment> services = instance.Get_BarberShopAppointments(this.barber.getId());
+            ArrayList<Appointment> services = instance.Get_AllBarberShopAppointments(this.barber.getId());
             Log.d(TAG, "setAppointmentsItems: " + services);
             for (int i = services.size()-1; i>=0; i--) {
                 splitedDate = services.get(i).getDate().split(" ");
                 dateOfAppointment = splitedDate[0];
-
                 if (!selectedDate.equals(dateOfAppointment)){
                     services.remove(i);
                 }

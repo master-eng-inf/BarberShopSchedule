@@ -1118,7 +1118,7 @@ public class DAL extends SQLiteOpenHelper {
             String currentDescription = cursor.getString(descriptionColumnIndex);
 
             promotion= new Promotion(currentId, currentBarberID, currentServiceID, currentName,
-                    currentDescription);
+                    currentDescription,0);
 
         } finally {
             cursor.close();
