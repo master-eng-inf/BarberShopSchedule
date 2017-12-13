@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#d3d3d3"
-    tools:context="com.udl.bss.barbershopschedule.BarberNewServiceActivity">
+    tools:context="com.udl.bss.barbershopschedule.BarberNewPromotionActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                         android:paddingTop="20dp">
 
                         <EditText
-                            android:id="@+id/new_service_name"
+                            android:id="@+id/new_promotion_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"

@@ -47,9 +47,17 @@ public class BarberServiceDetailFragment extends Fragment {
 
         Bundle args = getArguments();
         BarberService service = args.getParcelable("service");
-        TextView tv = view.findViewById(R.id.name_cv);
+        TextView name_cv = view.findViewById(R.id.name_cv);
+        TextView price_cv = view.findViewById(R.id.price_cv);
+        TextView duration_cv = view.findViewById(R.id.duration_cv);
         if (service != null) {
-            tv.setText(service.Get_Name());
+            name_cv.setText(service.Get_Name());
+
+            String price = Double.toString(service.Get_Price());
+            price_cv.setText(price);
+
+            String duration = Double.toString(service.Get_Duration());
+            duration_cv.setText(duration);
         }
 
     }

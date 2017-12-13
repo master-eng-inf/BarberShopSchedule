@@ -41,6 +41,8 @@
 
 
     <string name="barber_create_button">Create</string>
+    <string name="barber_update_button">Update</string>
+    <string name="barber_delete_button">Delete</string>
     <string name="barber_cancel_button">Cancel</string>
 
     <string name="barber_schedule_button">Schedule</string>
