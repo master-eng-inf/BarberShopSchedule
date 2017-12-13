@@ -1053,6 +1053,21 @@ public class DAL extends SQLiteOpenHelper {
         }
     }
 
+    public void Insert_Promotion(Promotion promotion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //values.put(PromotionEntry._ID, promotion.getId());
+        values.put(PromotionEntry.BARBER_SHOP_ID, promotion.getBarber_shop_id());
+        values.put(PromotionEntry.SERVICE_ID, promotion.getService_id());
+        values.put(PromotionEntry.NAME, promotion.getName());
+        values.put(PromotionEntry.DESCRIPTION, promotion.getDescription());
+        values.put(PromotionEntry.IS_PROMOTIONAL, promotion.getIs_Promotional());
+
+        db.insertOrThrow(PromotionEntry.TABLE_NAME, null, values);
+    }
+
     public void Delete_Promotions() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(PromotionEntry.TABLE_NAME, null, null);

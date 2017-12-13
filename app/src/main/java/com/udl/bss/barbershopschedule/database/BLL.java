@@ -164,6 +164,10 @@ public class BLL {
         this.dal_instance.Insert_Promotions(promotions);
     }
 
+    public void Insert_Promotion(Promotion promotion) {
+        this.dal_instance.Insert_Promotion(promotion);
+    }
+
     public void Delete_Promotions() {
         this.dal_instance.Delete_Promotions();
     }
