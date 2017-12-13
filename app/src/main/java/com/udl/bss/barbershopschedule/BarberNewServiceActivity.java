@@ -69,7 +69,7 @@ public class BarberNewServiceActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Your service was created succesfully", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("user", "barber");
+            intent.putExtra("user", "Barber");
             this.startActivity(intent);
 
         } else {
