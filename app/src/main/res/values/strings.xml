@@ -26,6 +26,8 @@
     <string name="barber_service_button">Services</string>
     <string name="barber_new_service_button">New Service</string>
     <string name="barber_service_creation_name">Service name</string>
+    <string name="barber_service_creation_price">Service price</string>
+    <string name="barber_service_creation_duration">Service duration</string>
     <string name="barber_service_creation_description">Service description</string>
 
 
