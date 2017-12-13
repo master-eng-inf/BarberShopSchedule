@@ -676,7 +676,7 @@ public class DAL extends SQLiteOpenHelper {
         values.put(ServiceEntry.PRICE, service.Get_Price());
         values.put(ServiceEntry.DURATION, service.Get_Duration());
 
-        db.insert(ServiceEntry.TABLE_NAME, null, values);
+        db.insertOrThrow(ServiceEntry.TABLE_NAME, null, values);
     }
 
     public void Delete_Services() {

@@ -18,7 +18,6 @@ import com.udl.bss.barbershopschedule.domain.BarberService;
 
 public class BarberNewServiceActivity extends AppCompatActivity {
 
-    private Activity activity;
     private EditText new_service_name, new_service_price, new_service_duration;
     private String new_service_name_var;
     private double new_service_price_var;
@@ -61,7 +60,7 @@ public class BarberNewServiceActivity extends AppCompatActivity {
             new_service_price_var = Double.parseDouble(new_service_price.getText().toString());
             new_service_duration_var = Double.parseDouble(new_service_duration.getText().toString());
 
-            BLL instance = new BLL(activity);
+            BLL instance = new BLL(this);
 
             BarberService new_service = new BarberService(-1,0,new_service_name_var,new_service_price_var,new_service_duration_var);
 
@@ -69,9 +68,9 @@ public class BarberNewServiceActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Your service was created succesfully", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(activity, HomeActivity.class);
-            intent.putExtra("barber1", "barber1");
-            activity.startActivity(intent);
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("user", "barber");
+            this.startActivity(intent);
 
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
