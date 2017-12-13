@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.domain.Promotion;
@@ -47,6 +48,15 @@ public class BarberPromotionDetailFragment extends Fragment {
         Bundle args = getArguments();
         Promotion promotion = args.getParcelable("promotion");
 
+        TextView name_cv = view.findViewById(R.id.name_cv);
+        TextView description_cv = view.findViewById(R.id.description_cv);
+        TextView service_cv = view.findViewById(R.id.service_cv);
+        if (promotion != null) {
+            name_cv.setText(promotion.getName());
+            description_cv.setText(promotion.getDescription());
+            String service_id = Double.toString(promotion.getService_id());
+            service_cv.setText(service_id);
+        }
     }
 
 
