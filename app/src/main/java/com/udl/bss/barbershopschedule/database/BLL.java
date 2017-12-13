@@ -116,6 +116,10 @@ public class BLL {
         this.dal_instance.Insert_Services(services);
     }
 
+    public void Insert_Service(BarberService service) {
+        this.dal_instance.Insert_Service(service);
+    }
+
     public void Delete_Services() {
         this.dal_instance.Delete_Services();
     }

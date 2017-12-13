@@ -666,6 +666,19 @@ public class DAL extends SQLiteOpenHelper {
         }
     }
 
+    public void Insert_Service(BarberService service) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ServiceEntry.BARBER_SHOP_ID, service.Get_BarberShopId());
+        values.put(ServiceEntry.NAME, service.Get_Name());
+        values.put(ServiceEntry.PRICE, service.Get_Price());
+        values.put(ServiceEntry.DURATION, service.Get_Duration());
+
+        db.insert(ServiceEntry.TABLE_NAME, null, values);
+    }
+
     public void Delete_Services() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ServiceEntry.TABLE_NAME, null, null);
