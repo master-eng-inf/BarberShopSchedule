@@ -124,6 +124,10 @@ public class BLL {
         this.dal_instance.Delete_Services();
     }
 
+    public void Delete_Service(BarberService service) {
+        this.dal_instance.Delete_Service(service);
+    }
+
     public ArrayList<Promotion> Get_PromotionalPromotions() {
         return  this.dal_instance.Get_PromotionalPromotions();
     }
