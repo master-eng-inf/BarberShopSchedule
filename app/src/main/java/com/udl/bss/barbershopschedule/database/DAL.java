@@ -1085,6 +1085,18 @@ public class DAL extends SQLiteOpenHelper {
         db.delete(PromotionEntry.TABLE_NAME, null, null);
     }
 
+    public void Delete_Promotion(Promotion promotion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = PromotionEntry._ID + " = " + promotion.getId(); //+
+        //" and " + ServiceEntry.BARBER_SHOP_ID + " = " + service.Get_BarberShopId() +
+        // " and " + ServiceEntry.NAME + " = " + service.Get_Name() +
+        // " and " + ServiceEntry.PRICE + " = " + service.Get_Price() +
+        // " and " + ServiceEntry.DURATION + " = " + service.Get_Duration();
+
+        db.delete(PromotionEntry.TABLE_NAME, selection, null);
+    }
+
     public ArrayList<SpecialDay> Get_BarberShopSpecialDays(int barber_shop_id) {
         ArrayList<SpecialDay> barber_shop_special_days = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

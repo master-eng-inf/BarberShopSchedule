@@ -180,6 +180,10 @@ public class BLL {
         return this.dal_instance.Get_BarberShopSpecialDays(barber_shop_id);
     }
 
+    public void Delete_Promotion(Promotion promotion) {
+        this.dal_instance.Delete_Promotion(promotion);
+    }
+
     public void Insert_SpecialDays(ArrayList<SpecialDay> special_days) {
         this.dal_instance.Insert_SpecialDays(special_days);
     }

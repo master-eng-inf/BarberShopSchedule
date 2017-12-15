@@ -93,7 +93,7 @@ public class BarberServiceDetailFragment extends Fragment {
         intent.putExtra("user", "Barber");
         this.startActivity(intent);
 
-}
+    }
 
     @Override
     public void onAttach(Context context) {
