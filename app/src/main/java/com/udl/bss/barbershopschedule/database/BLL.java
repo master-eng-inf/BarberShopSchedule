@@ -142,8 +142,16 @@ public class BLL {
         this.dal_instance.Insert_Services(services);
     }
 
+    public void Insert_Service(BarberService service) {
+        this.dal_instance.Insert_Service(service);
+    }
+
     public void Delete_Services() {
         this.dal_instance.Delete_Services();
+    }
+
+    public void Delete_Service(BarberService service) {
+        this.dal_instance.Delete_Service(service);
     }
 
     public ArrayList<Promotion> Get_PromotionalPromotions() {
@@ -186,12 +194,20 @@ public class BLL {
         this.dal_instance.Insert_Promotions(promotions);
     }
 
+    public void Insert_Promotion(Promotion promotion) {
+        this.dal_instance.Insert_Promotion(promotion);
+    }
+
     public void Delete_Promotions() {
         this.dal_instance.Delete_Promotions();
     }
 
     public ArrayList<SpecialDay> Get_BarberShopSpecialDays(int barber_shop_id) {
         return this.dal_instance.Get_BarberShopSpecialDays(barber_shop_id);
+    }
+
+    public void Delete_Promotion(Promotion promotion) {
+        this.dal_instance.Delete_Promotion(promotion);
     }
 
     public void Insert_SpecialDays(ArrayList<SpecialDay> special_days) {

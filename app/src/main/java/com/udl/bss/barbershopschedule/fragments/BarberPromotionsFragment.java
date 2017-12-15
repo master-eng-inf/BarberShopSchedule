@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
+import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 
@@ -39,26 +40,34 @@ import java.util.List;
 
 public class BarberPromotionsFragment extends Fragment {
 
+    private static final String BARBER_ID = "barber_id";
+    private int barber_id;
+    private BLL instance;
+
     private RecyclerView promotionsRecyclerView;
     private PromotionAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
-    final static String urlBarberPromotions = "https://raw.githubusercontent.com/master-eng-inf/BarberShopFakeData/master/Data/barber_shop_list.json";
-    String jsonStr;
-    private String TAG = HomeActivity.class.getSimpleName();
-
     public BarberPromotionsFragment() {
         // Required empty public constructor
     }
 
-    public static BarberPromotionsFragment newInstance() {
-        return new BarberPromotionsFragment();
+    public static BarberPromotionsFragment newInstance(int barber_id) {
+        BarberPromotionsFragment fragment = new BarberPromotionsFragment();
+        Bundle args = new Bundle();
+        args.putInt(BARBER_ID, barber_id);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.barber_id = getArguments().getInt(BARBER_ID);
+        }
+        this.instance = new BLL(getContext());
     }
 
     @Override
@@ -91,7 +100,7 @@ public class BarberPromotionsFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecyclerView.setLayoutManager(llm);
 
-            new GetBarberPromotions().execute();
+            setPromotions();
 
             /* Swipe down to refresh */
             final SwipeRefreshLayout sr = getView().findViewById(R.id.swiperefresh);
@@ -105,7 +114,7 @@ public class BarberPromotionsFragment extends Fragment {
 
                     }
                     adapter.removeAll();
-                    new GetBarberPromotions().execute();
+                    setPromotions();
                 }
             });
             sr.setColorSchemeResources(android.R.color.holo_blue_dark,
@@ -115,6 +124,15 @@ public class BarberPromotionsFragment extends Fragment {
             /* /Swipe down to refresh */
 
         }
+    }
+
+    private void setPromotions() {
+        List<Promotion> promotionsList;
+
+        promotionsList = this.instance.Get_BarberShopPromotions(this.barber_id);
+
+        PromotionAdapter adapter = new PromotionAdapter(promotionsList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
+        promotionsRecyclerView.setAdapter(adapter);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -143,107 +161,5 @@ public class BarberPromotionsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private class GetBarberPromotions extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPostExecute (Void aVoid){
-            super.onPostExecute(aVoid);
-
-            List<Promotion> promotionList = new ArrayList<>();
-
-            try {
-                JSONObject jsonObj =  new JSONObject(jsonStr);
-
-                JSONArray barber_shops = jsonObj.getJSONArray("barber_shops");
-
-                int id;
-                int barber_id;
-                String name;
-                String description;
-                int is_promotional;
-
-                JSONObject root = barber_shops.getJSONObject(0);
-                barber_id = root.getInt("id");
-
-                JSONArray promotions = root.getJSONArray("promotions");
-
-                for (int i = 0; i < promotions.length(); i++) {
-                    JSONObject promotion = promotions.getJSONObject(i);
-
-                    id = promotion.getInt("id") ;
-                    name = ("Promotion "+i);
-                    description = promotion.getString("description");
-                    is_promotional = promotion.getInt("is_promotional");
-
-                    //TODO service id
-                    Promotion barberPromotion = new Promotion(id, barber_id, 0, name ,description, is_promotional);
-                    promotionList.add(barberPromotion);
-                }
-
-                adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
-                promotionsRecyclerView.setAdapter(adapter);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            HttpURLConnection conn=null;
-            InputStream inputStream;
-            BufferedReader reader=null;
-
-            try {
-
-                URL url = new URL(urlBarberPromotions);
-
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-
-                inputStream = conn.getInputStream();
-
-                StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    return null;
-                }
-
-                jsonStr = buffer.toString();
-
-                //This system show in the log if you recieve the json string
-                //System.out.print(jsonStr);
-
-            } catch (MalformedURLException e) {
-                Log.e(TAG, "MalformedURLException: " + e.getMessage());
-            }catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                if (conn != null) {
-                    conn.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e(TAG, "Error closing stream", e);
-                    }
-                }
-            }
-
-            return null;
-
-        }
     }
 }
