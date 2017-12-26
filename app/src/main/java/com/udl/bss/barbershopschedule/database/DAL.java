@@ -703,9 +703,34 @@ public class DAL extends SQLiteOpenHelper {
         }
     }
 
+    public void Insert_Service(BarberService service) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(ServiceEntry.BARBER_SHOP_ID, service.Get_BarberShopId());
+        values.put(ServiceEntry.NAME, service.Get_Name());
+        values.put(ServiceEntry.PRICE, service.Get_Price());
+        values.put(ServiceEntry.DURATION, service.Get_Duration());
+
+        db.insertOrThrow(ServiceEntry.TABLE_NAME, null, values);
+    }
+
     public void Delete_Services() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ServiceEntry.TABLE_NAME, null, null);
+    }
+
+    public void Delete_Service(BarberService service) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = ServiceEntry._ID + " = " + service.Get_Id(); //+
+                //" and " + ServiceEntry.BARBER_SHOP_ID + " = " + service.Get_BarberShopId() +
+               // " and " + ServiceEntry.NAME + " = " + service.Get_Name() +
+               // " and " + ServiceEntry.PRICE + " = " + service.Get_Price() +
+               // " and " + ServiceEntry.DURATION + " = " + service.Get_Duration();
+
+        db.delete(ServiceEntry.TABLE_NAME, selection, null);
     }
 
     public ArrayList<Appointment> Get_AllBarberShopAppointments(int barber_shop_id) {
@@ -1127,9 +1152,36 @@ public class DAL extends SQLiteOpenHelper {
     }
 ///////////////////////////////////////////////////////////////////////
 
+    public void Insert_Promotion(Promotion promotion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        //values.put(PromotionEntry._ID, promotion.getId());
+        values.put(PromotionEntry.BARBER_SHOP_ID, promotion.getBarber_shop_id());
+        values.put(PromotionEntry.SERVICE_ID, promotion.getService_id());
+        values.put(PromotionEntry.NAME, promotion.getName());
+        values.put(PromotionEntry.DESCRIPTION, promotion.getDescription());
+        values.put(PromotionEntry.IS_PROMOTIONAL, promotion.getIs_Promotional());
+
+        db.insertOrThrow(PromotionEntry.TABLE_NAME, null, values);
+    }
+
     public void Delete_Promotions() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(PromotionEntry.TABLE_NAME, null, null);
+    }
+
+    public void Delete_Promotion(Promotion promotion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = PromotionEntry._ID + " = " + promotion.getId(); //+
+        //" and " + ServiceEntry.BARBER_SHOP_ID + " = " + service.Get_BarberShopId() +
+        // " and " + ServiceEntry.NAME + " = " + service.Get_Name() +
+        // " and " + ServiceEntry.PRICE + " = " + service.Get_Price() +
+        // " and " + ServiceEntry.DURATION + " = " + service.Get_Duration();
+
+        db.delete(PromotionEntry.TABLE_NAME, selection, null);
     }
 
     public ArrayList<SpecialDay> Get_BarberShopSpecialDays(int barber_shop_id) {
