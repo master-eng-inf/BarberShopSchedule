@@ -4,17 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
@@ -23,6 +27,7 @@ import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteManager;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.List;
 
@@ -70,8 +75,8 @@ public class BarberListFragment extends Fragment {
             getActivity().getWindow().setExitTransition(fade);
         }
 
-        final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
-        List<Barber> barberList = usm.getRegisteredBarbers();
+        //final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
+        //List<Barber> barberList = usm.getRegisteredBarbers();
 
         if (getView() != null) {
             mRecyclerView = getView().findViewById(R.id.rv);
@@ -87,8 +92,10 @@ public class BarberListFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
 
-            adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
-            mRecyclerView.setAdapter(adapter);
+            setBarbersToRecycleView();
+
+            //adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
+            //mRecyclerView.setAdapter(adapter);
         }
 
         /* Swipe down to refresh */
@@ -103,9 +110,10 @@ public class BarberListFragment extends Fragment {
 
                 }
                 adapter.removeAll();
-                List<Barber> barberList = usm.getRegisteredBarbers();
-                adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
-                mRecyclerView.setAdapter(adapter);
+                setBarbersToRecycleView();
+                //List<Barber> barberList = usm.getRegisteredBarbers();
+                //adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
+                //mRecyclerView.setAdapter(adapter);
             }
         });
         sr.setColorSchemeResources(android.R.color.holo_blue_dark,
@@ -113,6 +121,26 @@ public class BarberListFragment extends Fragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_red_dark);
             /* /Swipe down to refresh */
+
+    }
+
+    void setBarbersToRecycleView() {
+
+        APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+
+                APIController.getInstance().getAllBarbers(task.getResult())
+                        .addOnCompleteListener(new OnCompleteListener<List<Barber>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<List<Barber>> task) {
+                                adapter = new BarberAdapter(task.getResult(), new BarberClick(getActivity(), mRecyclerView), getContext());
+                                mRecyclerView.setAdapter(adapter);
+                            }
+                });
+            }
+        });
+
 
     }
 
