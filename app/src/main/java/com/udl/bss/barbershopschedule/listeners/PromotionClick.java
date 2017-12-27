@@ -28,6 +28,7 @@ public class PromotionClick implements OnItemClickListener {
 
         View name_cv = view.findViewById(R.id.name_cv);
         View description_cv = view.findViewById(R.id.description_cv);
+        View service_cv = view.findViewById(R.id.service_cv);
 
 
         PromotionAdapter adapter = (PromotionAdapter) recyclerView.getAdapter();
@@ -42,12 +43,14 @@ public class PromotionClick implements OnItemClickListener {
         }
         startFragmentWithSharedElement(fragment,
                 name_cv, activity.getString(R.string.transname_promotionname),
-                description_cv, activity.getString(R.string.transname_promotiondescription));
+                description_cv, activity.getString(R.string.transname_promotiondescription),
+                service_cv, activity.getString(R.string.transname_promotiondescription));
     }
 
     private void startFragmentWithSharedElement(Fragment fragment,
                                                 View sharedElement1, String transitionName1,
-                                                View sharedElement2, String transitionName2) {
+                                                View sharedElement2, String transitionName2,
+                                                View sharedElement3, String transitionName3){
         if (fragment != null){
             activity.getSupportFragmentManager()
                     .beginTransaction()
