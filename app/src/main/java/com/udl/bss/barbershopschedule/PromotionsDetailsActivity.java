@@ -54,7 +54,7 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
         anim.setInterpolator(new OvershootInterpolator());
         fab.startAnimation(anim);
 
-        TextView tv_description = findViewById(R.id.description_detail);
+        TextView tv_description = findViewById(R.id.description_cv);
         TextView tv_service = findViewById(R.id.service_detail);
         CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 

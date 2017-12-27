@@ -10,6 +10,7 @@ import android.view.View;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
 import com.udl.bss.barbershopschedule.fragments.BarberPromotionDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.PromotionDetailFragment;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
@@ -33,8 +34,8 @@ public class PromotionClick implements OnItemClickListener {
 
         PromotionAdapter adapter = (PromotionAdapter) recyclerView.getAdapter();
 
-        BarberPromotionDetailFragment fragment =
-                BarberPromotionDetailFragment.newInstance(adapter.getItem(position));
+        PromotionDetailFragment fragment =
+                PromotionDetailFragment.newInstance(adapter.getItem(position));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             fragment.setSharedElementEnterTransition(new DetailsTransition());

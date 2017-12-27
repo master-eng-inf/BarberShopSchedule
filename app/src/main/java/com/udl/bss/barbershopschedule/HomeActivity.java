@@ -32,6 +32,7 @@ import com.udl.bss.barbershopschedule.fragments.BarberScheduleFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberServicesFragment;
 import com.udl.bss.barbershopschedule.fragments.HomeFragment;
+import com.udl.bss.barbershopschedule.fragments.PromotionDetailFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -43,7 +44,8 @@ public class HomeActivity extends AppCompatActivity
         BarberServicesFragment.OnFragmentInteractionListener,
         BarberPromotionsFragment.OnFragmentInteractionListener,
         BarberServiceDetailFragment.OnFragmentInteractionListener,
-        BarberPromotionDetailFragment.OnFragmentInteractionListener{
+        BarberPromotionDetailFragment.OnFragmentInteractionListener,
+        PromotionDetailFragment.OnFragmentInteractionListener{
 
     private FloatingActionMenu floatingActionMenu;
     private boolean doubleBack = false;
