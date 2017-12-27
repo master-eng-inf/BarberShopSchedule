@@ -33,6 +33,14 @@ public interface APIService {
     @GET("appointments/list/{token}")
     Call<ResponseBody> getAllAppointments(@Path(value = "token", encoded = true) String token);
 
+    @GET("appointments/list/barberShop/{barber_shop_id}/{token}")
+    Call<ResponseBody> getAppointmentByBarber(@Path(value = "token", encoded = true) String token,
+                                              @Path(value = "barber_shop_id", encoded = true) String id);
+
+    @GET("appointments/list/client/{client_id}/{token}")
+    Call<ResponseBody> getAppointmentByClient(@Path(value = "token", encoded = true) String token,
+                                              @Path(value = "client_id", encoded = true) String id);
+
     @GET("appointments/appointment/{appointment_id}/{token}")
     Call<ResponseBody> getAppointmentById(@Path(value = "token", encoded = true) String token,
                                           @Path(value = "appointment_id", encoded = true) String id);
@@ -66,7 +74,7 @@ public interface APIService {
 
     @POST("barberShops/deleteBarberShop/{barber_shop_id}/{token}")
     Call<ResponseBody> removeBarber(@Path(value = "token", encoded = true) String token,
-                                         @Path(value = "barber_shop_id", encoded = true) String id);
+                                    @Path(value = "barber_shop_id", encoded = true) String id);
 
 
 
@@ -97,6 +105,13 @@ public interface APIService {
 
     @GET("promotions/list/{token}")
     Call<ResponseBody> getAllPromotions(@Path(value = "token", encoded = true) String token);
+
+    @GET("promotions/promotional/list/{token}")
+    Call<ResponseBody> getAllPromotionalPromotions(@Path(value = "token", encoded = true) String token);
+
+    @GET("promotions/list/barberShop/{barber_shop_id}/{token}")
+    Call<ResponseBody> getPromotionByBarber(@Path(value = "token", encoded = true) String token,
+                                            @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("promotions/promotion/{promotion_id}/{token}")
     Call<ResponseBody> getPromotionById(@Path(value = "token", encoded = true) String token,
@@ -163,6 +178,10 @@ public interface APIService {
 
     @GET("services/list/{token}")
     Call<ResponseBody> getAllServices(@Path(value = "token", encoded = true) String token);
+
+    @GET("services/list/barberShop/{barber_shop_id}/{token}")
+    Call<ResponseBody> getServiceByBarber(@Path(value = "token", encoded = true) String token,
+                                          @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("services/service/{service_id}/{token}")
     Call<ResponseBody> getServiceById(@Path(value = "token", encoded = true) String token,

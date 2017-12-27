@@ -72,14 +72,17 @@ public class APIController {
                     JSONArray jsonArray = new JSONArray(s);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject json = jsonArray.getJSONObject(i);
-                        Barber barber = new Barber(json.getInt("id"),
-                            json.getString("name"),
-                            "description"/*json.getString("description")*/,
-                            json.getString("city"),
-                            json.getString("address"),
-                            json.getString("telephone"),
-                            json.getString("email"),
-                            null);
+                        Barber barber = new Barber(
+                                json.getInt("id"),
+                                json.getString("name"),
+                                json.getString("email"),
+                                json.getString("places_id"),
+                                json.getString("password"),
+                                json.getString("telephone"),
+                                "male/female",
+                                json.getString("description"),
+                                json.getString("address")+", "+json.getString("city"),
+                                null);
                         barberList.add(barber);
                     }
 
