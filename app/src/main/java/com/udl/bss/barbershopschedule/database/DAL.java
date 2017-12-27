@@ -336,7 +336,7 @@ public class DAL extends SQLiteOpenHelper {
                 String currentEmail = cursor.getString(emailColumnIndex);
                 String currentPhone = cursor.getString(phoneColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                String currentGender = cursor.getString(genderColumnIndex);
+                int currentGender = cursor.getInt(genderColumnIndex);
                 int currentAge = cursor.getInt(ageColumnIndex);
 
                 client_list.add(new Client(currentId, currentName, currentPhone, currentEmail,
@@ -388,7 +388,7 @@ public class DAL extends SQLiteOpenHelper {
             String currentEmail = cursor.getString(emailColumnIndex);
             String currentPhone = cursor.getString(phoneColumnIndex);
             String currentName = cursor.getString(nameColumnIndex);
-            String currentGender = cursor.getString(genderColumnIndex);
+            int currentGender = cursor.getInt(genderColumnIndex);
             int currentAge = cursor.getInt(ageColumnIndex);
 
             client = new Client(currentId, currentName, currentPhone, currentEmail,

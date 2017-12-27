@@ -343,7 +343,7 @@ public class BLL {
 
                     db_client_list.add(new Client(client.getInt("id"),
                             client.getString("name"), client.getString("phone"),
-                            client.getString("email"), client.getString("gender"),
+                            client.getString("email"), client.getInt("gender"),
                             client.getInt("age")));
 
                 }

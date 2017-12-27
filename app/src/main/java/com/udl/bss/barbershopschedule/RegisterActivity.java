@@ -243,13 +243,15 @@ public class RegisterActivity extends AppCompatActivity
                             @Override
                             public void onComplete(@NonNull Task<Integer> task) {
 
+
+
                                 Client client = new Client(
                                         task.getResult(),
                                         et_name.getText().toString(),
                                         et_mail.getText().toString(),
                                         et_pass.getText().toString(),
                                         et_phone.getText().toString(),
-                                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                                        spinner_gender.getSelectedItemPosition(),
                                         Integer.valueOf(et_age.getText().toString()),
                                         imagePath
                                 );

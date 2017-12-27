@@ -11,13 +11,13 @@ public class Client {
     private String name;
     private String phone;
     private String email;
-    private String gender;
+    private int gender;
     private int age;
     private String password;
     private Bitmap image;
     private String imagePath;
 
-    public Client(int id, String name, String phone, String email, String gender, int age)
+    public Client(int id, String name, String phone, String email, int gender, int age)
     {
         this.id = id;
         this.name = name;
@@ -27,7 +27,7 @@ public class Client {
         this.age = age;
     }
 
-    public Client(int id, String name, String email, String password, String phone, String gender,
+    public Client(int id, String name, String email, String password, String phone, int gender,
                   int age, String imagePath)
     {
         this.id = id;
@@ -52,7 +52,7 @@ public class Client {
         return email;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
@@ -72,7 +72,7 @@ public class Client {
         this.email = email;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

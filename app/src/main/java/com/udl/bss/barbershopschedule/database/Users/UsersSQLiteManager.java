@@ -76,7 +76,7 @@ public class UsersSQLiteManager {
                         c.getString(3),
                         c.getString(2),
                         c.getString(4),
-                        c.getString(5),
+                        c.getInt(5),
                         c.getInt(6),
                         c.getString(7));
                 clientList.add(cl);

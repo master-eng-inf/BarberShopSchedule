@@ -185,7 +185,7 @@ public class APIController {
         requestBody.put("email", client.getEmail());
         requestBody.put("telephone", client.getPhone());
         requestBody.put("name", client.getName());
-        //requestBody.put("gender", String.valueOf(client.getGender()));
+        requestBody.put("gender", String.valueOf(client.getGender()));
         requestBody.put("age", String.valueOf(client.getAge()));
 
 
