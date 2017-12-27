@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.udl.bss.barbershopschedule.PriceDetailActivity"
-    tools:showIn="@layout/activity_price_detail">
+    tools:showIn="@layout/service_details">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/service_detail"
+            android:id="@+id/name_cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -24,7 +23,17 @@
             android:transitionName="@string/transname_servicename" />
 
         <TextView
-            android:id="@+id/duration_detail"
+            android:id="@+id/price_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:transitionName="@string/transname_serviceprice" />
+
+        <TextView
+            android:id="@+id/duration_cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -33,15 +42,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:transitionName="@string/transname_serviceduration" />
 
-        <TextView
-            android:id="@+id/price_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:transitionName="@string/transname_serviceprice" />
 
     </LinearLayout>
 
