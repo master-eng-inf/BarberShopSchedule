@@ -45,6 +45,7 @@ public class UsersSQLiteManager {
                         c.getString(7),
                         c.getString(8),
                         c.getString(9),
+                        null,
                         c.getString(4));
                 barberList.add(b);
             } while (c.moveToNext());

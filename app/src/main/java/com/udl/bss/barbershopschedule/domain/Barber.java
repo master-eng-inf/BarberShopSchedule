@@ -34,7 +34,7 @@ public class Barber implements Parcelable {
     }
 
     public Barber(int id, String name, String email, String placesID, String password, String phone,
-                  String gender, String description, String address, String imagePath) {
+                  String gender, String description, String address, String city, String imagePath) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -44,6 +44,7 @@ public class Barber implements Parcelable {
         this.gender = gender;
         this.description = description;
         this.address = address;
+        this.city = city;
         this.imagePath = imagePath;
     }
 
@@ -161,6 +162,14 @@ public class Barber implements Parcelable {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

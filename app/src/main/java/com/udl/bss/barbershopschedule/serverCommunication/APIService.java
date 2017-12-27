@@ -1,18 +1,13 @@
 package com.udl.bss.barbershopschedule.serverCommunication;
 
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.AppointmentUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.BarberUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.ClientUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.PromotionUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.ReviewUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.ScheduleUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.ServiceUpload;
-import com.udl.bss.barbershopschedule.serverCommunication.BodyData.SpecialDayUpload;
+
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -48,7 +43,7 @@ public interface APIService {
 
     @POST("appointments/insertAppointment/{token}")
     Call<ResponseBody> createAppointment(@Path(value = "token", encoded = true) String token,
-                                         @Body AppointmentUpload appointment);
+                                         @Body Map<String, String> appointment);
 
     @POST("appointments/deleteAppointment/{appointment_id}/{token}")
     Call<ResponseBody> removeAppointment(@Path(value = "token", encoded = true) String token,
@@ -65,12 +60,14 @@ public interface APIService {
                                      @Path(value = "barber_shop_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("barberShops/insertBarberShop")
-    Call<ResponseBody> createBarber(@Body BarberUpload barber);
+    Call<ResponseBody> createBarber(@Body Map<String, String> barber);
 
+    @Headers("Content-Type: application/json")
     @POST("barberShops/updateBarberShop/{token}")
     Call<ResponseBody> updateBarber(@Path(value = "token", encoded = true) String token,
-                                    @Body BarberUpload barber);
+                                    @Body Map<String, String> barber);
 
     @POST("barberShops/deleteBarberShop/{barber_shop_id}/{token}")
     Call<ResponseBody> removeBarber(@Path(value = "token", encoded = true) String token,
@@ -89,12 +86,14 @@ public interface APIService {
                                      @Path(value = "client_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("clients/insertClient")
-    Call<ResponseBody> createClient(@Body ClientUpload client);
+    Call<ResponseBody> createClient(@Body Map<String, String> client);
 
+    @Headers("Content-Type: application/json")
     @POST("clients/updateClient/{token}")
     Call<ResponseBody> updateClient(@Path(value = "token", encoded = true) String token,
-                                    @Body ClientUpload client);
+                                    @Body Map<String, String> client);
 
     @POST("clients/deleteClient/{client_id}/{token}")
     Call<ResponseBody> removeClient(@Path(value = "token", encoded = true) String token,
@@ -118,13 +117,15 @@ public interface APIService {
                                         @Path(value = "promotion_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("promotions/insertPromotion/{token}")
     Call<ResponseBody> createPromotion(@Path(value = "token", encoded = true) String token,
-                                       @Body PromotionUpload promotion);
+                                       @Body Map<String, String> promotion);
 
+    @Headers("Content-Type: application/json")
     @POST("promotions/updatePromotion/{token}")
     Call<ResponseBody> updatePromotion(@Path(value = "token", encoded = true) String token,
-                                       @Body PromotionUpload promotion);
+                                       @Body Map<String, String> promotion);
 
     @POST("promotions/deletePromotion/{promotion_id}/{token}")
     Call<ResponseBody> removePromotion(@Path(value = "token", encoded = true) String token,
@@ -139,13 +140,15 @@ public interface APIService {
                                             @Path(value = "barber_shop_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("reviews/insertReview/{token}")
     Call<ResponseBody> createReview(@Path(value = "token", encoded = true) String token,
-                                    @Body ReviewUpload review);
+                                    @Body Map<String, String> review);
 
+    @Headers("Content-Type: application/json")
     @POST("reviews/updateReview/{token}")
     Call<ResponseBody> updateReview(@Path(value = "token", encoded = true) String token,
-                                    @Body ReviewUpload review);
+                                    @Body Map<String, String> review);
 
     @POST("reviews/deleteReview/client_id/{client_id}/barber_shop_id/{barber_shop_id}/{token}")
     Call<ResponseBody> removeReview(@Path(value = "token", encoded = true) String token,
@@ -162,13 +165,15 @@ public interface APIService {
                                              @Path(value = "barber_shop_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("schedules/insertSchedule/{token}")
     Call<ResponseBody> createSchedule(@Path(value = "token", encoded = true) String token,
-                                      @Body ScheduleUpload schedule);
+                                      @Body Map<String, String> schedule);
 
+    @Headers("Content-Type: application/json")
     @POST("schedules/updateSchedule/{token}")
     Call<ResponseBody> updateSchedule(@Path(value = "token", encoded = true) String token,
-                                      @Body ScheduleUpload schedule);
+                                      @Body Map<String, String> schedule);
 
 
 
@@ -188,13 +193,15 @@ public interface APIService {
                                       @Path(value = "service_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("services/insertService/{token}")
     Call<ResponseBody> createService(@Path(value = "token", encoded = true) String token,
-                                     @Body ServiceUpload service);
+                                     @Body Map<String, String> service);
 
+    @Headers("Content-Type: application/json")
     @POST("services/updateService/{token}")
     Call<ResponseBody> updateService(@Path(value = "token", encoded = true) String token,
-                                     @Body ServiceUpload service);
+                                     @Body Map<String, String> service);
 
     @POST("services/deleteService/{service_id}/{token}")
     Call<ResponseBody> removeService(@Path(value = "token", encoded = true) String token,
@@ -209,13 +216,15 @@ public interface APIService {
                                                @Path(value = "barber_shop_id", encoded = true) String id);
 
 
+    @Headers("Content-Type: application/json")
     @POST("specialDays/insertSpecialDay/{token}")
     Call<ResponseBody> createSpecialDay(@Path(value = "token", encoded = true) String token,
-                                        @Body SpecialDayUpload specialDay);
+                                        @Body Map<String, String> specialDay);
 
+    @Headers("Content-Type: application/json")
     @POST("specialDays/updateSpecialDay/{token}")
     Call<ResponseBody> updateSpecialDay(@Path(value = "token", encoded = true) String token,
-                                        @Body SpecialDayUpload specialDay);
+                                        @Body Map<String, String> specialDay);
 
     @POST("specialDays/deleteSpecialDay/{barber_shop_id}/date/{date}/{token}")
     Call<ResponseBody> removeSpecialDay(@Path(value = "token", encoded = true) String token,

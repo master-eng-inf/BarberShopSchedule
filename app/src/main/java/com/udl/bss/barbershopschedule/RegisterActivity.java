@@ -35,9 +35,14 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.database.Users.BarbersSQLiteHelper;
 import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteHelper;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.listeners.GoogleMaps;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 import com.udl.bss.barbershopschedule.utils.BitmapUtils;
 
 public class RegisterActivity extends AppCompatActivity
@@ -135,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveToDatabase();
+                saveToServer();
             }
         });
 
@@ -192,7 +197,81 @@ public class RegisterActivity extends AppCompatActivity
 
     }
 
-    private void saveToDatabase () {
+    private void saveToServer() {
+
+        if (registerOk()) {
+            if (isBarber) {
+
+                APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+
+                        APIController.getInstance().getBarbersCount(task.getResult()).addOnCompleteListener(new OnCompleteListener<Integer>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Integer> task) {
+
+                                String[] strArray= address.replaceAll("\\'", " ").split(",");
+
+                                Barber barber = new Barber(
+                                        task.getResult(),
+                                        et_name.getText().toString(),
+                                        et_mail.getText().toString(),
+                                        placesID,
+                                        et_pass.getText().toString(),
+                                        et_phone.getText().toString(),
+                                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                                        et_desc.getText().toString(),
+                                        strArray[0]+", "+strArray[1],
+                                        strArray[2].replaceFirst("\\s",""),
+                                        imagePath
+                                );
+
+                                APIController.getInstance().createBarber(barber);
+                            }
+                        });
+                    }
+                });
+
+
+            } else {
+
+                APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+
+                        APIController.getInstance().getClientsCount(task.getResult()).addOnCompleteListener(new OnCompleteListener<Integer>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Integer> task) {
+
+                                Client client = new Client(
+                                        task.getResult(),
+                                        et_name.getText().toString(),
+                                        et_mail.getText().toString(),
+                                        et_pass.getText().toString(),
+                                        et_phone.getText().toString(),
+                                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                                        Integer.valueOf(et_age.getText().toString()),
+                                        imagePath
+                                );
+
+                                APIController.getInstance().createClient(client);
+                            }
+                        });
+                    }
+                });
+
+            }
+
+            finish();
+
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    /*private void saveToDatabase () {
 
         if (registerOk()) {
 
@@ -256,7 +335,7 @@ public class RegisterActivity extends AppCompatActivity
 
         //startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         finish();
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
