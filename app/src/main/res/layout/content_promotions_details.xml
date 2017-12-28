@@ -12,11 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-
-
-
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +39,8 @@
             android:paddingLeft="30sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +67,8 @@
             android:padding="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,6 +94,8 @@
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+
 
         <TextView
             android:layout_width="match_parent"

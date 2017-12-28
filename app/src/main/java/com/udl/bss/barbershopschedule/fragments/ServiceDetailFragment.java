@@ -25,7 +25,7 @@ public class ServiceDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private BarberService servic;
     FloatingActionButton btn_edit;
-    TextView name,price,duration;
+    TextView name,price,duration,barber,id;
 
     public ServiceDetailFragment() {
         // Required empty public constructor
@@ -55,6 +55,9 @@ public class ServiceDetailFragment extends Fragment {
         name = view.findViewById(R.id.name_cv);
         price = view.findViewById(R.id.price_cv);
         duration = view.findViewById(R.id.duration_cv);
+
+        barber = view.findViewById(R.id.barber_cv);
+        id = view.findViewById(R.id.id_cv);
 
         btn_edit = view.findViewById(R.id.edit_btn);
         btn_edit.setOnClickListener(new View.OnClickListener(){
@@ -97,6 +100,9 @@ public class ServiceDetailFragment extends Fragment {
         TextView name_cv = view.findViewById(R.id.name_cv);
         TextView price_cv = view.findViewById(R.id.price_cv);
         TextView duration_cv = view.findViewById(R.id.duration_cv);
+
+        TextView barber_cv = view.findViewById(R.id.barber_cv);
+        TextView id_cv = view.findViewById(R.id.id_cv);
         if (service != null) {
             name_cv.setText(service.Get_Name());
 
@@ -104,6 +110,13 @@ public class ServiceDetailFragment extends Fragment {
             price_cv.setText(price);
 
             String duration = Double.toString(service.Get_Duration());
+            duration_cv.setText(duration);
+
+            String barber = Double.toString(service.Get_BarberShopId());
+            barber_cv.setText(barber);
+
+            String id = Double.toString(service.Get_Id());
+            id_cv.setText(id);
 
             servic = new BarberService(service.Get_Id(),service.Get_BarberShopId(),service.Get_Name(),service.Get_Price(),service.Get_Duration());
         }
