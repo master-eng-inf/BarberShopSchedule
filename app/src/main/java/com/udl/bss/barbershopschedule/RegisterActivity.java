@@ -202,65 +202,37 @@ public class RegisterActivity extends AppCompatActivity
         if (registerOk()) {
             if (isBarber) {
 
-                APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
+                String[] strArray = address.replaceAll("\\'", " ").split(",");
 
-                        APIController.getInstance().getBarbersCount(task.getResult()).addOnCompleteListener(new OnCompleteListener<Integer>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Integer> task) {
+                Barber barber = new Barber(
+                        et_name.getText().toString(),
+                        et_mail.getText().toString(),
+                        placesID,
+                        et_pass.getText().toString(),
+                        et_phone.getText().toString(),
+                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                        et_desc.getText().toString(),
+                        strArray[0]+","+strArray[1],
+                        strArray[2].replaceFirst("\\s",""),
+                        imagePath
+                );
 
-                                String[] strArray= address.replaceAll("\\'", " ").split(",");
-
-                                Barber barber = new Barber(
-                                        task.getResult(),
-                                        et_name.getText().toString(),
-                                        et_mail.getText().toString(),
-                                        placesID,
-                                        et_pass.getText().toString(),
-                                        et_phone.getText().toString(),
-                                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
-                                        et_desc.getText().toString(),
-                                        strArray[0]+", "+strArray[1],
-                                        strArray[2].replaceFirst("\\s",""),
-                                        imagePath
-                                );
-
-                                APIController.getInstance().createBarber(barber);
-                            }
-                        });
-                    }
-                });
+                APIController.getInstance().createBarber(barber);
 
 
             } else {
 
-                APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
+                Client client = new Client(
+                        et_name.getText().toString(),
+                        et_mail.getText().toString(),
+                        et_pass.getText().toString(),
+                        et_phone.getText().toString(),
+                        spinner_gender.getSelectedItemPosition(),
+                        Integer.valueOf(et_age.getText().toString()),
+                        imagePath
+                );
 
-                        APIController.getInstance().getClientsCount(task.getResult()).addOnCompleteListener(new OnCompleteListener<Integer>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Integer> task) {
-
-
-
-                                Client client = new Client(
-                                        task.getResult(),
-                                        et_name.getText().toString(),
-                                        et_mail.getText().toString(),
-                                        et_pass.getText().toString(),
-                                        et_phone.getText().toString(),
-                                        spinner_gender.getSelectedItemPosition(),
-                                        Integer.valueOf(et_age.getText().toString()),
-                                        imagePath
-                                );
-
-                                APIController.getInstance().createClient(client);
-                            }
-                        });
-                    }
-                });
+                APIController.getInstance().createClient(client);
 
             }
 

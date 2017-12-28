@@ -40,6 +40,17 @@ public class Client {
         this.imagePath = imagePath;
     }
 
+    public Client(String name, String email, String password, String phone, int gender,
+                  int age, String imagePath) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.gender = gender;
+        this.age = age;
+        this.imagePath = imagePath;
+    }
+
     public int getAge() {
         return age;
     }

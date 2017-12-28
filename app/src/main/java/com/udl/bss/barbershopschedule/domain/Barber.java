@@ -49,6 +49,21 @@ public class Barber implements Parcelable {
     }
 
 
+    public Barber(String name, String email, String placesID, String password, String phone,
+                  String gender, String description, String address, String city, String imagePath) {
+        this.name = name;
+        this.email = email;
+        this.placesID = placesID;
+        this.password = password;
+        this.phone = phone;
+        this.gender = gender;
+        this.description = description;
+        this.address = address;
+        this.city = city;
+        this.imagePath = imagePath;
+    }
+
+
     private Barber(Parcel in) {
         this.id = in.readInt();
         this.name = in.readString();

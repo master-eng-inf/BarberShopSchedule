@@ -88,7 +88,7 @@ public class APIController {
                                 json.getString("places_id"),
                                 json.getString("password"),
                                 json.getString("telephone"),
-                                "male/female",
+                                json.getString("gender"),
                                 json.getString("description"),
                                 json.getString("address"),
                                 json.getString("city"),
@@ -118,7 +118,6 @@ public class APIController {
         final TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
 
         Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("id", String.valueOf(barber.getId()));
         requestBody.put("password", barber.getPassword());
         requestBody.put("email", barber.getEmail());
         requestBody.put("telephone", barber.getPhone());
@@ -144,34 +143,6 @@ public class APIController {
     }
 
 
-    public Task<Integer> getBarbersCount(String token){
-        final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
-
-        ApiUtils.getService().getAllBarbers(token).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String s = response.body().string();
-                    JSONArray jsonArray = new JSONArray(s);
-
-                    Log.i("APISERVER", String.valueOf(jsonArray.length()));
-                    tcs.setResult(jsonArray.length());
-
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.i("APISERVER", "Get barbers count ERROR");
-            }
-        });
-
-        return tcs.getTask();
-    }
-
-
 
 
     /* Client controller */
@@ -180,7 +151,6 @@ public class APIController {
         final TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
 
         Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("id", String.valueOf(client.getId()));
         requestBody.put("password", client.getPassword());
         requestBody.put("email", client.getEmail());
         requestBody.put("telephone", client.getPhone());
@@ -203,37 +173,6 @@ public class APIController {
 
         return tcs.getTask();
     }
-
-
-    public Task<Integer> getClientsCount(String token){
-        final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
-
-        ApiUtils.getService().getAllClients(token).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String s = response.body().string();
-                    JSONArray jsonArray = new JSONArray(s);
-
-                    Log.i("APISERVER", String.valueOf(jsonArray.length()));
-                    tcs.setResult(jsonArray.length());
-
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.i("APISERVER", "Get clients count ERROR");
-            }
-        });
-
-        return tcs.getTask();
-    }
-
-
-
 
 
 }
