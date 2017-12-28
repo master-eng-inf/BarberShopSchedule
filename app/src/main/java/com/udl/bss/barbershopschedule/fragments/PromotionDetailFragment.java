@@ -30,7 +30,7 @@ public class PromotionDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Promotion promo;
     FloatingActionButton btn_edit;
-    TextView name,description,service;
+    TextView name,description,service,is_promotional,barber,id;
 
     public PromotionDetailFragment() {
         // Required empty public constructor
@@ -59,6 +59,10 @@ public class PromotionDetailFragment extends Fragment {
         name = view.findViewById(R.id.name_cv);
         description = view.findViewById(R.id.description_cv);
         service = view.findViewById(R.id.service_cv);
+        is_promotional = view.findViewById(R.id.is_promotional_cv);
+
+        barber = view.findViewById(R.id.barber_cv);
+        id = view.findViewById(R.id.id_cv);
 
         btn_edit = view.findViewById(R.id.edit_btn);
         btn_edit.setOnClickListener(new View.OnClickListener(){
@@ -105,11 +109,25 @@ public class PromotionDetailFragment extends Fragment {
         TextView name_cv = view.findViewById(R.id.name_cv);
         TextView description_cv = view.findViewById(R.id.description_cv);
         TextView service_cv = view.findViewById(R.id.service_cv);
+        TextView is_promotional_cv = view.findViewById(R.id.is_promotional_cv);
+
+        TextView barber_cv = view.findViewById(R.id.barber_cv);
+        TextView id_cv = view.findViewById(R.id.id_cv);
         if (promotion != null) {
             name_cv.setText(promotion.getName());
             description_cv.setText(promotion.getDescription());
+
             String service_id = Double.toString(promotion.getService_id());
             service_cv.setText(service_id);
+
+            String is_promotional = Double.toString(promotion.getIs_Promotional());
+            is_promotional_cv.setText(is_promotional);
+
+            String barber = Double.toString(promotion.getBarber_shop_id());
+            barber_cv.setText(barber);
+
+            String id = Double.toString(promotion.getId());
+            id_cv.setText(id);
 
             promo = new Promotion(promotion.getId(),promotion.getBarber_shop_id(),promotion.getService_id(),promotion.getName(),promotion.getDescription(),promotion.getIs_Promotional());
         }
