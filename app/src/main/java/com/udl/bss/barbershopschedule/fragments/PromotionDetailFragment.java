@@ -120,8 +120,11 @@ public class PromotionDetailFragment extends Fragment {
             String service_id = Double.toString(promotion.getService_id());
             service_cv.setText(service_id);
 
-            String is_promotional = Double.toString(promotion.getIs_Promotional());
-            is_promotional_cv.setText(is_promotional);
+            if(promotion.getIs_Promotional()==0) {
+                is_promotional_cv.setText("No");
+            } else{
+                is_promotional_cv.setText("Yes");
+            }
 
             String barber = Double.toString(promotion.getBarber_shop_id());
             barber_cv.setText(barber);
