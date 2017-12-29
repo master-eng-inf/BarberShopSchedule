@@ -131,7 +131,7 @@ public class BarberPromotionsFragment extends Fragment {
 
         promotionsList = this.instance.Get_BarberShopPromotions(this.barber_id);
 
-        PromotionAdapter adapter = new PromotionAdapter(promotionsList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
+        PromotionAdapter adapter = new PromotionAdapter(promotionsList, new PromotionClick(getActivity(), promotionsRecyclerView), getContext(), ""/*TODO*/);
         promotionsRecyclerView.setAdapter(adapter);
     }
 

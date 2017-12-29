@@ -118,36 +118,40 @@ public class HomeFragment extends Fragment {
 
     private void setAppointmentItems() {
 
-
-        APIController.getInstance().getAppointmentsByClient(client.getToken(), String.valueOf(client.getId())).
-                addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+        APIController.getInstance().getAppointmentsByClient(client.getToken(), String.valueOf(client.getId()))
+                .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
             @Override
             public void onComplete(@NonNull Task<List<Appointment>> task) {
                 List<Appointment> appointmentList = task.getResult();
-                //Collections.sort(appointmentList);
-                AppointmentAdapter adapter =
-                        new AppointmentAdapter(
-                                appointmentList,
-                                new AppointmentClick(getActivity(),
-                                appointmentsRecyclerView), getContext(),
-                                client.getToken());
+                Collections.sort(appointmentList);
+                AppointmentAdapter adapter = new AppointmentAdapter(
+                        appointmentList,
+                        new AppointmentClick(getActivity(), appointmentsRecyclerView),
+                        getContext(),
+                        client.getToken());
                 appointmentsRecyclerView.setAdapter(adapter);
             }
         });
 
-        //appointmentList = this.instance.Get_ClientAppointments(client.getId());
-
-
-
-
     }
 
     private void setPromotionsItems() {
-        //List<Promotion> promotionList;
 
-        //promotionList = this.instance.Get_PromotionalPromotions();
-        //PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
-        //promotionsRecycleView.setAdapter(adapter);
+        APIController.getInstance().getPromotionalPromotions(client.getToken())
+                .addOnCompleteListener(new OnCompleteListener<List<Promotion>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Promotion>> task) {
+                List<Promotion> promotionList = task.getResult();
+
+                PromotionAdapter adapter = new PromotionAdapter(
+                        promotionList,
+                        new PromotionClick(getActivity(), promotionsRecycleView),
+                        getContext(),
+                        client.getToken());
+                promotionsRecycleView.setAdapter(adapter);
+            }
+        });
+
     }
 
     public void onButtonPressed(Uri uri) {

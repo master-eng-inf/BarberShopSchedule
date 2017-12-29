@@ -1,6 +1,7 @@
 package com.udl.bss.barbershopschedule.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +29,7 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
     private List<Promotion> mDataset;
     private OnItemClickListener listener;
     private Context context;
+    private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -40,10 +45,11 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         }
     }
 
-    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener, Context context) {
+    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener, Context context, String token) {
         mDataset = myDataset;
         this.listener = listener;
         this.context = context;
+        this.token = token;
     }
 
     @Override
@@ -56,13 +62,25 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        BLL instance = new BLL(this.context);
 
-        BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
-        Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
+        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getService_id()))
+                .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+                    @Override
+                    public void onComplete(@NonNull Task<BarberService> task) {
+                        BarberService barberService = task.getResult();
+                        holder.service.setText(barberService.getName());
+                    }
+                });
 
-        holder.service.setText(service.getName());
-        holder.name.setText(barber.getName());
+        APIController.getInstance().getBarberById(token ,String.valueOf(mDataset.get(position).getBarber_shop_id()))
+                .addOnCompleteListener(new OnCompleteListener<Barber>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Barber> task) {
+                        Barber barber = task.getResult();
+                        holder.name.setText(barber.getName());
+                    }
+                });
+
         holder.description.setText(mDataset.get(position).getDescription());
 
         ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");

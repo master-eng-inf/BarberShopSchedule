@@ -90,7 +90,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
         ArrayList<Promotion> promotions = instance.Get_BarberShopPromotions(barber.getId());
 
-        PromotionAdapter adapter = new PromotionAdapter(promotions, new PromotionClick(getActivity(), promotionsRecyclerView), getContext());
+        PromotionAdapter adapter = new PromotionAdapter(promotions, new PromotionClick(getActivity(), promotionsRecyclerView), getContext(), ""/*TODO*/);
         promotionsRecyclerView.setAdapter(adapter);
     }
 }

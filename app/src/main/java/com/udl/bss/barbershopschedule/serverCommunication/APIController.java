@@ -9,6 +9,7 @@ import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.domain.Promotion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -340,6 +341,54 @@ public class APIController {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Get service by id ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
+    /* Promotion Controller */
+
+    public Task<List<Promotion>> getPromotionalPromotions(String token){
+        final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getAllPromotionalPromotions(token).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        List<Promotion> promotionList = new ArrayList<>();
+
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+
+                            int promotional = Boolean.valueOf(json.getString("is_promotional")) ? 1 : 0;
+
+                            Promotion promotion = new Promotion(
+                                    json.getInt("id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getInt("service_id"),
+                                    json.getString("name"),
+                                    json.getString("description"),
+                                    promotional);
+                            promotionList.add(promotion);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(promotionList);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get all barbers ERROR");
             }
         });
 
