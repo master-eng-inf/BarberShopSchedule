@@ -200,43 +200,56 @@ public class RegisterActivity extends AppCompatActivity
     private void saveToServer() {
 
         if (registerOk()) {
-            if (isBarber) {
 
-                String[] strArray = address.replaceAll("\\'", " ").split(",");
+            APIController.getInstance().isUserAvailable(et_name.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                @Override
+                public void onComplete(@NonNull Task<Boolean> task) {
+                    if (task.getResult()) {
 
-                Barber barber = new Barber(
-                        et_name.getText().toString(),
-                        et_mail.getText().toString(),
-                        placesID,
-                        et_pass.getText().toString(),
-                        et_phone.getText().toString(),
-                        ((TextView)spinner_gender.getSelectedView()).getText().toString(),
-                        et_desc.getText().toString(),
-                        strArray[0]+","+strArray[1],
-                        strArray[2].replaceFirst("\\s",""),
-                        imagePath
-                );
+                        if (isBarber) {
 
-                APIController.getInstance().createBarber(barber);
+                            String[] strArray = address.replaceAll("\\'", " ").split(",");
+
+                            Barber barber = new Barber(
+                                    et_name.getText().toString(),
+                                    et_mail.getText().toString(),
+                                    placesID,
+                                    et_pass.getText().toString(),
+                                    et_phone.getText().toString(),
+                                    ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                                    et_desc.getText().toString(),
+                                    strArray[0]+","+strArray[1],
+                                    strArray[2].replaceFirst("\\s",""),
+                                    imagePath
+                            );
+
+                            APIController.getInstance().createBarber(barber);
 
 
-            } else {
+                        } else {
 
-                Client client = new Client(
-                        et_name.getText().toString(),
-                        et_mail.getText().toString(),
-                        et_pass.getText().toString(),
-                        et_phone.getText().toString(),
-                        spinner_gender.getSelectedItemPosition(),
-                        Integer.valueOf(et_age.getText().toString()),
-                        imagePath
-                );
+                            Client client = new Client(
+                                    et_name.getText().toString(),
+                                    et_mail.getText().toString(),
+                                    et_pass.getText().toString(),
+                                    et_phone.getText().toString(),
+                                    spinner_gender.getSelectedItemPosition(),
+                                    Integer.valueOf(et_age.getText().toString()),
+                                    imagePath
+                            );
 
-                APIController.getInstance().createClient(client);
+                            APIController.getInstance().createClient(client);
 
-            }
+                        }
 
-            finish();
+                        finish();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Username is not avaliable", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();

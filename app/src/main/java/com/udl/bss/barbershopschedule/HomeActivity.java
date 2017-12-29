@@ -1,6 +1,7 @@
 package com.udl.bss.barbershopschedule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +23,10 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberHomeFragment;
 import com.udl.bss.barbershopschedule.fragments.BarberListFragment;
@@ -47,6 +51,10 @@ public class HomeActivity extends AppCompatActivity
 
     private FloatingActionMenu floatingActionMenu;
     private boolean doubleBack = false;
+
+    private Client client;
+    private Barber barber;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +81,27 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String user = getIntent().getStringExtra("user");
+        //String user = getIntent().getStringExtra("user");
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
 
-        if (user.equals("Barber")) {
+        mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        String mode = mPrefs.getString("mode", "");
+
+        if (mode.equals("Barber")) {
+
+            barber = gson.fromJson(json, Barber.class);
+
 
             stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
 
             //TODO
-            BLL instance = new BLL(this);
-
-            instance.Initialize_Database();
-
-            Barber barber = instance.Get_BarberShop(0);
+            //BLL instance = new BLL(this);
+            //instance.Initialize_Database();
+            //Barber barber = instance.Get_BarberShop(0);
 
             fragment = BarberHomeFragment.newInstance(barber);
             stub.inflate();
@@ -115,12 +129,15 @@ public class HomeActivity extends AppCompatActivity
 
             startFragment(fragment);
 
-        } else if (user.equals("User")) {
+        } else if (mode.equals("User")) {
+
+            client = gson.fromJson(json, Client.class);
+
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
 
             //TODO
-            fragment = HomeFragment.newInstance(0);
+            fragment = HomeFragment.newInstance(client);
             stub.inflate();
             floatingActionMenu = findViewById(R.id.fab_menu);
             floatingActionMenu.setVisibility(View.GONE);
@@ -189,12 +206,12 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.home) {
             //TODO
-            HomeFragment hf = HomeFragment.newInstance(0);
+            HomeFragment hf = HomeFragment.newInstance(client);
             startFragmentBackStack(hf);
         } else if (id == R.id.barber_home) {
             //TODO
-            BLL instance = new BLL(this);
-            Barber barber = instance.Get_BarberShop(0);
+            //BLL instance = new BLL(this);
+            //Barber barber = instance.Get_BarberShop(0);
             BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
             startFragmentBackStack(bhf);
         } else if (id == R.id.show_barbers) {
@@ -217,6 +234,9 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.log_out) {
             Intent intent = new Intent(this, LoginActivity.class);
+
+            mPrefs.edit().remove("user").remove("mode").apply();
+
             startActivity(intent);
             finish();
         } else if (id == R.id.exit) {

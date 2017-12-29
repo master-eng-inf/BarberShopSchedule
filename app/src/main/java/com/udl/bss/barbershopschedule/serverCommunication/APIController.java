@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.serverCommunication;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -40,30 +41,71 @@ public class APIController {
     }
 
 
+
+
     /* Session Controller */
 
-    public Task<String> getSessionToken(String id){
+    public Task<String> logInUser(String username, String password){
         final TaskCompletionSource<String> tcs = new TaskCompletionSource<>();
 
-        ApiUtils.getService().getSessionToken(id).enqueue(new Callback<ResponseBody>() {
+        ApiUtils.getService().logInUser(username, password).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
-                    String s = response.body().string();
-                    Log.i("APISERVER", s);
-                    tcs.setResult(s);
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        Log.i("APISERVER", s);
+                        tcs.setResult(s);
+                    } else {
+                        tcs.setResult(null);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.i("APISERVER", "Get session token ERROR");
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Log in user ERROR");
             }
         });
         return tcs.getTask();
     }
+
+
+
+
+
+    /* User Controller */
+
+    public Task<Boolean> isUserAvailable(String username){
+        final TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().isUserAvailable(username).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        Log.i("APISERVER", s);
+                        tcs.setResult(Boolean.valueOf(s));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Is user available ERROR");
+            }
+        });
+        return tcs.getTask();
+    }
+
+
 
 
     /* Barber Shop Controller */
@@ -73,31 +115,34 @@ public class APIController {
 
         ApiUtils.getService().getAllBarbers(token).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
-                    String s = response.body().string();
-                    List<Barber> barberList = new ArrayList<>();
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        List<Barber> barberList = new ArrayList<>();
 
-                    JSONArray jsonArray = new JSONArray(s);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject json = jsonArray.getJSONObject(i);
-                        Barber barber = new Barber(
-                                json.getInt("id"),
-                                json.getString("name"),
-                                json.getString("email"),
-                                json.getString("places_id"),
-                                json.getString("password"),
-                                json.getString("telephone"),
-                                json.getString("gender"),
-                                json.getString("description"),
-                                json.getString("address"),
-                                json.getString("city"),
-                                null);
-                        barberList.add(barber);
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+                            Barber barber = new Barber(
+                                    json.getInt("id"),
+                                    json.getString("name"),
+                                    json.getString("email"),
+                                    json.getString("places_id"),
+                                    json.getString("password"),
+                                    json.getString("telephone"),
+                                    json.getString("gender"),
+                                    json.getString("description"),
+                                    json.getString("address"),
+                                    json.getString("city"),
+                                    null);
+                            barberList.add(barber);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(barberList);
                     }
-
-                    Log.i("APISERVER", s);
-                    tcs.setResult(barberList);
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -105,7 +150,7 @@ public class APIController {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Get all barbers ERROR");
             }
         });
@@ -114,8 +159,7 @@ public class APIController {
     }
 
 
-    public Task<Void> createBarber(Barber barber) {
-        final TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
+    public void createBarber(Barber barber) {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("password", barber.getPassword());
@@ -129,17 +173,16 @@ public class APIController {
 
         ApiUtils.getService().createBarber(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.i("APISERVER", "Create barber OK");
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Create barber ERROR");
             }
         });
 
-        return tcs.getTask();
     }
 
 
@@ -147,8 +190,7 @@ public class APIController {
 
     /* Client controller */
 
-    public Task<Void> createClient(Client client) {
-        final TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
+    public void createClient(Client client) {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("password", client.getPassword());
@@ -161,17 +203,16 @@ public class APIController {
 
         ApiUtils.getService().createClient(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.i("APISERVER", "Create client OK");
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Create client ERROR");
             }
         });
 
-        return tcs.getTask();
     }
 
 

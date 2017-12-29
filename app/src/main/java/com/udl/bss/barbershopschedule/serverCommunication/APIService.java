@@ -19,8 +19,16 @@ public interface APIService {
 
     /* Session Controller */
 
-    @GET("sessions/login/{user_id}")
-    Call<ResponseBody> getSessionToken(@Path(value = "user_id", encoded = true) String user_id);
+    @GET("sessions/login/{username}/{password}")
+    Call<ResponseBody> logInUser(@Path(value = "username", encoded = true) String username,
+                                 @Path(value = "password", encoded = true) String password);
+
+
+    /* User Controller */
+
+    @GET("users/isAvailable/{username}")
+    Call<ResponseBody> isUserAvailable(@Path(value = "username", encoded = true) String username);
+
 
 
     /* Appointment Controller */

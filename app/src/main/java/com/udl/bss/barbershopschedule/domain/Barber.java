@@ -21,6 +21,7 @@ public class Barber implements Parcelable {
     private String placesID;
     private String gender;
     private String imagePath;
+    private String token;
 
     public Barber(int id, String name, String description, String city, String address, String phone, String email, Bitmap image) {
         this.id = id;
@@ -185,6 +186,14 @@ public class Barber implements Parcelable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class Client {
     private String password;
     private Bitmap image;
     private String imagePath;
+    private String token;
 
     public Client(int id, String name, String phone, String email, int gender, int age)
     {
@@ -109,5 +110,13 @@ public class Client {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

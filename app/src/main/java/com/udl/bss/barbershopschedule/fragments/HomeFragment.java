@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
@@ -28,8 +30,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private static final String CLIENT_ID = "client_id";
-    private int client_id;
+    private static final String CLIENT = "client";
+    private Client client;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView promotionsRecycleView;
     private BLL instance;
@@ -40,10 +42,12 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public static HomeFragment newInstance(int client_id) {
+    public static HomeFragment newInstance(Client client) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putInt(CLIENT_ID, client_id);
+        Gson gson = new Gson();
+        String json = gson.toJson(client);
+        args.putString(CLIENT, json);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +56,9 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.client_id = getArguments().getInt(CLIENT_ID);
+            Gson gson = new Gson();
+            String json = getArguments().getString(CLIENT);
+            this.client = gson.fromJson(json, Client.class);
         }
         this.instance = new BLL(getContext());
         this.instance.Initialize_Database();
@@ -109,7 +115,7 @@ public class HomeFragment extends Fragment {
     private void setAppointmentItems() {
         List<Appointment> appointmentList;
 
-        appointmentList = this.instance.Get_ClientAppointments(this.client_id);
+        appointmentList = this.instance.Get_ClientAppointments(client.getId());
 
         Collections.sort(appointmentList);
 

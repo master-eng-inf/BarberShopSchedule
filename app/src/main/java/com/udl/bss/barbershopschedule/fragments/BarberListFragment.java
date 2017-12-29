@@ -1,6 +1,8 @@
 package com.udl.bss.barbershopschedule.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
@@ -29,6 +32,9 @@ import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 
@@ -38,6 +44,8 @@ public class BarberListFragment extends Fragment {
     private BarberAdapter adapter;
     private BLL instance;
     private OnFragmentInteractionListener mListener;
+
+    SharedPreferences mPrefs;
 
     String jsonStr;
     private String TAG = HomeActivity.class.getSimpleName();
@@ -78,6 +86,8 @@ public class BarberListFragment extends Fragment {
         //final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
         //List<Barber> barberList = usm.getRegisteredBarbers();
 
+        mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+
         if (getView() != null) {
             mRecyclerView = getView().findViewById(R.id.rv);
         }
@@ -97,6 +107,7 @@ public class BarberListFragment extends Fragment {
             //adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
             //mRecyclerView.setAdapter(adapter);
         }
+
 
         /* Swipe down to refresh */
         final SwipeRefreshLayout sr = getView().findViewById(R.id.swiperefresh);
@@ -126,20 +137,27 @@ public class BarberListFragment extends Fragment {
 
     void setBarbersToRecycleView() {
 
-        APIController.getInstance().getSessionToken("1").addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
+        if (getActivity() != null && mPrefs != null){
+            try {
+                JSONObject json = new JSONObject(mPrefs.getString("user", ""));
 
-                APIController.getInstance().getAllBarbers(task.getResult())
+                APIController.getInstance().getAllBarbers(json.getString("token"))
                         .addOnCompleteListener(new OnCompleteListener<List<Barber>>() {
                             @Override
                             public void onComplete(@NonNull Task<List<Barber>> task) {
                                 adapter = new BarberAdapter(task.getResult(), new BarberClick(getActivity(), mRecyclerView), getContext());
                                 mRecyclerView.setAdapter(adapter);
                             }
-                });
+                        });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+        }
+
+
+
+
 
 
     }
