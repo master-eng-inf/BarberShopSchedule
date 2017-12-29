@@ -92,19 +92,27 @@ public class BarberDetailGeneralInformationFragment extends Fragment {
         mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
         googleMaps = new GoogleMaps(getActivity());
 
-        mGeoDataClient.getPlaceById(barber.getPlacesID()).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                if (task.isSuccessful()) {
-                    PlaceBufferResponse places = task.getResult();
-                    Place myPlace = places.get(0);
-                    googleMaps.setMap(myPlace.getName().toString(), myPlace.getLatLng());
-                    Log.i("PLACES API", "Place found: " + myPlace.getName());
-                    places.release();
-                } else {
-                    Log.e("PLACES API", "Place not found.");
+        if (barber.getPlacesID() != null) {
+            mGeoDataClient.getPlaceById(barber.getPlacesID()).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+                @Override
+                public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                    if (task.isSuccessful()) {
+                        try {
+                            PlaceBufferResponse places = task.getResult();
+                            Place myPlace = places.get(0);
+                            googleMaps.setMap(myPlace.getName().toString(), myPlace.getLatLng());
+                            Log.i("PLACES API", "Place found: " + myPlace.getName());
+                            places.release();
+                        } catch (Exception e) {
+                            Log.e("PLACES API", "Invalid place.");
+                        }
+
+                    } else {
+                        Log.e("PLACES API", "Place not found.");
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 }
