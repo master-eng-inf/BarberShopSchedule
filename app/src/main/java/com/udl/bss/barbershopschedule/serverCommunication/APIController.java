@@ -347,7 +347,103 @@ public class APIController {
         return tcs.getTask();
     }
 
+
+    public Task<List<BarberService>> getServicesByBarber(String token, String id){
+        final TaskCompletionSource<List<BarberService>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getServicesByBarber(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        List<BarberService> serviceList = new ArrayList<>();
+
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+
+                            BarberService service = new BarberService(
+                                    json.getInt("id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getString("name"),
+                                    json.getInt("price"),
+                                    json.getDouble("duration"));
+                            serviceList.add(service);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(serviceList);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get promotions by barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
+
+
+
+
     /* Promotion Controller */
+
+
+    public Task<List<Promotion>> getPromotionsByBarber(String token, String id){
+        final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getPromotionsByBarber(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+                        List<Promotion> promotionList = new ArrayList<>();
+
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+
+                            int promotional = Boolean.valueOf(json.getString("is_promotional")) ? 1 : 0;
+
+                            Promotion promotion = new Promotion(
+                                    json.getInt("id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getInt("service_id"),
+                                    json.getString("name"),
+                                    json.getString("description"),
+                                    promotional);
+                            promotionList.add(promotion);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(promotionList);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get promotions by barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
 
     public Task<List<Promotion>> getPromotionalPromotions(String token){
         final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();
@@ -388,7 +484,7 @@ public class APIController {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Log.i("APISERVER", "Get all barbers ERROR");
+                Log.i("APISERVER", "Get promotional promotions ERROR");
             }
         });
 

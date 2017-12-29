@@ -117,7 +117,7 @@ public interface APIService {
     Call<ResponseBody> getAllPromotionalPromotions(@Path(value = "token", encoded = true) String token);
 
     @GET("promotions/list/barberShop/{barber_shop_id}/{token}")
-    Call<ResponseBody> getPromotionByBarber(@Path(value = "token", encoded = true) String token,
+    Call<ResponseBody> getPromotionsByBarber(@Path(value = "token", encoded = true) String token,
                                             @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("promotions/promotion/{promotion_id}/{token}")
@@ -193,7 +193,7 @@ public interface APIService {
     Call<ResponseBody> getAllServices(@Path(value = "token", encoded = true) String token);
 
     @GET("services/list/barberShop/{barber_shop_id}/{token}")
-    Call<ResponseBody> getServiceByBarber(@Path(value = "token", encoded = true) String token,
+    Call<ResponseBody> getServicesByBarber(@Path(value = "token", encoded = true) String token,
                                           @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("services/service/{service_id}/{token}")
