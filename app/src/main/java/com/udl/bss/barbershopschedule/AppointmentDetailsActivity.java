@@ -72,6 +72,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         //TODO format date
         ctl.setTitle(barber.getName());
         tv_date.setText(a.getDate());
-        tv_service.setText(service.Get_Name());
+        tv_service.setText(service.getName());
     }
 }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class BarberFreeHoursActivity extends AppCompatActivity {
 
@@ -75,12 +76,12 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
 
     private void SetFreeHours() {
         BLL instance = new BLL(this);
-        ArrayList<Appointment> appointments_for_current_day = instance.Get_BarberShopAppointmentsForSpecificDate(this.barberService.Get_BarberShopId(), this.date);
+        ArrayList<Appointment> appointments_for_current_day = instance.Get_BarberShopAppointmentsForSpecificDate(this.barberService.getBarberShopId(), this.date);
         List<Time> freeHoursList = new ArrayList<>();
 
         int day_of_week = date.get(Calendar.DAY_OF_WEEK) - 2;
 
-        Schedule schedule = instance.Get_BarberShopScheduleForSpecificDay(this.barberService.Get_BarberShopId(), day_of_week);
+        Schedule schedule = instance.Get_BarberShopScheduleForSpecificDay(this.barberService.getBarberShopId(), day_of_week);
 
         if (schedule != null) {
             oppening1 = ParseTime(schedule.GetOppening1());
@@ -127,23 +128,23 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
             }
 
             if (freeHoursList.size() > 0) {
-                Iterator<Appointment> appointments_iterator = appointments_for_current_day.iterator();
 
-                while (appointments_iterator.hasNext()) {
-                    Appointment current_appointment = appointments_iterator.next();
+                for (Appointment current_appointment : appointments_for_current_day) {
                     BarberService current_service = instance.Get_BarberShopService(current_appointment.getService_id());
 
                     try {
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         Calendar appointment_date = Calendar.getInstance();
 
                         appointment_date.setTime(format.parse(current_appointment.getDate()));
 
-                        ArrayList<Integer> index = GetListIndexForTime(new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY), appointment_date.get(Calendar.MINUTE)), (int) current_service.Get_Duration());
+                        ArrayList<Integer> index = GetListIndexForTime(
+                                new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY),
+                                        appointment_date.get(Calendar.MINUTE)),
+                                (int) current_service.getDuration());
 
-                        Iterator index_iterator = index.iterator();
-                        while (index_iterator.hasNext()) {
-                            int current_index = (int) index_iterator.next();
+                        for (Object anIndex : index) {
+                            int current_index = (int) anIndex;
 
                             Time current_time = freeHoursList.get(current_index);
                             current_time.SetAvailability(false);

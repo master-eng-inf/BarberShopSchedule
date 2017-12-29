@@ -56,10 +56,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.name.setText(mDataset.get(position).Get_Name());
-        String price = String.valueOf(mDataset.get(position).Get_Price()) + " " + context.getString(R.string.service_price_currency);
+        holder.name.setText(mDataset.get(position).getName());
+        String price = String.valueOf(mDataset.get(position).getPrice()) + " " + context.getString(R.string.service_price_currency);
         holder.price.setText(price);
-        String duration = String.valueOf((int)mDataset.get(position).Get_Duration()) + " " + context.getString(R.string.service_duration);
+        String duration = String.valueOf((int)mDataset.get(position).getDuration()) + " " + context.getString(R.string.service_duration);
         holder.duration.setText(duration);
 
         ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"name");

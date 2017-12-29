@@ -69,12 +69,12 @@ public class BarberServiceDetailFragment extends Fragment {
         TextView price_cv = view.findViewById(R.id.price_cv);
         TextView duration_cv = view.findViewById(R.id.duration_cv);
         if (service != null) {
-            name_cv.setText(service.Get_Name());
+            name_cv.setText(service.getName());
 
-            String price = Double.toString(service.Get_Price());
+            String price = Double.toString(service.getPrice());
             price_cv.setText(price);
 
-            String duration = Double.toString(service.Get_Duration());
+            String duration = Double.toString(service.getDuration());
             duration_cv.setText(duration);
         }
 

@@ -56,35 +56,35 @@ public class BarberService implements Parcelable {
         return 0;
     }
 
-    public String Get_Name() {
+    public String getName() {
         return this.service_name;
     }
 
-    public double Get_Price() {
+    public double getPrice() {
         return this.service_price;
     }
 
-    public int Get_Id() {
+    public int getId() {
         return this.service_id;
     }
 
-    public double Get_Duration() {
+    public double getDuration() {
         return this.service_duration;
     }
 
-    public int Get_BarberShopId() {
+    public int getBarberShopId() {
         return this.barber_shop_id;
     }
 
-    public void Set_Name(String new_name) {
+    public void setName(String new_name) {
         this.service_name = new_name;
     }
 
-    public void Set_Price(double new_price) {
+    public void setPrice(double new_price) {
         this.service_price = new_price;
     }
 
-    public void Set_Duration(double new_duration) {
+    public void setDuration(double new_duration) {
         this.service_duration = new_duration;
     }
 

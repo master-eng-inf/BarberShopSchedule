@@ -74,7 +74,7 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         //Log.d("", "onBindViewHolder: "+ client);
 
 
-        holder.service_name.setText(service.Get_Name());
+        holder.service_name.setText(service.getName());
         //holder.client_name.setText(client.getName());
         if (promotion != null)
             holder.promotion_name.setText(promotion.getDescription());

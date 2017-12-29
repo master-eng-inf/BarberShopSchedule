@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Appointment implements Parcelable, Comparable<Appointment> {
     private int id;
@@ -25,12 +26,18 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
         this.service_id = service_id;
         this.promotion_id = promotion_id;
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             this.date = format.parse(date);
             System.out.println(date);
         } catch (ParseException e) {
-            this.date = null;
+            format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            try {
+                this.date = format.parse(date);
+            } catch (ParseException e1) {
+                this.date = null;
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -119,7 +126,7 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
     }
 
     public String getDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         return dateFormat.format(this.date);
     }
 
@@ -170,7 +177,7 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
         Calendar internal = Calendar.getInstance();
         Calendar external = Calendar.getInstance();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             internal.setTime(format.parse(getDate()));
             external.setTime(format.parse(o.getDate()));

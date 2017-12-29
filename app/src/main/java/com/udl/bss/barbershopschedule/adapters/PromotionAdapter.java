@@ -61,7 +61,7 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
         Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
 
-        holder.service.setText(service.Get_Name());
+        holder.service.setText(service.getName());
         holder.name.setText(barber.getName());
         holder.description.setText(mDataset.get(position).getDescription());
 

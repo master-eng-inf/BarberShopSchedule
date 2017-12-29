@@ -1,20 +1,25 @@
 package com.udl.bss.barbershopschedule.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +34,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private List<Appointment> mDataset;
     private OnItemClickListener listener;
     private Context context;
+    private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -44,10 +50,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context) {
+    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context, String token) {
         mDataset = myDataset;
         this.listener = listener;
         this.context = context;
+        this.token = token;
     }
 
     @Override
@@ -60,16 +67,31 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        BLL instance = new BLL(this.context);
-        BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
-        Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
+        //BLL instance = new BLL(this.context);
+        //BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
+        //Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
 
-        holder.service.setText(service.Get_Name());
-        holder.name.setText(barber.getName());
+        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getService_id()))
+                .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+            @Override
+            public void onComplete(@NonNull Task<BarberService> task) {
+                BarberService barberService = task.getResult();
+                holder.service.setText(barberService.getName());
+            }
+        });
 
-        Date date_obj = null;
+        APIController.getInstance().getBarberById(token ,String.valueOf(mDataset.get(position).getBarber_shop_id()))
+                .addOnCompleteListener(new OnCompleteListener<Barber>() {
+            @Override
+            public void onComplete(@NonNull Task<Barber> task) {
+                Barber barber = task.getResult();
+                holder.name.setText(barber.getName());
+            }
+        });
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date_obj;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             date_obj = format.parse(mDataset.get(position).getDate());
         } catch (ParseException e) {

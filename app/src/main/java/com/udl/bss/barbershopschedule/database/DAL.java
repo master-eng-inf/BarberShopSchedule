@@ -693,11 +693,11 @@ public class DAL extends SQLiteOpenHelper {
             BarberService current_service = iterator.next();
             ContentValues values = new ContentValues();
 
-            values.put(ServiceEntry._ID, current_service.Get_Id());
-            values.put(ServiceEntry.BARBER_SHOP_ID, current_service.Get_BarberShopId());
-            values.put(ServiceEntry.NAME, current_service.Get_Name());
-            values.put(ServiceEntry.PRICE, current_service.Get_Price());
-            values.put(ServiceEntry.DURATION, current_service.Get_Duration());
+            values.put(ServiceEntry._ID, current_service.getId());
+            values.put(ServiceEntry.BARBER_SHOP_ID, current_service.getBarberShopId());
+            values.put(ServiceEntry.NAME, current_service.getName());
+            values.put(ServiceEntry.PRICE, current_service.getPrice());
+            values.put(ServiceEntry.DURATION, current_service.getDuration());
 
             db.insert(ServiceEntry.TABLE_NAME, null, values);
         }
@@ -708,10 +708,10 @@ public class DAL extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(ServiceEntry.BARBER_SHOP_ID, service.Get_BarberShopId());
-        values.put(ServiceEntry.NAME, service.Get_Name());
-        values.put(ServiceEntry.PRICE, service.Get_Price());
-        values.put(ServiceEntry.DURATION, service.Get_Duration());
+        values.put(ServiceEntry.BARBER_SHOP_ID, service.getBarberShopId());
+        values.put(ServiceEntry.NAME, service.getName());
+        values.put(ServiceEntry.PRICE, service.getPrice());
+        values.put(ServiceEntry.DURATION, service.getDuration());
 
         db.insertOrThrow(ServiceEntry.TABLE_NAME, null, values);
     }
@@ -724,7 +724,7 @@ public class DAL extends SQLiteOpenHelper {
     public void Delete_Service(BarberService service) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = ServiceEntry._ID + " = " + service.Get_Id(); //+
+        String selection = ServiceEntry._ID + " = " + service.getId(); //+
                 //" and " + ServiceEntry.BARBER_SHOP_ID + " = " + service.Get_BarberShopId() +
                // " and " + ServiceEntry.NAME + " = " + service.Get_Name() +
                // " and " + ServiceEntry.PRICE + " = " + service.Get_Price() +

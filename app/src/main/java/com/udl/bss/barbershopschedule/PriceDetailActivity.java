@@ -64,11 +64,11 @@ public class PriceDetailActivity extends AppCompatActivity {
 
         BLL instance = new BLL(this);
 
-        ctl.setTitle(instance.Get_BarberShop(barber_shop_service.Get_BarberShopId()).getName());
-        tv_service.setText(barber_shop_service.Get_Name());
-        String price = Double.toString(barber_shop_service.Get_Price()) + " " + getResources().getString(R.string.service_price_currency);
+        ctl.setTitle(instance.Get_BarberShop(barber_shop_service.getBarberShopId()).getName());
+        tv_service.setText(barber_shop_service.getName());
+        String price = Double.toString(barber_shop_service.getPrice()) + " " + getResources().getString(R.string.service_price_currency);
         tv_price.setText(price);
-        String duration = Double.toString(barber_shop_service.Get_Duration()) + " " + getResources().getString(R.string.service_duration);
+        String duration = Double.toString(barber_shop_service.getDuration()) + " " + getResources().getString(R.string.service_duration);
         tv_duration.setText(duration);
     }
 }

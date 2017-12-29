@@ -47,7 +47,7 @@ public class FreeHourClick implements OnItemClickListener {
             int total_time_spaces = 0;
 
             try {
-                int time_spaces_for_service = ((int) service.Get_Duration()) / BarberFreeHoursActivity.MINUTES_PER_TIME_SPACE;
+                int time_spaces_for_service = ((int) service.getDuration()) / BarberFreeHoursActivity.MINUTES_PER_TIME_SPACE;
                 int temporal_position = position;
                 while (time_spaces_for_service >= 0) {
                     Time current_time = adapter.getItem(temporal_position);
@@ -69,7 +69,7 @@ public class FreeHourClick implements OnItemClickListener {
                 alert.setTitle(activity.getString(R.string.free_hour_click_not_enough_time_title));
 
                 alert.setMessage(String.format(activity.getString(R.string.free_hour_click_not_enough_time_dialog),
-                        service.Get_Name(), String.valueOf((int) service.Get_Duration()),
+                        service.getName(), String.valueOf((int) service.getDuration()),
                         String.valueOf(total_time_spaces * BarberFreeHoursActivity.MINUTES_PER_TIME_SPACE)));
 
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, activity.getString(R.string.accept_button), new DialogInterface.OnClickListener() {
@@ -100,7 +100,7 @@ public class FreeHourClick implements OnItemClickListener {
                 }
 
                 alert.setMessage(String.format(activity.getString(R.string.free_hour_click_dialog),
-                        service.Get_Name(), time.getYear() + "-" + time.getMonth() + "-" +
+                        service.getName(), time.getYear() + "-" + time.getMonth() + "-" +
                                 time.getDay(), time.getHour() + ":" + minutes));
 
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, activity.getString(R.string.accept_button), new DialogInterface.OnClickListener() {
@@ -111,11 +111,11 @@ public class FreeHourClick implements OnItemClickListener {
 
                         BLL instance = new BLL(activity);
 
-                        Promotion promotion = instance.Get_BarberShopPromotionForService(service.Get_BarberShopId(), service.Get_Id());
+                        Promotion promotion = instance.Get_BarberShopPromotionForService(service.getBarberShopId(), service.getId());
 
                         //TODO Change Client Id
-                        instance.Insert_Appointment(new Appointment(-1, 0, service.Get_BarberShopId(),
-                                service.Get_Id(), promotion == null ? -1 : promotion.getId(), db_format_time));
+                        instance.Insert_Appointment(new Appointment(-1, 0, service.getBarberShopId(),
+                                service.getId(), promotion == null ? -1 : promotion.getId(), db_format_time));
 
                         Intent intent = new Intent(activity, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

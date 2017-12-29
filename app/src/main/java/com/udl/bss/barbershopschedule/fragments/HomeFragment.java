@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
@@ -25,6 +28,7 @@ import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +38,7 @@ public class HomeFragment extends Fragment {
     private Client client;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView promotionsRecycleView;
-    private BLL instance;
+    //private BLL instance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,8 +64,8 @@ public class HomeFragment extends Fragment {
             String json = getArguments().getString(CLIENT);
             this.client = gson.fromJson(json, Client.class);
         }
-        this.instance = new BLL(getContext());
-        this.instance.Initialize_Database();
+        //this.instance = new BLL(getContext());
+        //this.instance.Initialize_Database();
         //this.instance.Initialize_Clients();
         //Log.d("", "onCreate: pozvananaaa");
     }
@@ -113,22 +117,37 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAppointmentItems() {
-        List<Appointment> appointmentList;
 
-        appointmentList = this.instance.Get_ClientAppointments(client.getId());
 
-        Collections.sort(appointmentList);
+        APIController.getInstance().getAppointmentsByClient(client.getToken(), String.valueOf(client.getId())).
+                addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Appointment>> task) {
+                List<Appointment> appointmentList = task.getResult();
+                //Collections.sort(appointmentList);
+                AppointmentAdapter adapter =
+                        new AppointmentAdapter(
+                                appointmentList,
+                                new AppointmentClick(getActivity(),
+                                appointmentsRecyclerView), getContext(),
+                                client.getToken());
+                appointmentsRecyclerView.setAdapter(adapter);
+            }
+        });
 
-        AppointmentAdapter adapter = new AppointmentAdapter(appointmentList, new AppointmentClick(getActivity(), appointmentsRecyclerView), getContext());
-        appointmentsRecyclerView.setAdapter(adapter);
+        //appointmentList = this.instance.Get_ClientAppointments(client.getId());
+
+
+
+
     }
 
     private void setPromotionsItems() {
-        List<Promotion> promotionList;
+        //List<Promotion> promotionList;
 
-        promotionList = this.instance.Get_PromotionalPromotions();
-        PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
-        promotionsRecycleView.setAdapter(adapter);
+        //promotionList = this.instance.Get_PromotionalPromotions();
+        //PromotionAdapter adapter = new PromotionAdapter(promotionList, new PromotionClick(getActivity(), promotionsRecycleView), getContext());
+        //promotionsRecycleView.setAdapter(adapter);
     }
 
     public void onButtonPressed(Uri uri) {

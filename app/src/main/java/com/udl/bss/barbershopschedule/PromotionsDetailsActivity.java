@@ -66,7 +66,7 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
         BarberService service = instance.Get_BarberShopService(p.getService_id());
 
         ctl.setTitle(barber.getName());
-        tv_service.setText(service.Get_Name());
+        tv_service.setText(service.getName());
         tv_description.setText(p.getDescription());
     }
 }
