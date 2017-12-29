@@ -10,6 +10,7 @@ import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.domain.Review;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -492,4 +493,46 @@ public class APIController {
     }
 
 
+    /* Review Controller */
+
+    public Task<List<Review>> getReviewsByBarber(String token, String id) {
+        final TaskCompletionSource<List<Review>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getReviewsByBarberId(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                ResponseBody body = response.body();
+                if (body != null) {
+                    try {
+                        String s = body.string();
+                        List<Review> reviewList = new ArrayList<>();
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+
+                            Review review = new Review(
+                                    json.getInt("client_id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getString("description"),
+                                    json.getDouble("mark"),
+                                    json.getString("date"));
+                            reviewList.add(review);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(reviewList);
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get reviews by barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
 }

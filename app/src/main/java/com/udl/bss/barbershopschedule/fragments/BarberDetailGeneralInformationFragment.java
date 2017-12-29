@@ -1,6 +1,8 @@
 package com.udl.bss.barbershopschedule.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,21 +21,27 @@ import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.ReviewsActivity;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Review;
 import com.udl.bss.barbershopschedule.listeners.GoogleMaps;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class BarberDetailGeneralInformationFragment extends Fragment {
     private static final String BARBER_SHOP = "barber_shop";
     private Barber barber;
     private GoogleMaps googleMaps;
     protected GeoDataClient mGeoDataClient;
+    private SharedPreferences mPrefs;
+    private Client client;
 
     public static BarberDetailGeneralInformationFragment newInstance(Barber param1) {
         BarberDetailGeneralInformationFragment fragment = new BarberDetailGeneralInformationFragment();
@@ -57,20 +65,35 @@ public class BarberDetailGeneralInformationFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BLL instance = new BLL(getContext());
-        ArrayList<Review> reviews = instance.Get_BarberShopReviews(this.barber.getId());
-        double rating = 0.0;
-
-        Iterator<Review> it = reviews.iterator();
-        while (it.hasNext()) {
-            rating += it.next().GetMark();
+        if (getActivity() != null) {
+            mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("user", "");
+            client = gson.fromJson(json, Client.class);
         }
 
-        RatingBar ratingBar = view.findViewById(R.id.rating_bar);
-        ratingBar.setRating((float) rating / reviews.size());
+
+        if (client != null && barber != null) {
+            APIController.getInstance().getReviewsByBarber(client.getToken() ,String.valueOf(barber.getId()))
+                    .addOnCompleteListener(new OnCompleteListener<List<Review>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Review>> task) {
+                    List<Review> reviewList = task.getResult();
+                    double rating = 0.0;
+
+                    for (Review aReviewList : reviewList) {
+                        rating += aReviewList.GetMark();
+                    }
+
+                    RatingBar ratingBar = view.findViewById(R.id.rating_bar);
+                    ratingBar.setRating((float) rating / reviewList.size());
+                }
+            });
+        }
+
 
         TextView name = view.findViewById(R.id.Name);
         name.setText(this.barber.getName());
