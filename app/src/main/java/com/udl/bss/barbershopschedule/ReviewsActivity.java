@@ -1,6 +1,9 @@
 package com.udl.bss.barbershopschedule;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +13,18 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.adapters.ReviewAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Review;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class ReviewsActivity extends AppCompatActivity {
@@ -24,6 +32,8 @@ public class ReviewsActivity extends AppCompatActivity {
     private Barber barber_shop;
     private RecyclerView mRecyclerView;
     private ReviewAdapter adapter;
+    private Client client;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +43,14 @@ public class ReviewsActivity extends AppCompatActivity {
 
         this.barber_shop = getIntent().getParcelableExtra("barber");
         final BLL instance = new BLL(this);
+
+
+        mPrefs = getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        client = gson.fromJson(json, Client.class);
+
+
 
         //TODO change id client
         final Review review = instance.Get_ClientReviewForBarberShop(0, this.barber_shop.getId());
@@ -172,7 +190,19 @@ public class ReviewsActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(llm);
 
-        adapter = new ReviewAdapter(instance.Get_BarberShopReviews(barber_shop.getId()), this);
-        mRecyclerView.setAdapter(adapter);
+
+        if (client != null && barber_shop != null) {
+            APIController.getInstance().getReviewsByBarber(client.getToken() ,String.valueOf(barber_shop.getId()))
+                    .addOnCompleteListener(new OnCompleteListener<List<Review>>() {
+                        @Override
+                        public void onComplete(@NonNull Task<List<Review>> task) {
+                            List<Review> reviewList = task.getResult();
+                            adapter = new ReviewAdapter(reviewList, getApplicationContext());
+                            mRecyclerView.setAdapter(adapter);
+                        }
+                    });
+        }
+
+
     }
 }
