@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,15 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -92,16 +93,21 @@ public class BarberHomeFragment extends Fragment {
     }
 
     private void setAppointmentItems() {
-        BLL instance = new BLL(getContext());
 
-        List<Appointment> appointmentList = instance.Get_AllBarberShopAppointments(this.barber.getId());
+        APIController.getInstance().getAppointmentsByBarber(barber.getToken(), String.valueOf(barber.getId()))
+                .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Appointment>> task) {
 
-        AppointmentAdapter adapter = new AppointmentAdapter(
-                appointmentList,
-                new AppointmentClick(getActivity(), appointmentsRecyclerView),
-                getContext(),
-                barber.getToken());
-        appointmentsRecyclerView.setAdapter(adapter);
+                AppointmentAdapter adapter = new AppointmentAdapter(
+                        task.getResult(),
+                        new AppointmentClick(getActivity(), appointmentsRecyclerView),
+                        getContext(),
+                        barber.getToken());
+                appointmentsRecyclerView.setAdapter(adapter);
+            }
+        });
+
     }
 
     public void onButtonPressed(Uri uri) {
