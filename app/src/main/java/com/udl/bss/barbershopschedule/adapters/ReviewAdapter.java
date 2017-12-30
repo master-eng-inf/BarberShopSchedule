@@ -1,6 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Review;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder>{
 
     private List<Review> mDataset;
-    private Context context;
+    private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView username;
@@ -39,9 +41,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
     }
 
-    public ReviewAdapter(List<Review> myDataset, Context context) {
+    public ReviewAdapter(List<Review> myDataset, String token) {
         mDataset = myDataset;
-        this.context = context;
+        this.token = token;
     }
 
     @Override
@@ -54,24 +56,22 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ReviewAdapter.ViewHolder holder, int position) {
-        String client_name;
+        final String[] client_name = {"Could not get username"};
 
-        try
-        {
-            BLL instance = new BLL(this.context);
-            Client client = instance.Get_Client(mDataset.get(position).GetClientId());
-            client_name = client.getName();
-        }
+        APIController.getInstance().getClientById(token, String.valueOf(mDataset.get(position).getClientId()))
+                .addOnCompleteListener(new OnCompleteListener<Client>() {
+            @Override
+            public void onComplete(@NonNull Task<Client> task) {
+                Client client = task.getResult();
+                client_name[0] = client.getName();
+                holder.username.setText(client_name[0]);
+            }
+        });
 
-        catch (Exception ex)
-        {
-            client_name = "Could not get username";
-        }
 
-        holder.username.setText(client_name);
-        holder.date.setText(mDataset.get(position).GetDate());
-        holder.user_review.setText(mDataset.get(position).GetDescription());
-        holder.rating_bar.setRating((float)mDataset.get(position).GetMark());
+        holder.date.setText(mDataset.get(position).getDate());
+        holder.user_review.setText(mDataset.get(position).getDescription());
+        holder.rating_bar.setRating((float)mDataset.get(position).getMark());
     }
 
     @Override

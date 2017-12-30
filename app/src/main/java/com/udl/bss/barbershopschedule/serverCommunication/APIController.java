@@ -264,6 +264,48 @@ public class APIController {
     }
 
 
+    public Task<Client> getClientById(String token, String id){
+        final TaskCompletionSource<Client> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getClientById(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+
+                        JSONObject json = new JSONObject(s);
+                        Client client = new Client(
+                                json.getInt("id"),
+                                json.getString("name"),
+                                json.getString("email"),
+                                json.getString("password"),
+                                json.getString("telephone"),
+                                json.getInt("gender"),
+                                json.getInt("age"),
+                                null);
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(client);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get client by id ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
+
+
     /* Appointment Controller */
 
     public Task<List<Appointment>> getAppointmentsByClient(String token, String id){

@@ -24,15 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.ReviewsActivity;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Review;
 import com.udl.bss.barbershopschedule.listeners.GoogleMaps;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class BarberDetailGeneralInformationFragment extends Fragment {
@@ -85,7 +82,7 @@ public class BarberDetailGeneralInformationFragment extends Fragment {
                     double rating = 0.0;
 
                     for (Review aReviewList : reviewList) {
-                        rating += aReviewList.GetMark();
+                        rating += aReviewList.getMark();
                     }
 
                     RatingBar ratingBar = view.findViewById(R.id.rating_bar);

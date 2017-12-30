@@ -179,9 +179,9 @@ public class ReviewsActivity extends AppCompatActivity {
             findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
             findViewById(R.id.already_rated_layout).setVisibility(View.VISIBLE);
 
-            ((TextView) findViewById(R.id.user_review)).setText(review.GetDescription());
-            ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.GetMark());
-            ((TextView) findViewById(R.id.user_rating_date)).setText((review.GetDate()));
+            ((TextView) findViewById(R.id.user_review)).setText(review.getDescription());
+            ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.getMark());
+            ((TextView) findViewById(R.id.user_rating_date)).setText((review.getDate()));
         }
 
         mRecyclerView = findViewById(R.id.reviews_rv);
@@ -197,7 +197,7 @@ public class ReviewsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<List<Review>> task) {
                             List<Review> reviewList = task.getResult();
-                            adapter = new ReviewAdapter(reviewList, getApplicationContext());
+                            adapter = new ReviewAdapter(reviewList, client.getToken());
                             mRecyclerView.setAdapter(adapter);
                         }
                     });

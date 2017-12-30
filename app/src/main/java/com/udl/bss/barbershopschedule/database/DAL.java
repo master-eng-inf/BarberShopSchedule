@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.database.BE.BarberShopContract.BarberShopEntry;
@@ -27,10 +26,8 @@ import com.udl.bss.barbershopschedule.domain.Schedule;
 import com.udl.bss.barbershopschedule.domain.SpecialDay;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -542,17 +539,17 @@ public class DAL extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(ReviewEntry.CLIENT_ID, review.GetClientId());
-        values.put(ReviewEntry.BARBER_SHOP_ID, review.GetBarberShopId());
-        values.put(ReviewEntry.DESCRIPTION, review.GetDescription());
-        values.put(ReviewEntry.MARK, review.GetMark());
-        values.put(ReviewEntry.DATE, review.GetDate());
+        values.put(ReviewEntry.CLIENT_ID, review.getClientId());
+        values.put(ReviewEntry.BARBER_SHOP_ID, review.getBarberShopId());
+        values.put(ReviewEntry.DESCRIPTION, review.getDescription());
+        values.put(ReviewEntry.MARK, review.getMark());
+        values.put(ReviewEntry.DATE, review.getDate());
 
         try {
             db.insertOrThrow(ReviewEntry.TABLE_NAME, null, values);
         } catch (android.database.sqlite.SQLiteConstraintException ex) {
-            String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
-                    " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+            String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.getBarberShopId() +
+                    " and " + ReviewEntry.CLIENT_ID + " = " + review.getClientId();
 
             db.update(ReviewEntry.TABLE_NAME, values, selection, null);
         }
@@ -565,11 +562,11 @@ public class DAL extends SQLiteOpenHelper {
             Review current_review = iterator.next();
             ContentValues values = new ContentValues();
 
-            values.put(ReviewEntry.CLIENT_ID, current_review.GetClientId());
-            values.put(ReviewEntry.BARBER_SHOP_ID, current_review.GetBarberShopId());
-            values.put(ReviewEntry.DESCRIPTION, current_review.GetDescription());
-            values.put(ReviewEntry.MARK, current_review.GetMark());
-            values.put(ReviewEntry.DATE, current_review.GetDate());
+            values.put(ReviewEntry.CLIENT_ID, current_review.getClientId());
+            values.put(ReviewEntry.BARBER_SHOP_ID, current_review.getBarberShopId());
+            values.put(ReviewEntry.DESCRIPTION, current_review.getDescription());
+            values.put(ReviewEntry.MARK, current_review.getMark());
+            values.put(ReviewEntry.DATE, current_review.getDate());
 
             db.insert(ReviewEntry.TABLE_NAME, null, values);
         }
@@ -583,8 +580,8 @@ public class DAL extends SQLiteOpenHelper {
     public void Delete_Review(Review review) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.GetBarberShopId() +
-                " and " + ReviewEntry.CLIENT_ID + " = " + review.GetClientId();
+        String selection = ReviewEntry.BARBER_SHOP_ID + " = " + review.getBarberShopId() +
+                " and " + ReviewEntry.CLIENT_ID + " = " + review.getClientId();
 
         db.delete(ReviewEntry.TABLE_NAME, selection, null);
     }
