@@ -397,6 +397,28 @@ public class APIController {
 
     /* Service Controller */
 
+    public void createService(String token, BarberService service) {
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("barber_shop_id", String.valueOf(service.getBarberShopId()));
+        requestBody.put("name", service.getName());
+        requestBody.put("price", String.valueOf(service.getPrice()));
+        requestBody.put("duration", String.valueOf((int)service.getDuration()));
+
+        ApiUtils.getService().createService(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Create service OK" + response.toString()+" "+response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Create service ERROR");
+            }
+        });
+
+    }
+
     public Task<BarberService> getServiceById(String token, String id){
         final TaskCompletionSource<BarberService> tcs = new TaskCompletionSource<>();
 

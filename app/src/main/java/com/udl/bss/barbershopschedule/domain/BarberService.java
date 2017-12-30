@@ -23,6 +23,13 @@ public class BarberService implements Parcelable {
         this.service_duration = service_duration;
     }
 
+    public BarberService(int barber_shop_id, String service_name, double service_price, double service_duration) {
+        this.barber_shop_id = barber_shop_id;
+        this.service_name = service_name;
+        this.service_price = service_price;
+        this.service_duration = service_duration;
+    }
+
     private BarberService(Parcel in) {
         this.service_id = in.readInt();
         this.barber_shop_id = in.readInt();
