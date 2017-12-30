@@ -483,6 +483,46 @@ public class APIController {
 
     /* Promotion Controller */
 
+    public Task<Promotion> getPromotionById(String token, String id){
+        final TaskCompletionSource<Promotion> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getPromotionById(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null){
+                        String s = body.string();
+
+                        JSONObject json = new JSONObject(s);
+
+                        int promotional = Boolean.valueOf(json.getString("is_promotional")) ? 1 : 0;
+
+                        Promotion promotion = new Promotion(
+                                json.getInt("id"),
+                                json.getInt("barber_shop_id"),
+                                json.getInt("service_id"),
+                                json.getString("name"),
+                                json.getString("description"),
+                                promotional);
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(promotion);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get promotion by id ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
 
     public Task<List<Promotion>> getPromotionsByBarber(String token, String id){
         final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();

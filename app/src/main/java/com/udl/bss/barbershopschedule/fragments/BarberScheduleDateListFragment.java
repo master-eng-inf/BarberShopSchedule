@@ -1,7 +1,10 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +13,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
-import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,47 +31,40 @@ import java.util.ArrayList;
 public class BarberScheduleDateListFragment extends Fragment {
     private static final String TAG= "BarberScheduleDateList";
 
-    private static final String BARBER_SHOP= "barber_shop";
     private Barber barber;
     private RecyclerView appointmentsRecyclerView;
+    private SharedPreferences mPrefs;
 
     String selectedDate = "";
 
-    public BarberScheduleDateListFragment() {
-        // Required empty public constructor
-    }
+    public BarberScheduleDateListFragment() {}
 
-    public static BarberScheduleDateListFragment newInstance(Barber  app) {
-        BarberScheduleDateListFragment fragment = new BarberScheduleDateListFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(BARBER_SHOP, app);
-        fragment.setArguments(args);
-        return fragment;
+    public static BarberScheduleDateListFragment newInstance() {
+        return new BarberScheduleDateListFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            this.barber = getArguments().getParcelable(BARBER_SHOP);
-            Log.d(TAG, "onCreate: " + barber);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       /* Bundle bundle = getArguments();
-        if (bundle!= null){
-            selectedDate = bundle.getString("date");
-        }
-        */
         return inflater.inflate(R.layout.fragment_barber_schedule_date_list, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("user", "");
+            barber = gson.fromJson(json, Barber.class);
+        }
+
 
         if (getView() != null) {
             appointmentsRecyclerView = getView().findViewById(R.id.rv_list_appointments);
@@ -85,24 +80,34 @@ public class BarberScheduleDateListFragment extends Fragment {
     }
 
     private void setAppointmentsItems(){
-        BLL instance = new BLL(getContext());
-        //Dates from appointments
-        String splitedDate[];
-        String timeOfAppointment = "";
-        String dateOfAppointment = "";
-        if (barber != null){
-            ArrayList<Appointment> services = instance.Get_AllBarberShopAppointments(this.barber.getId());
-            Log.d(TAG, "setAppointmentsItems: " + services);
-            for (int i = services.size()-1; i>=0; i--) {
-                splitedDate = services.get(i).getDate().split(" ");
-                dateOfAppointment = splitedDate[0];
-                if (!selectedDate.equals(dateOfAppointment)){
-                    services.remove(i);
-                }
-            }
 
-            BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(services, getContext());
-            appointmentsRecyclerView.setAdapter(adapter);
+        if (barber != null){
+
+            APIController.getInstance().getAppointmentsByBarber(barber.getToken(), String.valueOf(barber.getId()))
+                    .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Appointment>> task) {
+                    String splitedDate[];
+                    String dateOfAppointment;
+                    List<Appointment> appointmentList = task.getResult();
+
+                    Log.d(TAG, "setAppointmentsItems: " + appointmentList);
+
+                    for (Appointment appointment: appointmentList) {
+                        splitedDate = appointment.getDate().split(" ");
+                        dateOfAppointment = splitedDate[0];
+                        if (!selectedDate.equals(dateOfAppointment)){
+                            appointmentList.remove(appointment);
+                        }
+                    }
+
+                    BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
+                            appointmentList,
+                            barber.getToken());
+                    appointmentsRecyclerView.setAdapter(adapter);
+                }
+            });
+
         }
     }
 

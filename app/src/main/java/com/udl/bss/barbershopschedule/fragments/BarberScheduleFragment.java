@@ -1,7 +1,6 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,14 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
-import com.udl.bss.barbershopschedule.domain.Barber;
-
-import static android.content.ContentValues.TAG;
 
 
 public class BarberScheduleFragment extends Fragment {
@@ -30,9 +24,7 @@ public class BarberScheduleFragment extends Fragment {
     CalendarView mCalendarView;
 
 
-    public BarberScheduleFragment() {
-        // Required empty public constructor
-    }
+    public BarberScheduleFragment() {}
 
     public static BarberScheduleFragment newInstance() {
         return new BarberScheduleFragment();
@@ -55,11 +47,11 @@ public class BarberScheduleFragment extends Fragment {
 
 
         //Section for listing the schedule for selected date
-        mCalendarView = (CalendarView) mView.findViewById(R.id.barbers_schedule_day);
+        mCalendarView = mView.findViewById(R.id.barbers_schedule_day);
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String date = "";
+                String date;
                 date = year + "-" + (month + 1) + "-" + dayOfMonth;
 
                 if ((month+1)<10) {
@@ -73,18 +65,16 @@ public class BarberScheduleFragment extends Fragment {
                 }
                 Log.d(TAG, "onSelectedDayChange: "+ date);
 
-
-                BLL instance = new BLL(getContext());
-                Barber barber = instance.Get_BarberShop(0);
-                //Log.d(TAG, "onSelectedDayChange: " + barber );
-
-                BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance(barber);
+                BarberScheduleDateListFragment barberScheduleDateListFragment =  BarberScheduleDateListFragment.newInstance();
                 barberScheduleDateListFragment.setSelectedDate(date);
 
                 FragmentManager manager = getFragmentManager();
-                manager.beginTransaction()
-                        .replace(R.id.content_home, barberScheduleDateListFragment).
-                        commit();
+                if (manager != null){
+                    manager.beginTransaction()
+                            .replace(R.id.content_home, barberScheduleDateListFragment)
+                            .commit();
+                }
+
             }
         });
         // Inflate the layout for this fragment

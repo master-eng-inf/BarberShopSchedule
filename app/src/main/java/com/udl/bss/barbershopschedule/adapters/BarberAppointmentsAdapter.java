@@ -1,25 +1,22 @@
 package com.udl.bss.barbershopschedule.adapters;
 
 
-import android.app.Service;
-import android.content.Context;
-import android.support.v4.view.ViewCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
-import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +28,7 @@ import java.util.Locale;
 public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppointmentsAdapter.ViewHolder> {
     private List<Appointment> mDataset;
     //private OnItemClickListener listener; need this when I would want to create onClick opening info about special appointment
-    private Context context;
+    private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -50,9 +47,10 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         }
     }
 
-    public BarberAppointmentsAdapter(List<Appointment> myDataset/*, OnItemClickListener listener*/, Context context) {//delete comments when implementing listener for opening special appointments
+    public BarberAppointmentsAdapter(List<Appointment> myDataset/*, OnItemClickListener listener*/, String token) {//delete comments when implementing listener for opening special appointments
         mDataset = myDataset;
         //this.listener = listener;
+        this.token = token;
     }
 
     @Override
@@ -64,31 +62,41 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
 
     @Override
     public void onBindViewHolder(final BarberAppointmentsAdapter.ViewHolder holder, int position) {
-        BLL instace = new BLL(this.context);
 
-        BarberService service = instace.Get_BarberShopService(mDataset.get(position).getService_id());
-        //Client client = instace.Get_Client(0);//mDataset.get(position).getClient_id()
-        Promotion promotion = instace.Get_Promotion(mDataset.get(position).getPromotion_id());//
+        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getService_id()))
+                .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+                    @Override
+                    public void onComplete(@NonNull Task<BarberService> task) {
+                        BarberService barberService = task.getResult();
+                        holder.service_name.setText(barberService.getName());
+                    }
+                });
 
+        APIController.getInstance().getClientById(token ,String.valueOf(mDataset.get(position).getClient_id()))
+                .addOnCompleteListener(new OnCompleteListener<Client>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Client> task) {
+                        Client client = task.getResult();
+                        holder.client_name.setText(client.getName());
+                    }
+                });
 
-        //Log.d("", "onBindViewHolder: "+ client);
+        APIController.getInstance().getPromotionById(token, String.valueOf(mDataset.get(position).getPromotion_id()))
+                .addOnCompleteListener(new OnCompleteListener<Promotion>() {
+            @Override
+            public void onComplete(@NonNull Task<Promotion> task) {
+                Promotion promotion = task.getResult();
+                String promoName = promotion != null ? promotion.getDescription() : "";
+                holder.promotion_name.setText(promoName);
+            }
+        });
 
-
-        holder.service_name.setText(service.getName());
-        //holder.client_name.setText(client.getName());
-        if (promotion != null)
-            holder.promotion_name.setText(promotion.getDescription());
-        else
-            holder.promotion_name.setText("");
 
         Date date_obj = null;
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             date_obj = format.parse(mDataset.get(position).getDate());
-        } catch (ParseException e) {
-            date_obj = null;
-        }
+        } catch (ParseException e) { e.printStackTrace(); }
 
         String date = new SimpleDateFormat("HH:mm dd-MM-yyyy", new Locale("es", "ES")).format(date_obj);
         holder.date.setText(date);
