@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/promotion_details">
+    tools:showIn="@layout/service_details">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:text="@string/barber_promotion_creation_name"
+            android:text="@string/barber_service_creation_name"
             android:textStyle="bold"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
@@ -36,8 +36,8 @@
             android:textSize="15sp"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:paddingLeft="30sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:transitionName="@string/transname_servicename" />
 
 
 
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:text="@string/barber_promotion_creation_description"
+            android:text="@string/barber_service_creation_price"
             android:textStyle="bold"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
@@ -59,13 +59,14 @@
             android:background="#000000" />
 
         <TextView
-            android:id="@+id/description_cv"
+            android:id="@+id/price_cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:transitionName="@string/transname_serviceprice" />
 
 
 
@@ -73,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:text="@string/barber_promotion_creation_service"
+            android:text="@string/barber_service_creation_duration"
             android:textStyle="bold"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
@@ -87,41 +88,14 @@
             android:background="#000000" />
 
         <TextView
-            android:id="@+id/service_cv"
+            android:id="@+id/duration_cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:text="@string/barber_promotion_creation_is_promotional"
-            android:textStyle="bold"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="#000000" />
-
-        <TextView
-            android:id="@+id/is_promotional_cv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:transitionName="@string/transname_serviceduration" />
 
 
 
@@ -180,6 +154,7 @@
             android:padding="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="60sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
 
     </LinearLayout>
 

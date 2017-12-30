@@ -54,9 +54,9 @@ public class PriceDetailActivity extends AppCompatActivity {
         anim.setInterpolator(new OvershootInterpolator());
         fab.startAnimation(anim);
 
-        TextView tv_price = findViewById(R.id.price_detail);
+        TextView tv_price = findViewById(R.id.price_cv);
         TextView tv_service = findViewById(R.id.service_detail);
-        TextView tv_duration = findViewById(R.id.duration_detail);
+        TextView tv_duration = findViewById(R.id.duration_cv);
 
         CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 

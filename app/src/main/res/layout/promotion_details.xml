@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.udl.bss.barbershopschedule.AppointmentDetailsActivity">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -36,16 +35,16 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_appointment_details" />
+    <include layout="@layout/content_promotions_details" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/delete_btn"
+        android:id="@+id/edit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_delete"
+        app:srcCompat="@android:drawable/ic_menu_edit"
         android:transitionName="fab" />
 
 </android.support.design.widget.CoordinatorLayout>

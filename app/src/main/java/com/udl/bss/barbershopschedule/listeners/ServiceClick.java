@@ -10,6 +10,7 @@ import android.view.View;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.ServiceDetailFragment;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
@@ -33,8 +34,8 @@ public class ServiceClick implements OnItemClickListener {
 
         ServiceAdapter adapter = (ServiceAdapter) recyclerView.getAdapter();
 
-        BarberServiceDetailFragment fragment =
-                BarberServiceDetailFragment.newInstance(adapter.getItem(position));
+        ServiceDetailFragment fragment =
+                ServiceDetailFragment.newInstance(adapter.getItem(position));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             fragment.setSharedElementEnterTransition(new DetailsTransition());

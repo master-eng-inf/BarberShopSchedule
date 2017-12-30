@@ -36,8 +36,10 @@
     <string name="barber_promotion_creation_name">Promotion name</string>
     <string name="barber_promotion_creation_description">Promotion description</string>
     <string name="barber_promotion_creation_service">Promotion service</string>
-    <string name="transname_promotionname">serviceName</string>
-    <string name="transname_promotiondescription">serviceDescription</string>
+    <string name="barber_promotion_creation_is_promotional">Promotional</string>
+    <string name="transname_promotionname">promotionName</string>
+    <string name="transname_promotiondescription">promotionDescription</string>
+    <string name="transname_promotionservice">promotionService</string>
 
 
     <string name="barber_create_button">Create</string>
@@ -184,6 +186,9 @@
     <string name="people_reviews">Reviews</string>
     <string name="free_hour_click_title">Warning</string>
     <string name="free_hour_click_dialog" formatted="false">Are you sure you want to create an appointment for %1$s for the %2$s at %3$s?</string>
+    <string name="delete_appointment_dialog">Are you sure you want to delete that appointment?</string>
+    <string name="delete_appointment_dialog_title">Warning</string>
+    <string name="appointment_deleted">The appointment was deleted successfully</string>
     <string name="free_hour_click_not_enough_time_title">Warning</string>
     <string name="free_hour_click_not_enough_time_dialog" formatted="false">The estimated time for %1$s is %2$s minutes, but with your selection there is only %3$s minutes at most. The appointment has to be validated by the barber shop. Do you want to continue? </string>
 </resources>

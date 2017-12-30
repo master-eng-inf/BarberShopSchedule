@@ -10,6 +10,7 @@ import android.view.View;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
 import com.udl.bss.barbershopschedule.fragments.BarberPromotionDetailFragment;
+import com.udl.bss.barbershopschedule.fragments.PromotionDetailFragment;
 import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
@@ -28,12 +29,13 @@ public class PromotionClick implements OnItemClickListener {
 
         View name_cv = view.findViewById(R.id.name_cv);
         View description_cv = view.findViewById(R.id.description_cv);
+        View service_cv = view.findViewById(R.id.service_cv);
 
 
         PromotionAdapter adapter = (PromotionAdapter) recyclerView.getAdapter();
 
-        BarberPromotionDetailFragment fragment =
-                BarberPromotionDetailFragment.newInstance(adapter.getItem(position));
+        PromotionDetailFragment fragment =
+                PromotionDetailFragment.newInstance(adapter.getItem(position));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             fragment.setSharedElementEnterTransition(new DetailsTransition());
@@ -42,12 +44,14 @@ public class PromotionClick implements OnItemClickListener {
         }
         startFragmentWithSharedElement(fragment,
                 name_cv, activity.getString(R.string.transname_promotionname),
-                description_cv, activity.getString(R.string.transname_promotiondescription));
+                description_cv, activity.getString(R.string.transname_promotiondescription),
+                service_cv, activity.getString(R.string.transname_promotiondescription));
     }
 
     private void startFragmentWithSharedElement(Fragment fragment,
                                                 View sharedElement1, String transitionName1,
-                                                View sharedElement2, String transitionName2) {
+                                                View sharedElement2, String transitionName2,
+                                                View sharedElement3, String transitionName3){
         if (fragment != null){
             activity.getSupportFragmentManager()
                     .beginTransaction()

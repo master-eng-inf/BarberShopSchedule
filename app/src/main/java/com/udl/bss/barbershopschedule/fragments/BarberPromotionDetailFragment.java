@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ import com.udl.bss.barbershopschedule.domain.Promotion;
 public class BarberPromotionDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private Promotion promotionToDelete;
+    private Promotion promotionToChange;
 
     public BarberPromotionDetailFragment() {
         // Required empty public constructor
@@ -46,6 +47,20 @@ public class BarberPromotionDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_barber_promotion_detail, container, false);
 
+        Bundle bundle = getArguments();
+
+        String s_name = bundle.getString("name");
+        String s_description = bundle.getString("description");
+        String s_service = bundle.getString("service");
+
+        EditText name_cv = (EditText) view.findViewById(R.id.name_cv);
+        EditText description_cv = (EditText) view.findViewById(R.id.description_cv);
+        EditText service_cv = (EditText) view.findViewById(R.id.service_cv);
+
+        name_cv.setText(s_name);
+        description_cv.setText(s_description);
+        service_cv.setText(s_service);
+
         Button btn_delete = (Button) view.findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -63,25 +78,15 @@ public class BarberPromotionDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle args = getArguments();
-        Promotion promotion = args.getParcelable("promotion");
-        promotionToDelete = args.getParcelable("promotion");
+        promotionToChange = new Promotion(args.getInt("id"),args.getInt("id_barber"),args.getInt("service"),args.getString("name"),args.getString("description"),args.getInt("is_promotional"));
 
-        TextView name_cv = view.findViewById(R.id.name_cv);
-        TextView description_cv = view.findViewById(R.id.description_cv);
-        TextView service_cv = view.findViewById(R.id.service_cv);
-        if (promotion != null) {
-            name_cv.setText(promotion.getName());
-            description_cv.setText(promotion.getDescription());
-            String service_id = Double.toString(promotion.getService_id());
-            service_cv.setText(service_id);
-        }
     }
 
     private void deleteInDB () {
 
         BLL instance = new BLL(getContext());
 
-        instance.Delete_Promotion(promotionToDelete);
+        instance.Delete_Promotion(promotionToChange);
 
         Toast.makeText(getContext(), "Your promotion was deleted succesfully", Toast.LENGTH_SHORT).show();
 
