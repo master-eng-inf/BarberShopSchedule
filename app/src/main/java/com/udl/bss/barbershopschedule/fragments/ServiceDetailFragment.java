@@ -63,11 +63,11 @@ public class ServiceDetailFragment extends Fragment {
         btn_edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                int id = servic.Get_Id();
-                int id_barber = servic.Get_BarberShopId();
-                String name_cv = servic.Get_Name();
-                Double price_cv = servic.Get_Price();
-                Double duration_cv = servic.Get_Duration();
+                int id = servic.getId();
+                int id_barber = servic.getBarberShopId();
+                String name_cv = servic.getName();
+                Double price_cv = servic.getPrice();
+                Double duration_cv = servic.getDuration();
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", id);
@@ -104,21 +104,21 @@ public class ServiceDetailFragment extends Fragment {
         TextView barber_cv = view.findViewById(R.id.barber_cv);
         TextView id_cv = view.findViewById(R.id.id_cv);
         if (service != null) {
-            name_cv.setText(service.Get_Name());
+            name_cv.setText(service.getName());
 
-            String price = Double.toString(service.Get_Price());
+            String price = Double.toString(service.getPrice());
             price_cv.setText(price);
 
-            String duration = Double.toString(service.Get_Duration());
+            String duration = Double.toString(service.getDuration());
             duration_cv.setText(duration);
 
-            String barber = Double.toString(service.Get_BarberShopId());
+            String barber = Double.toString(service.getBarberShopId());
             barber_cv.setText(barber);
 
-            String id = Double.toString(service.Get_Id());
+            String id = Double.toString(service.getId());
             id_cv.setText(id);
 
-            servic = new BarberService(service.Get_Id(),service.Get_BarberShopId(),service.Get_Name(),service.Get_Price(),service.Get_Duration());
+            servic = new BarberService(service.getId(),service.getBarberShopId(),service.getName(),service.getPrice(),service.getDuration());
         }
 
     }
