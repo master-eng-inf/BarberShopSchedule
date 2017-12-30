@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.fragments.BarberDetailFragment;
@@ -221,7 +219,7 @@ public class HomeActivity extends AppCompatActivity
             BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
             startFragmentBackStack(bsf);
         } else if (id == R.id.show_services) {
-            BarberServicesFragment bsf = BarberServicesFragment.newInstance(0);
+            BarberServicesFragment bsf = BarberServicesFragment.newInstance();
             startFragmentBackStack(bsf);
         } else if (id == R.id.show_promotions) {
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance(0);

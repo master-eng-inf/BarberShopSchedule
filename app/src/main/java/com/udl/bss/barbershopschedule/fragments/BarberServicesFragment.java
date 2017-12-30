@@ -1,74 +1,53 @@
 package com.udl.bss.barbershopschedule.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.udl.bss.barbershopschedule.HomeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.ServiceClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
 public class BarberServicesFragment extends Fragment {
-    private static final String BARBER_ID = "barber_id";
-    private int barber_id;
-    private BLL instance;
 
     private RecyclerView servicesRecyclerView;
     private ServiceAdapter adapter;
+    private Barber barber;
+    private SharedPreferences mPrefs;
 
     private OnFragmentInteractionListener mListener;
 
-    public BarberServicesFragment() {
-        // Required empty public constructor
-    }
+    public BarberServicesFragment() {}
 
-    public static BarberServicesFragment newInstance(int barber_id) {
-        BarberServicesFragment fragment = new BarberServicesFragment();
-        Bundle args = new Bundle();
-        args.putInt(BARBER_ID, barber_id);
-        fragment.setArguments(args);
-        return fragment;
-
+    public static BarberServicesFragment newInstance() {
+        return new BarberServicesFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            this.barber_id = getArguments().getInt(BARBER_ID);
-        }
-        this.instance = new BLL(getContext());
     }
 
     @Override
@@ -82,7 +61,7 @@ public class BarberServicesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getActivity() != null) {
             Fade fade = new Fade();
             fade.excludeTarget(android.R.id.statusBarBackground, true);
             fade.excludeTarget(android.R.id.navigationBarBackground, true);
@@ -90,6 +69,11 @@ public class BarberServicesFragment extends Fragment {
             getActivity().getWindow().setEnterTransition(fade);
             getActivity().getWindow().setExitTransition(fade);
         }
+
+        mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        barber = gson.fromJson(json, Barber.class);
 
         if (getView() != null) {
             servicesRecyclerView = getView().findViewById(R.id.rv);
@@ -128,12 +112,21 @@ public class BarberServicesFragment extends Fragment {
     }
 
     private void setBarberServices() {
-        List<BarberService> barberServiceList;
 
-        barberServiceList = this.instance.Get_BarberShopServices(this.barber_id);
+        if (barber != null) {
+            APIController.getInstance().getServicesByBarber(barber.getToken(), String.valueOf(barber.getId()))
+                    .addOnCompleteListener(new OnCompleteListener<List<BarberService>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<BarberService>> task) {
+                    ServiceAdapter adapter = new ServiceAdapter(
+                            task.getResult(),
+                            new ServiceClick(getActivity(), servicesRecyclerView),
+                            getContext());
+                    servicesRecyclerView.setAdapter(adapter);
+                }
+            });
+        }
 
-        ServiceAdapter adapter = new ServiceAdapter(barberServiceList, new ServiceClick(getActivity(), servicesRecyclerView), getContext());
-        servicesRecyclerView.setAdapter(adapter);
     }
 
     public void onButtonPressed(Uri uri) {
