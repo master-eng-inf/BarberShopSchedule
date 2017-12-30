@@ -146,7 +146,6 @@ public class HomeFragment extends Fragment {
                 PromotionAdapter adapter = new PromotionAdapter(
                         promotionList,
                         new PromotionClick(getActivity(), promotionsRecycleView),
-                        getContext(),
                         client.getToken());
                 promotionsRecycleView.setAdapter(adapter);
             }

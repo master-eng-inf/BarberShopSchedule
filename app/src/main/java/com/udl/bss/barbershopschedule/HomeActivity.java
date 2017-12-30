@@ -222,7 +222,7 @@ public class HomeActivity extends AppCompatActivity
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
             startFragmentBackStack(bsf);
         } else if (id == R.id.show_promotions) {
-            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance(0);
+            BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
             startFragmentBackStack(bpf);
         } else if (id == R.id.profile) {
             //Intent intent = new Intent(this, BarberSettingsActivity.class);

@@ -127,7 +127,6 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
                             PromotionAdapter adapter = new PromotionAdapter(
                                     promotionList,
                                     new PromotionClick(getActivity(), promotionsRecyclerView),
-                                    getContext(),
                                     client.getToken());
                             promotionsRecyclerView.setAdapter(adapter);
                         }

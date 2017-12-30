@@ -1,6 +1,5 @@
 package com.udl.bss.barbershopschedule.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
@@ -28,7 +26,6 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
 
     private List<Promotion> mDataset;
     private OnItemClickListener listener;
-    private Context context;
     private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,10 +42,9 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.View
         }
     }
 
-    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener, Context context, String token) {
+    public PromotionAdapter(List<Promotion> myDataset, OnItemClickListener listener, String token) {
         mDataset = myDataset;
         this.listener = listener;
-        this.context = context;
         this.token = token;
     }
 
