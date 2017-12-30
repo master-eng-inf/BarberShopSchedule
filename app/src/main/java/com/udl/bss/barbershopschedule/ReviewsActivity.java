@@ -34,6 +34,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private ReviewAdapter adapter;
     private Client client;
     private SharedPreferences mPrefs;
+    private Review review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class ReviewsActivity extends AppCompatActivity {
 
 
         //TODO change id client
-        final Review review = instance.Get_ClientReviewForBarberShop(0, this.barber_shop.getId());
+        review = instance.Get_ClientReviewForBarberShop(0, this.barber_shop.getId());
 
         (findViewById(R.id.edit_user_review)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +75,11 @@ public class ReviewsActivity extends AppCompatActivity {
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        instance.Delete_Review(review);
+
+                        APIController.getInstance().removeReview(
+                                client.getToken(),
+                                String.valueOf(barber_shop.getId()),
+                                String.valueOf(client.getId()));
 
                         finish();
                         startActivity(getIntent());
@@ -102,8 +107,7 @@ public class ReviewsActivity extends AppCompatActivity {
                 String date = String.valueOf(calendar.get(Calendar.YEAR)) + "-" +
                         String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
-                //TODO change id client
-                instance.Insert_or_Update_Review(new Review(0, barber_shop.getId(), description, rating, date));
+                insertOrUpdateReview(new Review(client.getId(), barber_shop.getId(), description, rating, date));
 
                 finish();
                 startActivity(getIntent());
@@ -204,5 +208,10 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void insertOrUpdateReview(Review r) {
+        if (review == null) APIController.getInstance().createReview(client.getToken(), r);
+        else APIController.getInstance().updateReview(client.getToken(), r);
     }
 }

@@ -537,6 +537,64 @@ public class APIController {
 
     /* Review Controller */
 
+    public void createReview(String token, Review review) {
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("client_id", String.valueOf(review.getClientId()));
+        requestBody.put("barber_shop_id", String.valueOf(review.getBarberShopId()));
+        requestBody.put("mark", String.valueOf(review.getMark()));
+        requestBody.put("description", review.getDescription());
+        requestBody.put("date", review.getDate());
+
+        ApiUtils.getService().createReview(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Create review OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Create review ERROR");
+            }
+        });
+
+    }
+
+    public void updateReview(String token, Review review) {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("client_id", String.valueOf(review.getClientId()));
+        requestBody.put("barber_shop_id", String.valueOf(review.getBarberShopId()));
+        requestBody.put("mark", String.valueOf(review.getMark()));
+        requestBody.put("description", review.getDescription());
+        requestBody.put("date", review.getDate());
+
+        ApiUtils.getService().updateReview(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Update review OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update review ERROR");
+            }
+        });
+    }
+
+    public void removeReview(String token, String barber_id, String client_id) {
+        ApiUtils.getService().removeReview(token,barber_id, client_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Review removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Remove review ERROR");
+            }
+        });
+    }
+
     public Task<List<Review>> getReviewsByBarber(String token, String id) {
         final TaskCompletionSource<List<Review>> tcs = new TaskCompletionSource<>();
 
