@@ -1,34 +1,84 @@
 package com.udl.bss.barbershopschedule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.udl.bss.barbershopschedule.database.BLL;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.udl.bss.barbershopschedule.adapters.ServiceSpinnerAdapter;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
+
+import java.util.List;
 
 public class BarberNewPromotionActivity extends AppCompatActivity {
 
-    private EditText new_promotion_name, new_promotion_description, new_promotion_service;
-    private String new_promotion_name_var;
-    private String new_promotion_description_var;
-    private int new_promotion_service_var;
+    private EditText new_promotion_name, new_promotion_description;
+
+    private SharedPreferences mPrefs;
+    private Barber barber;
+    private BarberService service;
+    private CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barber_new_promotion);
 
+        mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        barber = gson.fromJson(json, Barber.class);
+
         new_promotion_name = findViewById(R.id.new_promotion_name);
         new_promotion_description = findViewById(R.id.new_promotion_description);
-        new_promotion_service = findViewById(R.id.new_promotion_service);
+        checkBox = findViewById(R.id.checkbox_promotional);
+
+        final Spinner spinner = findViewById(R.id.service_spinner);
+        APIController.getInstance().getServicesByBarber(barber.getToken(), String.valueOf(barber.getId()))
+                .addOnCompleteListener(new OnCompleteListener<List<BarberService>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<BarberService>> task) {
+                List<BarberService> serviceList = task.getResult();
+                BarberService[] servicesArray = new BarberService[serviceList.size()];
+                servicesArray = serviceList.toArray(servicesArray);
+
+                if (serviceList.size() > 0) service = serviceList.get(0);
+
+                final ServiceSpinnerAdapter adapter = new ServiceSpinnerAdapter(
+                        getApplicationContext(),
+                        android.R.layout.simple_spinner_item,
+                        servicesArray
+                );
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        service = adapter.getItem(i);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {}
+                });
+            }
+        });
 
 
-        Button btn_create = (Button) findViewById(R.id.btn_create);
+        Button btn_create = findViewById(R.id.btn_create);
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +87,7 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
             }
         });
 
-        Button btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        Button btn_cancel = findViewById(R.id.btn_cancel);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,21 +101,26 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
 
         if (creationCheck()) {
 
-            new_promotion_name_var = new_promotion_name.getText().toString();
-            new_promotion_description_var = new_promotion_description.getText().toString();
-            new_promotion_service_var = Integer.parseInt(new_promotion_service.getText().toString());
+            if (barber != null) {
 
-            BLL instance = new BLL(this);
+                int promotional = checkBox.isChecked() ? 1 : 0;
 
-            Promotion new_promotion = new Promotion(-1,0,new_promotion_service_var,new_promotion_name_var,new_promotion_description_var,0);
+                Promotion newPromotion = new Promotion(
+                        barber.getId(),
+                        service.getId(),
+                        new_promotion_name.getText().toString(),
+                        new_promotion_description.getText().toString(),
+                        promotional
+                );
 
-            instance.Insert_Promotion(new_promotion);
+                APIController.getInstance().createPromotion(barber.getToken(), newPromotion);
 
-            Toast.makeText(getApplicationContext(), "Your promotion was created succesfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Your promotion was created succesfully", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("user", "Barber");
-            this.startActivity(intent);
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("user", "Barber");
+                this.startActivity(intent);
+            }
 
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
@@ -76,7 +131,7 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
 
         return new_promotion_name != null && !new_promotion_name.getText().toString().equals("")
                 && new_promotion_description != null && !new_promotion_description.getText().toString().equals("")
-                && new_promotion_service != null && !new_promotion_service.getText().toString().equals("");
+                && service != null;
 
     }
 

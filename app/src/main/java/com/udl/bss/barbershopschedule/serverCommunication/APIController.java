@@ -505,6 +505,31 @@ public class APIController {
 
     /* Promotion Controller */
 
+    public void createPromotion(String token, Promotion promotion) {
+
+        String promotional = promotion.getIs_Promotional() != 0 ? "true" : "false";
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("service_id", String.valueOf(promotion.getService_id()));
+        requestBody.put("barber_shop_id", String.valueOf(promotion.getBarber_shop_id()));
+        requestBody.put("name", promotion.getName());
+        requestBody.put("description", promotion.getDescription());
+        requestBody.put("is_promotional", promotional);
+
+        ApiUtils.getService().createPromotion(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Create promotion OK" + response.toString()+" "+response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Create promotion ERROR");
+            }
+        });
+
+    }
+
     public Task<Promotion> getPromotionById(String token, String id){
         final TaskCompletionSource<Promotion> tcs = new TaskCompletionSource<>();
 

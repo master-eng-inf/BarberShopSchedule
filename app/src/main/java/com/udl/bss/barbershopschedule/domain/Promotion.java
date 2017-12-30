@@ -22,6 +22,14 @@ public class Promotion implements Parcelable {
         this.is_promotional = is_promotional;
     }
 
+    public Promotion(int barber_shop_id, int service_id, String name, String description, int is_promotional) {
+        this.barber_shop_id = barber_shop_id;
+        this.service_id = service_id;
+        this.name = name;
+        this.description = description;
+        this.is_promotional = is_promotional;
+    }
+
     private Promotion(Parcel in) {
         this.id = in.readInt();
         this.barber_shop_id = in.readInt();
