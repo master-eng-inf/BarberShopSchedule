@@ -147,6 +147,11 @@ public interface APIService {
     Call<ResponseBody> getReviewsByBarberId(@Path(value = "token", encoded = true) String token,
                                             @Path(value = "barber_shop_id", encoded = true) String id);
 
+    @GET("reviews/barberShop/{barber_shop_id}/client/{client_id}/{token}")
+    Call<ResponseBody> getReviewByClientIdAndBarberId(@Path(value = "token", encoded = true) String token,
+                                                       @Path(value = "barber_shop_id", encoded = true) String barber_id,
+                                                       @Path(value = "client_id", encoded = true) String client_id);
+
 
     @Headers("Content-Type: application/json")
     @POST("reviews/insertReview/{token}")

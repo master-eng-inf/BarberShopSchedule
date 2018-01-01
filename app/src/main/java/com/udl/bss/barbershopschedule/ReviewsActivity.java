@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.adapters.ReviewAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Review;
@@ -43,7 +42,6 @@ public class ReviewsActivity extends AppCompatActivity {
         setTitle(R.string.barber_shop_rating);
 
         this.barber_shop = getIntent().getParcelableExtra("barber");
-        final BLL instance = new BLL(this);
 
 
         mPrefs = getSharedPreferences("USER", Activity.MODE_PRIVATE);
@@ -51,10 +49,41 @@ public class ReviewsActivity extends AppCompatActivity {
         String json = mPrefs.getString("user", "");
         client = gson.fromJson(json, Client.class);
 
+        if (client != null && barber_shop != null) {
 
+            APIController.getInstance().getReviewByClientAndBarber(client.getToken(),
+                    String.valueOf(barber_shop.getId()), String.valueOf(client.getId()))
+                    .addOnCompleteListener(new OnCompleteListener<Review>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Review> task) {
+                            review = task.getResult();
 
-        //TODO change id client
-        review = instance.Get_ClientReviewForBarberShop(0, this.barber_shop.getId());
+                            String rate_this_barber_shop = getString(R.string.rate_barber_shop_now) + " " + barber_shop.getName();
+                            ((TextView) findViewById(R.id.rate_this_barber_shop)).setText(rate_this_barber_shop);
+
+                            findViewById(R.id.review_next_button).setClickable(false);
+                            findViewById(R.id.review_next_button).setVisibility(View.GONE);
+
+                            if (review == null) {
+                                findViewById(R.id.review_cancel_button).setClickable(false);
+                                findViewById(R.id.review_cancel_button).setVisibility(View.GONE);
+                                findViewById(R.id.no_rated_layout_1).setVisibility(View.VISIBLE);
+                                findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
+                                findViewById(R.id.already_rated_layout).setVisibility(View.GONE);
+
+                            } else {
+                                findViewById(R.id.no_rated_layout_1).setVisibility(View.GONE);
+                                findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
+                                findViewById(R.id.already_rated_layout).setVisibility(View.VISIBLE);
+
+                                ((TextView) findViewById(R.id.user_review)).setText(review.getDescription());
+                                ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.getMark());
+                                ((TextView) findViewById(R.id.user_rating_date)).setText((review.getDate()));
+                            }
+
+                        }
+                    });
+        }
 
         (findViewById(R.id.edit_user_review)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,28 +194,6 @@ public class ReviewsActivity extends AppCompatActivity {
             }
         });
 
-        String rate_this_barber_shop = getString(R.string.rate_barber_shop_now) + " " + this.barber_shop.getName();
-        ((TextView) findViewById(R.id.rate_this_barber_shop)).setText(rate_this_barber_shop);
-
-        findViewById(R.id.review_next_button).setClickable(false);
-        findViewById(R.id.review_next_button).setVisibility(View.GONE);
-
-        if (review == null) {
-            findViewById(R.id.review_cancel_button).setClickable(false);
-            findViewById(R.id.review_cancel_button).setVisibility(View.GONE);
-            findViewById(R.id.no_rated_layout_1).setVisibility(View.VISIBLE);
-            findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
-            findViewById(R.id.already_rated_layout).setVisibility(View.GONE);
-
-        } else {
-            findViewById(R.id.no_rated_layout_1).setVisibility(View.GONE);
-            findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
-            findViewById(R.id.already_rated_layout).setVisibility(View.VISIBLE);
-
-            ((TextView) findViewById(R.id.user_review)).setText(review.getDescription());
-            ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.getMark());
-            ((TextView) findViewById(R.id.user_rating_date)).setText((review.getDate()));
-        }
 
         mRecyclerView = findViewById(R.id.reviews_rv);
         mRecyclerView.setHasFixedSize(true);

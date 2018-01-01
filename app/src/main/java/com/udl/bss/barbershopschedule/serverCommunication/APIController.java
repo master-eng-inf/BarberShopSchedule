@@ -765,4 +765,40 @@ public class APIController {
 
         return tcs.getTask();
     }
+
+    public Task<Review> getReviewByClientAndBarber(String token, String barber_id, String client_id) {
+        final TaskCompletionSource<Review> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getReviewByClientIdAndBarberId(token, barber_id, client_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                ResponseBody body = response.body();
+                if (body != null) {
+                    try {
+                        String s = body.string();
+                        JSONObject json = new JSONObject(s);
+
+                        Review review = new Review(
+                                json.getInt("client_id"),
+                                json.getInt("barber_shop_id"),
+                                json.getString("description"),
+                                json.getDouble("mark"),
+                                json.getString("date"));
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(review);
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get review by client and barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
 }
