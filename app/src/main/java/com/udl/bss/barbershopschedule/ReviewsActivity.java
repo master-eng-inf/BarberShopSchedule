@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -41,6 +43,16 @@ public class ReviewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reviews);
         setTitle(R.string.barber_shop_rating);
 
+        final TextView rate_tv = findViewById(R.id.rate_this_barber_shop);
+        final Button next_btn = findViewById(R.id.review_next_button);
+        final Button cancel_btn = findViewById(R.id.review_cancel_button);
+        final LinearLayout no_rated1 = findViewById(R.id.no_rated_layout_1);
+        final LinearLayout no_rated2 = findViewById(R.id.no_rated_layout_2);
+        final LinearLayout already_rated = findViewById(R.id.already_rated_layout);
+        final TextView user_review_tv = findViewById(R.id.user_review);
+        final RatingBar user_rating = findViewById(R.id.user_rating_bar);
+        final TextView user_rating_date = findViewById(R.id.user_rating_date);
+
         this.barber_shop = getIntent().getParcelableExtra("barber");
 
 
@@ -48,6 +60,13 @@ public class ReviewsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = mPrefs.getString("user", "");
         client = gson.fromJson(json, Client.class);
+
+
+        cancel_btn.setClickable(false);
+        cancel_btn.setVisibility(View.GONE);
+        no_rated1.setVisibility(View.VISIBLE);
+        no_rated2.setVisibility(View.GONE);
+        already_rated.setVisibility(View.GONE);
 
         if (client != null && barber_shop != null) {
 
@@ -59,26 +78,26 @@ public class ReviewsActivity extends AppCompatActivity {
                             review = task.getResult();
 
                             String rate_this_barber_shop = getString(R.string.rate_barber_shop_now) + " " + barber_shop.getName();
-                            ((TextView) findViewById(R.id.rate_this_barber_shop)).setText(rate_this_barber_shop);
+                            rate_tv.setText(rate_this_barber_shop);
 
-                            findViewById(R.id.review_next_button).setClickable(false);
-                            findViewById(R.id.review_next_button).setVisibility(View.GONE);
+                            next_btn.setClickable(false);
+                            next_btn.setVisibility(View.GONE);
 
                             if (review == null) {
-                                findViewById(R.id.review_cancel_button).setClickable(false);
-                                findViewById(R.id.review_cancel_button).setVisibility(View.GONE);
-                                findViewById(R.id.no_rated_layout_1).setVisibility(View.VISIBLE);
-                                findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
-                                findViewById(R.id.already_rated_layout).setVisibility(View.GONE);
+                                cancel_btn.setClickable(false);
+                                cancel_btn.setVisibility(View.GONE);
+                                no_rated1.setVisibility(View.VISIBLE);
+                                no_rated2.setVisibility(View.GONE);
+                                already_rated.setVisibility(View.GONE);
 
                             } else {
-                                findViewById(R.id.no_rated_layout_1).setVisibility(View.GONE);
-                                findViewById(R.id.no_rated_layout_2).setVisibility(View.GONE);
-                                findViewById(R.id.already_rated_layout).setVisibility(View.VISIBLE);
+                                no_rated1.setVisibility(View.GONE);
+                                no_rated2.setVisibility(View.GONE);
+                                already_rated.setVisibility(View.VISIBLE);
 
-                                ((TextView) findViewById(R.id.user_review)).setText(review.getDescription());
-                                ((RatingBar) findViewById(R.id.user_rating_bar)).setRating((float)review.getMark());
-                                ((TextView) findViewById(R.id.user_rating_date)).setText((review.getDate()));
+                                user_review_tv.setText(review.getDescription());
+                                user_rating.setRating((float)review.getMark());
+                                user_rating_date.setText((review.getDate()));
                             }
 
                         }
