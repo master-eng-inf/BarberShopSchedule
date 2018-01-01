@@ -208,6 +208,9 @@ public class ReviewsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<List<Review>> task) {
                             List<Review> reviewList = task.getResult();
+                            for(Review review: reviewList) {
+                                if (review.getClientId() == client.getId()) reviewList.remove(review);
+                            }
                             adapter = new ReviewAdapter(reviewList, client.getToken());
                             mRecyclerView.setAdapter(adapter);
                         }
