@@ -30,6 +30,9 @@
     <string name="barber_service_creation_duration">Service duration</string>
     <string name="barber_service_creation_description">Service description</string>
 
+    <string name="delete_service_dialog">Are you sure you want to delete your service?</string>
+    <string name="delete_service_dialog_title">Warning</string>
+
 
     <string name="barber_promotion_button">Promotions</string>
     <string name="barber_new_promotion_button">New Promotion</string>
@@ -191,4 +194,5 @@
     <string name="appointment_deleted">The appointment was deleted successfully</string>
     <string name="free_hour_click_not_enough_time_title">Warning</string>
     <string name="free_hour_click_not_enough_time_dialog" formatted="false">The estimated time for %1$s is %2$s minutes, but with your selection there is only %3$s minutes at most. The appointment has to be validated by the barber shop. Do you want to continue? </string>
+    <string name="title_activity_barber_update_service">BarberUpdateServiceActivity</string>
 </resources>

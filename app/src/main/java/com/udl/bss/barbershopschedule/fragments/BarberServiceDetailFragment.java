@@ -1,27 +1,37 @@
 package com.udl.bss.barbershopschedule.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
+
 
 public class BarberServiceDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private BarberService serviceToChange;
+    private String service_id;
+
+    private Barber barber;
+    private SharedPreferences mPrefs;
+
 
     public BarberServiceDetailFragment() {
         // Required empty public constructor
@@ -39,6 +49,11 @@ public class BarberServiceDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        barber = gson.fromJson(json, Barber.class);
     }
 
     @Override
@@ -53,6 +68,7 @@ public class BarberServiceDetailFragment extends Fragment {
         String s_name = bundle.getString("name");
         String d_price = Double.toString(bundle.getDouble("price"));
         String d_duration = Double.toString(bundle.getDouble("duration"));
+        service_id = Integer.toString(bundle.getInt("id"));
 
         EditText name_cv = (EditText) view.findViewById(R.id.name_cv);
         EditText price_cv = (EditText) view.findViewById(R.id.price_cv);
@@ -66,7 +82,27 @@ public class BarberServiceDetailFragment extends Fragment {
         btn_delete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-               deleteInDB();
+                AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+                alert.setTitle(getString(R.string.delete_service_dialog_title));
+                alert.setMessage(getString(R.string.delete_service_dialog));
+                alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        APIController.getInstance().removeService(barber.getToken(), service_id);
+                        Toast.makeText(getContext(), "Your service was deleted succesfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), HomeActivity.class);
+                        intent.putExtra("user", "Barber");
+                        startActivity(intent);
+                    }
+                });
+                alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.show();
             }
         });
         return view;
@@ -75,29 +111,8 @@ public class BarberServiceDetailFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        Bundle args = getArguments();
-
-        serviceToChange = new BarberService(args.getInt("id"),args.getInt("id_barber"),args.getString("name"),args.getDouble("price"),args.getDouble("duration"));
-
-
     }
 
-
-    private void deleteInDB () {
-
-        BLL instance = new BLL(getContext());
-
-        instance.Delete_Service(serviceToChange);
-
-        Toast.makeText(getContext(), "Your service was deleted succesfully", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(getContext(), HomeActivity.class);
-        intent.putExtra("user", "Barber");
-        this.startActivity(intent);
-
-    }
 
     @Override
     public void onAttach(Context context) {

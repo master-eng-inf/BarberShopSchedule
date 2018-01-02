@@ -499,6 +499,20 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public void removeService(String token, String service_id) {
+        ApiUtils.getService().removeService(token,service_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Service removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Service deletion ERROR");
+            }
+        });
+    }
+
 
 
 
