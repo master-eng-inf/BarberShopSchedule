@@ -14,19 +14,24 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 
-import com.udl.bss.barbershopschedule.database.BLL;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.List;
 
@@ -41,7 +46,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class BarberSettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity {
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -130,15 +135,7 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
 
         setupActionBar();
-        /*Preference button = findPreference(getString(R.string.savePreferences));
-        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(BarberSettingsActivity.this, "Saving is not possible yet", Toast.LENGTH_SHORT).show();
-                //code for what you want it to do
-                return true;
-            }
-        });*/
+
     }
 
     /**
@@ -187,9 +184,7 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-                || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-                || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+                || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -198,13 +193,22 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
-        EditTextPreference pName = null;
-        EditTextPreference pEmail = null;
-        EditTextPreference pPhone = null;
-        EditTextPreference pPassword = null;
-        EditTextPreference pAddress = null;
-        EditTextPreference pCity = null;
-        EditTextPreference pDescription = null;
+
+        private static String BARBER_MODE = "Barber";
+
+        PreferenceScreen pScreen;
+        EditTextPreference pName;
+        ListPreference pGender;
+        EditTextPreference pAge;
+        EditTextPreference pEmail;
+        EditTextPreference pPhone;
+        EditTextPreference pPassword;
+        Preference pPlace;
+        EditTextPreference pDescription;
+
+        Barber barber;
+        Client client;
+        SharedPreferences mPrefs;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
@@ -213,134 +217,121 @@ public class BarberSettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
+            mPrefs = getContext().getSharedPreferences("USER", MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("user", "");
+            final String mode = mPrefs.getString("mode", "");
+
+            pScreen = getPreferenceScreen();
             pName = (EditTextPreference) findPreference("save_name");
             pEmail= (EditTextPreference) findPreference("save_mail");
             pPhone = (EditTextPreference) findPreference("save_phone");
             pPassword = (EditTextPreference) findPreference("save_password");
-            pAddress = (EditTextPreference) findPreference("save_address");
             pDescription= (EditTextPreference)findPreference("save_description");
-            pCity = (EditTextPreference) findPreference("save_city");
+            pPlace = findPreference("save_place");
+            pGender = (ListPreference) findPreference("gender_list");
+            pAge = (EditTextPreference) findPreference("save_age");
 
-            final BLL instance = new BLL(getContext());
-            final Barber barber = instance.Get_BarberShop(0);
 
-            pName.setSummary(barber.getName());
-            pEmail.setSummary(barber.getEmail());
-            pPhone.setSummary(barber.getPhone());
-            pPassword.setSummary("");
-            pAddress.setSummary(barber.getAddress());
-            pCity.setSummary(barber.getCity());
-            pDescription.setSummary(barber.getDescription());
+            if (mode.equals(BARBER_MODE)) {
+                barber = gson.fromJson(json, Barber.class);
+                pScreen.removePreference(pAge);
 
-            pName.setText(barber.getName());
-            pEmail.setText(barber.getEmail());
-            pPhone.setText(barber.getPhone());
-            //pPassword.setText("");
-            pAddress.setText(barber.getAddress());
-            pCity.setText(barber.getCity());
-            pDescription.setText(barber.getDescription());
+                setContent(barber.getName(), barber.getEmail(), barber.getPhone(),
+                        barber.getPassword(), barber.getDescription(),
+                        barber.getAddress() + ", " + barber.getCity(),
+                        Integer.valueOf(barber.getGender()), null);
 
-            bindPreferenceSummaryToValue(pName);
-            bindPreferenceSummaryToValue(pEmail);
-            bindPreferenceSummaryToValue(pPhone);
-            bindPreferenceSummaryToValue(pAddress);
-            bindPreferenceSummaryToValue(pDescription);
-            bindPreferenceSummaryToValue(findPreference("save_description"));
 
-            Preference button = findPreference(getString(R.string.savePreferences));
-            button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            } else {
+                client = gson.fromJson(json, Client.class);
+                pScreen.removePreference(pDescription);
+                pScreen.removePreference(pPlace);
+
+                setContent(client.getName(), client.getEmail(), client.getPhone(),
+                        client.getPassword(), null, null,
+                        client.getGender(), String.valueOf(client.getAge()));
+            }
+
+            pName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    //code for what you want it to do
+                public boolean onPreferenceChange(final Preference preference, final Object o) {
 
-                    bindPreferenceSummaryToValue(pName);
-                    bindPreferenceSummaryToValue(pEmail);
-                    bindPreferenceSummaryToValue(pPhone);
-                    bindPreferenceSummaryToValue(pAddress);
-                    bindPreferenceSummaryToValue(pDescription);
-                    bindPreferenceSummaryToValue(pCity);
+                    APIController.getInstance().isUserAvailable(o.toString()).addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Boolean> task) {
+                            if (task.getResult()) {
 
+                                if (mode.equals(BARBER_MODE)) {
+                                    barber.setName(o.toString());
+                                    APIController.getInstance().updateBarber(barber.getToken(), barber);
+                                    saveToSharedPreferences((new Gson()).toJson(barber));
+                                } else {
+                                    client.setName(o.toString());
+                                    APIController.getInstance().updateClient(client.getToken(), client);
+                                    saveToSharedPreferences((new Gson()).toJson(client));
+                                }
 
-                    if(instance.Update_BarberShop(barber.getId(),pEmail.getText(),pPhone.getText(),
-                            pName.getText(),pAddress.getText(),pCity.getText(),pDescription.getText()) == true)
-                    {
-                        Toast.makeText(getActivity(),"Data saved!",Toast.LENGTH_SHORT).show();
-                    }else
-                        Toast.makeText(getActivity(),"Data not saved!",Toast.LENGTH_SHORT).show();
-                    
+                                preference.setSummary(o.toString());
+
+                                Toast.makeText(getContext(), "Name updated successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Username is not available", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     return true;
                 }
             });
+
         }
+
+        private void setContent (String name, String mail, String phone, String password,
+                                 String description, String place, int gender, String age) {
+            pName.setText(name);
+            bindPreferenceSummaryToValue(pName);
+
+            pEmail.setText(mail);
+            bindPreferenceSummaryToValue(pEmail);
+
+            pPhone.setText(phone);
+            bindPreferenceSummaryToValue(pPhone);
+
+            pPassword.setText(password);
+
+            if (description != null) {
+                pDescription.setText(description);
+                bindPreferenceSummaryToValue(pDescription);
+            }
+
+            if (place != null) pPlace.setSummary(place);
+
+            pGender.setValueIndex(gender);
+            bindPreferenceSummaryToValue(pGender);
+
+            if (age != null) {
+                pAge.setText(age);
+                bindPreferenceSummaryToValue(pAge);
+            }
+
+        }
+
+        private void saveToSharedPreferences (String user) {
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            prefsEditor.putString("user", user);
+            prefsEditor.apply();
+        }
+
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), BarberSettingsActivity.class));
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
     }
 
-    /**
-     * This fragment shows notification preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NotificationPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification);
-            setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), BarberSettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * This fragment shows data and sync preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class DataSyncPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_data_sync);
-            setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), BarberSettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
 }

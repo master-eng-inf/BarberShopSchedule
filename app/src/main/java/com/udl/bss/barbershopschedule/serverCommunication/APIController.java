@@ -234,6 +234,34 @@ public class APIController {
     }
 
 
+    public void updateBarber(String token, Barber barber) {
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("id", String.valueOf(barber.getId()));
+        requestBody.put("password", barber.getPassword());
+        requestBody.put("email", barber.getEmail());
+        requestBody.put("telephone", barber.getPhone());
+        requestBody.put("name", barber.getName());
+        requestBody.put("address", barber.getAddress());
+        requestBody.put("city", barber.getCity());
+        requestBody.put("description", barber.getDescription());
+        requestBody.put("places_id", barber.getPlacesID());
+
+        ApiUtils.getService().updateBarber(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Update barber OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update barber ERROR");
+            }
+        });
+
+    }
+
+
 
 
     /* Client controller */
@@ -258,6 +286,33 @@ public class APIController {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Create client ERROR");
+            }
+        });
+
+    }
+
+
+    public void updateClient(String token, Client client) {
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("id", String.valueOf(client.getId()));
+        requestBody.put("password", client.getPassword());
+        requestBody.put("email", client.getEmail());
+        requestBody.put("telephone", client.getPhone());
+        requestBody.put("name", client.getName());
+        requestBody.put("gender", String.valueOf(client.getGender()));
+        requestBody.put("age", String.valueOf(client.getAge()));
+
+
+        ApiUtils.getService().updateClient(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Update client OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update client ERROR");
             }
         });
 

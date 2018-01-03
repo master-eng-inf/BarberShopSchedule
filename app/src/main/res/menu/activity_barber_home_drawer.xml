@@ -24,7 +24,7 @@
     <item android:title="@string/action_settings">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/profile"
                 android:icon="@drawable/ic_person_black_24dp"
                 android:title="@string/profile" />
         </menu>

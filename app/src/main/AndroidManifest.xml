@@ -54,7 +54,7 @@
         <activity android:name=".ReviewsActivity" />
         <activity android:name=".RegisterActivity" />
         <activity
-            android:name=".BarberSettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_barber_settings"
             android:parentActivityName=".HomeActivity">
             <meta-data
