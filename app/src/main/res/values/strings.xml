@@ -33,6 +33,9 @@
     <string name="delete_service_dialog">Are you sure you want to delete your service?</string>
     <string name="delete_service_dialog_title">Warning</string>
 
+    <string name="update_service_dialog_title">Update</string>
+    <string name="update_service_dialog">Are you sure you want to update your service?</string>
+
 
     <string name="barber_promotion_button">Promotions</string>
     <string name="barber_new_promotion_button">New Promotion</string>

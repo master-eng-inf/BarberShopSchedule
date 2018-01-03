@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ public class BarberServiceDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private String service_id;
+    private int service_idToUpdate, barberShop_idToUpdate;
+    private EditText name_cv, price_cv, duration_cv;
+
 
     private Barber barber;
     private SharedPreferences mPrefs;
@@ -68,11 +72,14 @@ public class BarberServiceDetailFragment extends Fragment {
         String s_name = bundle.getString("name");
         String d_price = Double.toString(bundle.getDouble("price"));
         String d_duration = Double.toString(bundle.getDouble("duration"));
+        service_idToUpdate = bundle.getInt("id");
+        barberShop_idToUpdate = bundle.getInt("id_barber");
+
         service_id = Integer.toString(bundle.getInt("id"));
 
-        EditText name_cv = (EditText) view.findViewById(R.id.name_cv);
-        EditText price_cv = (EditText) view.findViewById(R.id.price_cv);
-        EditText duration_cv = (EditText) view.findViewById(R.id.duration_cv);
+        name_cv = view.findViewById(R.id.name_cv);
+        price_cv = view.findViewById(R.id.price_cv);
+        duration_cv = view.findViewById(R.id.duration_cv);
 
         name_cv.setText(s_name);
         price_cv.setText(d_price);
@@ -91,6 +98,39 @@ public class BarberServiceDetailFragment extends Fragment {
 
                         APIController.getInstance().removeService(barber.getToken(), service_id);
                         Toast.makeText(getContext(), "Your service was deleted succesfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), HomeActivity.class);
+                        intent.putExtra("user", "Barber");
+                        startActivity(intent);
+                    }
+                });
+                alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.show();
+            }
+        });
+
+        Button btn_update = (Button) view.findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+                alert.setTitle(getString(R.string.update_service_dialog_title));
+                alert.setMessage(getString(R.string.update_service_dialog));
+                alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String nameToUpdate = name_cv.getText().toString();
+                        Double priceToUpdate = Double.parseDouble(price_cv.getText().toString());
+                        Double durationToUpdate = Double.parseDouble(duration_cv.getText().toString());
+
+                        BarberService serviceUpdated = new BarberService(service_idToUpdate,barberShop_idToUpdate,nameToUpdate,priceToUpdate,durationToUpdate);
+
+                        APIController.getInstance().updateService(barber.getToken(), serviceUpdated);
+                        Toast.makeText(getContext(), "Your service was updated succesfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), HomeActivity.class);
                         intent.putExtra("user", "Barber");
                         startActivity(intent);
