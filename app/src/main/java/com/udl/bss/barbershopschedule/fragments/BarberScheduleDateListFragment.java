@@ -21,6 +21,7 @@ import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.List;
@@ -103,6 +104,7 @@ public class BarberScheduleDateListFragment extends Fragment {
 
                     BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
                             appointmentList,
+                            new AppointmentClick(getActivity(), appointmentsRecyclerView),
                             barber.getToken());
                     appointmentsRecyclerView.setAdapter(adapter);
                 }

@@ -2,6 +2,7 @@ package com.udl.bss.barbershopschedule.adapters;
 
 
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.text.ParseException;
@@ -27,7 +29,7 @@ import java.util.Locale;
 
 public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppointmentsAdapter.ViewHolder> {
     private List<Appointment> mDataset;
-    //private OnItemClickListener listener; need this when I would want to create onClick opening info about special appointment
+    private OnItemClickListener listener;
     private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +49,9 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         }
     }
 
-    public BarberAppointmentsAdapter(List<Appointment> myDataset/*, OnItemClickListener listener*/, String token) {//delete comments when implementing listener for opening special appointments
+    public BarberAppointmentsAdapter(List<Appointment> myDataset, OnItemClickListener listener, String token) {
         mDataset = myDataset;
-        //this.listener = listener;
+        this.listener = listener;
         this.token = token;
     }
 
@@ -101,16 +103,16 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         String date = new SimpleDateFormat("HH:mm dd-MM-yyyy", new Locale("es", "ES")).format(date_obj);
         holder.date.setText(date);
 
-        /*ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");
-        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_name");
+        ViewCompat.setTransitionName(holder.service_name, String.valueOf(position)+"_serv");
+        ViewCompat.setTransitionName(holder.client_name, String.valueOf(position)+"_name");
         ViewCompat.setTransitionName(holder.date, String.valueOf(position)+"_date");
-        */
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onItemClick(v, holder.getAdapterPosition());
             }
-        });*/
+        });
 
     }
 

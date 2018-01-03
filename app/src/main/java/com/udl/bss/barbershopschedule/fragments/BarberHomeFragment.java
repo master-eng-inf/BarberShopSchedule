@@ -18,7 +18,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
+import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
@@ -99,10 +99,9 @@ public class BarberHomeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<List<Appointment>> task) {
 
-                AppointmentAdapter adapter = new AppointmentAdapter(
+                BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
                         task.getResult(),
                         new AppointmentClick(getActivity(), appointmentsRecyclerView),
-                        getContext(),
                         barber.getToken());
                 appointmentsRecyclerView.setAdapter(adapter);
             }
