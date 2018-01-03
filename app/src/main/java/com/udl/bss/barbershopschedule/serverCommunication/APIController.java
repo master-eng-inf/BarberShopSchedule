@@ -678,6 +678,20 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public void removePromotion(String token, String promotion_id) {
+        ApiUtils.getService().removePromotion(token,promotion_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Promotion removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Promotion deletion ERROR");
+            }
+        });
+    }
+
 
     /* Review Controller */
 

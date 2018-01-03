@@ -44,6 +44,9 @@
     <string name="transname_promotiondescription">promotionDescription</string>
     <string name="transname_promotionservice">promotionService</string>
 
+    <string name="delete_promotion_dialog">Are you sure you want to delete your promotion?</string>
+    <string name="delete_promotion_dialog_title">Warning</string>
+
 
     <string name="barber_create_button">Create</string>
     <string name="barber_update_button">Update</string>
