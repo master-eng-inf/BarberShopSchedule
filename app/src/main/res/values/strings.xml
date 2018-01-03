@@ -21,6 +21,8 @@
     <string name="transname_serviceprice">servicePrice</string>
     <string name="transname_serviceduration">serviceDuration</string>
 
+    <string name="update_title_alert">Update</string>
+
     <string name="next_appointment">Next appointments</string>
     <string name="promotions">Promotions</string>
     <string name="barber_service_button">Services</string>
@@ -33,7 +35,6 @@
     <string name="delete_service_dialog">Are you sure you want to delete your service?</string>
     <string name="delete_service_dialog_title">Warning</string>
 
-    <string name="update_service_dialog_title">Update</string>
     <string name="update_service_dialog">Are you sure you want to update your service?</string>
 
 
@@ -49,6 +50,8 @@
 
     <string name="delete_promotion_dialog">Are you sure you want to delete your promotion?</string>
     <string name="delete_promotion_dialog_title">Warning</string>
+
+    <string name="update_promotion_dialog">Are you sure you want to update your promotion?</string>
 
 
     <string name="barber_create_button">Create</string>

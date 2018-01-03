@@ -118,7 +118,7 @@ public class BarberServiceDetailFragment extends Fragment {
             @Override
             public void onClick(View v){
                 AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-                alert.setTitle(getString(R.string.update_service_dialog_title));
+                alert.setTitle(getString(R.string.update_title_alert));
                 alert.setMessage(getString(R.string.update_service_dialog));
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                     @Override
