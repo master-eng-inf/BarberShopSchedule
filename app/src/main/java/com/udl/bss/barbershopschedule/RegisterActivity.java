@@ -68,11 +68,6 @@ public class RegisterActivity extends AppCompatActivity
     private Spinner spinner_gender;
     private CardView cv_desc, cv_age, cv_place;
 
-    private long id;
-    private SharedPreferences sharedPreferences;
-    private BarbersSQLiteHelper bsh;
-    private UsersSQLiteHelper ush;
-
     private GoogleMaps googleMaps;
 
 
@@ -83,10 +78,6 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         buildGoogleApiClient();
-
-        sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-        bsh = new BarbersSQLiteHelper(getApplicationContext(), "DBBarbers", null, 1);
-        ush = new UsersSQLiteHelper(getApplicationContext(), "DBUsers", null, 1);
 
         et_name = findViewById(R.id.editText_register_name);
         et_mail = findViewById(R.id.editText_register_mail);
@@ -157,7 +148,6 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         String item = parent.getItemAtPosition(position).toString();
         if (item.equals(getString(R.string.user))) {
             isBarber = false;
@@ -258,71 +248,6 @@ public class RegisterActivity extends AppCompatActivity
 
     }
 
-    /*private void saveToDatabase () {
-
-        if (registerOk()) {
-
-            if (bitmap != null)
-                imagePath = BitmapUtils.saveToInternalStorage(bitmap,
-                        et_name.getText().toString(), getApplicationContext());
-
-            ContentValues data = new ContentValues();
-            data.put("name", et_name.getText().toString());
-            data.put("mail", et_mail.getText().toString());
-            data.put("password", et_pass.getText().toString());
-            data.put("image", imagePath);
-            data.put("phone", et_phone.getText().toString());
-            data.put("gender", ((TextView)spinner_gender.getSelectedView()).getText().toString());
-
-
-            if (isBarber) {
-                data.put("placesID", placesID);
-                data.put("address", address);
-                data.put("description", et_desc.getText().toString());
-            } else {
-                data.put("age", et_age.getText().toString());
-            }
-
-            save(data);
-
-            Toast.makeText(getApplicationContext(), "Registered succesfully", Toast.LENGTH_SHORT).show();
-
-            String mode = isBarber ? getString(R.string.barber) : getString(R.string.user);
-            saveToSharedPreferencesAndStart((int)id, et_name.getText().toString(), mode);
-
-        } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void save (final ContentValues data) {
-        SQLiteDatabase db;
-
-        if (isBarber) {
-            db = bsh.getWritableDatabase();
-            id = db.insert("Barbers", null, data);
-            db.close();
-            bsh.close();
-        } else {
-            db = ush.getWritableDatabase();
-            id = db.insert("Users", null, data);
-            db.close();
-            ush.close();
-        }
-
-    }
-
-    private void saveToSharedPreferencesAndStart (int id, String name, String mode) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("id", id);
-        editor.putString("user", name);
-        editor.putString("mode", mode);
-        editor.apply();
-
-        //startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        finish();
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
