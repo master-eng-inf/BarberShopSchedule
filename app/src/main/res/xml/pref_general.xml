@@ -30,8 +30,7 @@
         android:title="Change age" />
 
     <EditTextPreference
-        android:capitalize="words"
-        android:inputType="textCapWords"
+        android:inputType="textEmailAddress"
         android:key="save_mail"
         android:maxLines="1"
         android:selectAllOnFocus="true"
@@ -39,8 +38,7 @@
         android:title="Change E-mail" />
 
     <EditTextPreference
-        android:capitalize="words"
-        android:inputType="textCapWords"
+        android:inputType="number"
         android:key="save_phone"
         android:maxLines="1"
         android:selectAllOnFocus="true"
@@ -48,8 +46,7 @@
         android:title="Change phone number" />
 
     <EditTextPreference
-        android:capitalize="words"
-        android:inputType="textCapWords"
+        android:inputType="textPassword"
         android:key="save_password"
         android:maxLines="1"
         android:selectAllOnFocus="true"

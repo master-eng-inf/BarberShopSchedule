@@ -243,6 +243,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         Integer.valueOf(barber.getGender()), null);
 
 
+                pDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+                        barber.setDescription(o.toString());
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+
+                        preference.setSummary(o.toString());
+                        Toast.makeText(getContext(), "Description updated successfully", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+
             } else {
                 client = gson.fromJson(json, Client.class);
                 pScreen.removePreference(pDescription);
@@ -251,6 +265,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 setContent(client.getName(), client.getEmail(), client.getPhone(),
                         client.getPassword(), null, null,
                         client.getGender(), String.valueOf(client.getAge()));
+
+
+                pAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+                        client.setAge(Integer.valueOf(o.toString()));
+                        APIController.getInstance().updateClient(client.getToken(), client);
+                        saveToSharedPreferences((new Gson()).toJson(client));
+
+                        preference.setSummary(o.toString());
+                        Toast.makeText(getContext(), "Age updated successfully", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
             }
 
             pName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -280,6 +308,59 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             }
                         }
                     });
+                    return true;
+                }
+            });
+
+            pEmail.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if (mode.equals(BARBER_MODE)) {
+                        barber.setEmail(o.toString());
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+                    } else {
+                        client.setEmail(o.toString());
+                        APIController.getInstance().updateClient(client.getToken(), client);
+                        saveToSharedPreferences((new Gson()).toJson(client));
+                    }
+                    preference.setSummary(o.toString());
+                    Toast.makeText(getContext(), "Email updated successfully", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+            pPhone.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if (mode.equals(BARBER_MODE)) {
+                        barber.setPhone(o.toString());
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+                    } else {
+                        client.setPhone(o.toString());
+                        APIController.getInstance().updateClient(client.getToken(), client);
+                        saveToSharedPreferences((new Gson()).toJson(client));
+                    }
+                    preference.setSummary(o.toString());
+                    Toast.makeText(getContext(), "Phone updated successfully", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+            pPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if (mode.equals(BARBER_MODE)) {
+                        barber.setPassword(o.toString());
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+                    } else {
+                        client.setPassword(o.toString());
+                        APIController.getInstance().updateClient(client.getToken(), client);
+                        saveToSharedPreferences((new Gson()).toJson(client));
+                    }
+                    Toast.makeText(getContext(), "Password updated successfully", Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
