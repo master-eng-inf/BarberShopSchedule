@@ -21,6 +21,8 @@
     <string name="transname_serviceprice">servicePrice</string>
     <string name="transname_serviceduration">serviceDuration</string>
 
+    <string name="update_title_alert">Update</string>
+
     <string name="next_appointment">Next appointments</string>
     <string name="promotions">Promotions</string>
     <string name="barber_service_button">Services</string>
@@ -29,6 +31,11 @@
     <string name="barber_service_creation_price">Service price</string>
     <string name="barber_service_creation_duration">Service duration</string>
     <string name="barber_service_creation_description">Service description</string>
+
+    <string name="delete_service_dialog">Are you sure you want to delete your service?</string>
+    <string name="delete_service_dialog_title">Warning</string>
+
+    <string name="update_service_dialog">Are you sure you want to update your service?</string>
 
 
     <string name="barber_promotion_button">Promotions</string>
@@ -40,6 +47,11 @@
     <string name="transname_promotionname">promotionName</string>
     <string name="transname_promotiondescription">promotionDescription</string>
     <string name="transname_promotionservice">promotionService</string>
+
+    <string name="delete_promotion_dialog">Are you sure you want to delete your promotion?</string>
+    <string name="delete_promotion_dialog_title">Warning</string>
+
+    <string name="update_promotion_dialog">Are you sure you want to update your promotion?</string>
 
 
     <string name="barber_create_button">Create</string>
@@ -191,4 +203,5 @@
     <string name="appointment_deleted">The appointment was deleted successfully</string>
     <string name="free_hour_click_not_enough_time_title">Warning</string>
     <string name="free_hour_click_not_enough_time_dialog" formatted="false">The estimated time for %1$s is %2$s minutes, but with your selection there is only %3$s minutes at most. The appointment has to be validated by the barber shop. Do you want to continue? </string>
+    <string name="title_activity_barber_update_service">BarberUpdateServiceActivity</string>
 </resources>

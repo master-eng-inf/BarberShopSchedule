@@ -554,6 +554,41 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public void updateService(String token, BarberService service) {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("id", String.valueOf(service.getId()));
+        requestBody.put("barber_shop_id", String.valueOf(service.getBarberShopId()));
+        requestBody.put("name", service.getName());
+        requestBody.put("price", String.valueOf(service.getPrice()));
+        requestBody.put("duration", String.valueOf((int)service.getDuration()));
+
+        ApiUtils.getService().updateService(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Update service OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update service ERROR");
+            }
+        });
+    }
+
+    public void removeService(String token, String service_id) {
+        ApiUtils.getService().removeService(token,service_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Service removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Service deletion ERROR");
+            }
+        });
+    }
+
 
 
 
@@ -717,6 +752,44 @@ public class APIController {
         });
 
         return tcs.getTask();
+    }
+
+    public void updatePromotion(String token, Promotion promotion) {
+        String promotional = promotion.getIs_Promotional() != 0 ? "true" : "false";
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("id", String.valueOf(promotion.getId()));
+        requestBody.put("service_id", String.valueOf(promotion.getService_id()));
+        requestBody.put("barber_shop_id", String.valueOf(promotion.getBarber_shop_id()));
+        requestBody.put("name", promotion.getName());
+        requestBody.put("description", promotion.getDescription());
+        requestBody.put("is_promotional", promotional);
+
+        ApiUtils.getService().updatePromotion(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Update service OK");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update service ERROR");
+            }
+        });
+    }
+
+    public void removePromotion(String token, String promotion_id) {
+        ApiUtils.getService().removePromotion(token,promotion_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Promotion removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Promotion deletion ERROR");
+            }
+        });
     }
 
 
