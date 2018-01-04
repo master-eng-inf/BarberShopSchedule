@@ -176,6 +176,10 @@ public class Barber implements Parcelable {
         return gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getImagePath() {
         return imagePath;
     }

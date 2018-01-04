@@ -365,6 +365,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             });
 
+            pGender.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    int index = ((ListPreference)preference).findIndexOfValue(o.toString());
+                    if (mode.equals(BARBER_MODE)) {
+                        barber.setGender(String.valueOf(index));
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+                    } else {
+                        client.setGender(index);
+                        APIController.getInstance().updateClient(client.getToken(), client);
+                        saveToSharedPreferences((new Gson()).toJson(client));
+                    }
+                    preference.setSummary(o.toString());
+                    Toast.makeText(getContext(), "Gender updated successfully", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
         }
 
         private void setContent (String name, String mail, String phone, String password,

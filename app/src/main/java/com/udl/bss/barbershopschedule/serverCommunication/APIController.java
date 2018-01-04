@@ -218,6 +218,7 @@ public class APIController {
         requestBody.put("city", barber.getCity());
         requestBody.put("description", barber.getDescription());
         requestBody.put("places_id", barber.getPlacesID());
+        requestBody.put("gender", barber.getGender());
 
         ApiUtils.getService().createBarber(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -246,6 +247,7 @@ public class APIController {
         requestBody.put("city", barber.getCity());
         requestBody.put("description", barber.getDescription());
         requestBody.put("places_id", barber.getPlacesID());
+        requestBody.put("gender", barber.getGender());
 
         ApiUtils.getService().updateBarber(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
