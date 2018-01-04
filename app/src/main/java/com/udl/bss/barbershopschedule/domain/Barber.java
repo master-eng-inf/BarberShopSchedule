@@ -172,6 +172,10 @@ public class Barber implements Parcelable {
         return placesID;
     }
 
+    public void setPlacesID(String placesID) {
+        this.placesID = placesID;
+    }
+
     public String getGender() {
         return gender;
     }

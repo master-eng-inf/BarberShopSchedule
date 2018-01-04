@@ -16,16 +16,24 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -192,7 +200,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragment
+            implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+
+
+        private static final int PLACE_PICKER_REQUEST = 2;
+
+        private GoogleApiClient mGoogleApiClient;
 
         private static String BARBER_MODE = "Barber";
 
@@ -216,6 +230,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+
+            buildGoogleApiClient();
 
             mPrefs = getContext().getSharedPreferences("USER", MODE_PRIVATE);
             Gson gson = new Gson();
@@ -384,6 +400,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             });
 
+            pPlace.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    displayPlacePicker();
+                    return true;
+                }
+            });
+
         }
 
         private void setContent (String name, String mail, String phone, String password,
@@ -432,6 +456,93 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+            super.onActivityResult(requestCode, resultCode, intent);
+
+            switch(requestCode) {
+                case PLACE_PICKER_REQUEST:
+                    if(resultCode == RESULT_OK && intent != null){
+                        String placesID = PlacePicker.getPlace(getActivity(), intent).getId();
+                        String address = (String) PlacePicker.getPlace(getActivity(), intent).getAddress();
+
+                        String[] strArray = address.replaceAll("\\'", " ").split(",");
+
+                        barber.setAddress(strArray[0]+","+strArray[1]);
+                        barber.setCity(strArray[2].replaceFirst("\\s",""));
+                        barber.setPlacesID(placesID);
+
+                        APIController.getInstance().updateBarber(barber.getToken(), barber);
+                        saveToSharedPreferences((new Gson()).toJson(barber));
+
+                        pPlace.setSummary(barber.getAddress() + ", " + barber.getCity());
+
+                        Toast.makeText(getActivity(), "Place updated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+
+
+        private void displayPlacePicker() {
+            if( mGoogleApiClient == null || !mGoogleApiClient.isConnected() )
+                return;
+
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+            try {
+                startActivityForResult( builder.build( getActivity() ), PLACE_PICKER_REQUEST );
+            } catch ( GooglePlayServicesRepairableException e ) {
+                Log.d( "PlacesAPI Demo", "GooglePlayServicesRepairableException thrown" );
+            } catch ( GooglePlayServicesNotAvailableException e ) {
+                Log.d( "PlacesAPI Demo", "GooglePlayServicesNotAvailableException thrown" );
+            }
+        }
+
+        private void buildGoogleApiClient(){
+            mGoogleApiClient = new GoogleApiClient
+                    .Builder( getActivity() )
+                    /*.enableAutoManage(getContext(), 0, this )*/
+                    .addApi( Places.GEO_DATA_API )
+                    .addApi( Places.PLACE_DETECTION_API )
+                    .addConnectionCallbacks( this )
+                    .addOnConnectionFailedListener( this )
+                    .build();
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            if( mGoogleApiClient != null )
+                mGoogleApiClient.connect();
+        }
+
+        @Override
+        public void onStop() {
+            if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+                mGoogleApiClient.disconnect();
+            }
+            super.onStop();
+        }
+
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.i("ON CONNECTION FAILED","Google Places API connection failed with error code:");
+        }
+
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+
+        }
+
+
     }
 
 }
