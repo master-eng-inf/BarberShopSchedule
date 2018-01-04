@@ -54,9 +54,6 @@ public class ServiceDetailFragment extends Fragment {
         duration = view.findViewById(R.id.duration_cv);
         btn_edit = view.findViewById(R.id.edit_btn);
 
-        barber = view.findViewById(R.id.barber_cv);
-        id = view.findViewById(R.id.id_cv);
-
         mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String mode = mPrefs.getString("mode", "");
 
@@ -105,8 +102,6 @@ public class ServiceDetailFragment extends Fragment {
         TextView price_cv = view.findViewById(R.id.price_cv);
         TextView duration_cv = view.findViewById(R.id.duration_cv);
 
-        TextView barber_cv = view.findViewById(R.id.barber_cv);
-        TextView id_cv = view.findViewById(R.id.id_cv);
         if (service != null) {
             name_cv.setText(service.getName());
 
@@ -115,12 +110,6 @@ public class ServiceDetailFragment extends Fragment {
 
             String duration = Double.toString(service.getDuration());
             duration_cv.setText(duration);
-
-            String barber = Double.toString(service.getBarberShopId());
-            barber_cv.setText(barber);
-
-            String id = Double.toString(service.getId());
-            id_cv.setText(id);
 
             servic = new BarberService(service.getId(),service.getBarberShopId(),service.getName(),service.getPrice(),service.getDuration());
         }

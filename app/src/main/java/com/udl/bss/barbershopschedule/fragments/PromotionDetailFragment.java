@@ -53,9 +53,6 @@ public class PromotionDetailFragment extends Fragment {
         service = view.findViewById(R.id.service_cv);
         is_promotional = view.findViewById(R.id.is_promotional_cv);
 
-        barber = view.findViewById(R.id.barber_cv);
-        id = view.findViewById(R.id.id_cv);
-
         btn_edit = view.findViewById(R.id.edit_btn);
 
         mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
@@ -111,8 +108,6 @@ public class PromotionDetailFragment extends Fragment {
         TextView service_cv = view.findViewById(R.id.service_cv);
         TextView is_promotional_cv = view.findViewById(R.id.is_promotional_cv);
 
-        TextView barber_cv = view.findViewById(R.id.barber_cv);
-        TextView id_cv = view.findViewById(R.id.id_cv);
         if (promotion != null) {
             name_cv.setText(promotion.getName());
             description_cv.setText(promotion.getDescription());
@@ -125,12 +120,6 @@ public class PromotionDetailFragment extends Fragment {
             } else{
                 is_promotional_cv.setText("Yes");
             }
-
-            String barber = Double.toString(promotion.getBarber_shop_id());
-            barber_cv.setText(barber);
-
-            String id = Double.toString(promotion.getId());
-            id_cv.setText(id);
 
             promo = new Promotion(promotion.getId(),promotion.getBarber_shop_id(),promotion.getService_id(),promotion.getName(),promotion.getDescription(),promotion.getIs_Promotional());
         }
