@@ -61,20 +61,26 @@ public class BarberNewServiceActivity extends AppCompatActivity {
 
         if (creationCheck()) {
 
-            if (barber != null) {
-                BarberService newService = new BarberService(
-                        barber.getId(),
-                        new_service_name.getText().toString(),
-                        Double.parseDouble(new_service_price.getText().toString()),
-                        Double.parseDouble(new_service_duration.getText().toString()));
+            if (creationDurationCheck()) {
 
-                APIController.getInstance().createService(barber.getToken(), newService);
+                if (barber != null) {
+                    BarberService newService = new BarberService(
+                            barber.getId(),
+                            new_service_name.getText().toString(),
+                            Double.parseDouble(new_service_price.getText().toString()),
+                            Double.parseDouble(new_service_duration.getText().toString()));
 
-                Toast.makeText(getApplicationContext(), "Your service was created succesfully", Toast.LENGTH_SHORT).show();
+                    APIController.getInstance().createService(barber.getToken(), newService);
 
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("user", "Barber");
-                this.startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Your service was created succesfully", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.putExtra("user", "Barber");
+                    this.startActivity(intent);
+                }
+            }
+            else {
+                Toast.makeText(getApplicationContext(), getString(R.string.field_duration_error), Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -87,7 +93,11 @@ public class BarberNewServiceActivity extends AppCompatActivity {
         return new_service_name != null && !new_service_name.getText().toString().equals("")
                 && new_service_price != null && !new_service_price.getText().toString().equals("")
                 && new_service_duration != null && !new_service_duration.getText().toString().equals("");
+    }
 
+    private boolean creationDurationCheck() {
+        int durationInt = Integer.parseInt(new_service_duration.getText().toString());
+        return durationInt%15 == 0;
     }
 
 }
