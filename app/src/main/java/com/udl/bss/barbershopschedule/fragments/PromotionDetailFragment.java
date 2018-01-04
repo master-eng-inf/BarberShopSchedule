@@ -1,29 +1,20 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
+import static android.content.Context.MODE_PRIVATE;
 
 public class PromotionDetailFragment extends Fragment {
 
@@ -31,6 +22,7 @@ public class PromotionDetailFragment extends Fragment {
     private Promotion promo;
     FloatingActionButton btn_edit;
     TextView name,description,service,is_promotional,barber,id;
+    private SharedPreferences mPrefs;
 
     public PromotionDetailFragment() {
         // Required empty public constructor
@@ -65,6 +57,14 @@ public class PromotionDetailFragment extends Fragment {
         id = view.findViewById(R.id.id_cv);
 
         btn_edit = view.findViewById(R.id.edit_btn);
+
+        mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        String mode = mPrefs.getString("mode", "");
+
+        if(mode.equals("User")) {
+            btn_edit.setVisibility(View.GONE);
+        }
+
         btn_edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

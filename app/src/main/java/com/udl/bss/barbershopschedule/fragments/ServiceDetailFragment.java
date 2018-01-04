@@ -1,7 +1,7 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,14 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import static android.content.Context.MODE_PRIVATE;
 
 public class ServiceDetailFragment extends Fragment {
 
@@ -26,6 +22,7 @@ public class ServiceDetailFragment extends Fragment {
     private BarberService servic;
     FloatingActionButton btn_edit;
     TextView name,price,duration,barber,id;
+    private SharedPreferences mPrefs;
 
     public ServiceDetailFragment() {
         // Required empty public constructor
@@ -55,11 +52,18 @@ public class ServiceDetailFragment extends Fragment {
         name = view.findViewById(R.id.name_cv);
         price = view.findViewById(R.id.price_cv);
         duration = view.findViewById(R.id.duration_cv);
+        btn_edit = view.findViewById(R.id.edit_btn);
 
         barber = view.findViewById(R.id.barber_cv);
         id = view.findViewById(R.id.id_cv);
 
-        btn_edit = view.findViewById(R.id.edit_btn);
+        mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        String mode = mPrefs.getString("mode", "");
+
+        if(mode.equals("User")) {
+            btn_edit.setVisibility(View.GONE);
+        }
+
         btn_edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
