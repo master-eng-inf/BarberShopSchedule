@@ -96,8 +96,8 @@ public class BarberNewServiceActivity extends AppCompatActivity {
     }
 
     private boolean creationDurationCheck() {
-        int durationInt = Integer.parseInt(new_service_duration.getText().toString());
-        return durationInt%15 == 0;
+        Double durationDouble = Double.parseDouble(new_service_duration.getText().toString());
+        return durationDouble%15 == 0;
     }
 
 }

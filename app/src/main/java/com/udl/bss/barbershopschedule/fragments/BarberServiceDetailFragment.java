@@ -167,8 +167,8 @@ public class BarberServiceDetailFragment extends Fragment {
     }
 
     private boolean creationDurationCheck() {
-        int durationInt = Integer.parseInt(duration_cv.getText().toString());
-        return durationInt%15 == 0;
+        Double durationDouble = Double.parseDouble(duration_cv.getText().toString());
+        return durationDouble%15 == 0;
     }
 
     @Override
