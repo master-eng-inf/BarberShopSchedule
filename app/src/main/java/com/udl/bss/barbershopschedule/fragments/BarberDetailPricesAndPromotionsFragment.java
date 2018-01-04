@@ -25,6 +25,7 @@ import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
+import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
 
                             ServiceAdapter adapter = new ServiceAdapter(
                                     serviceList,
-                                    new BarberServiceClick(getActivity(), servicesRecyclerView),
+                                    new ServiceClick(getActivity(), servicesRecyclerView),
                                     getContext());
 
                             servicesRecyclerView.setAdapter(adapter);
