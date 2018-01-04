@@ -171,6 +171,7 @@
     <string name="barber">Barber</string>
 
     <string name="field_error">All fields are required</string>
+    <string name="field_duration_error">The duration of a service must be multiple of 15 (15,30,45,...)</string>
     <string name="double_back">Click BACK again to exit</string>
 
     <string name="barber_shop_rating">Rating</string>

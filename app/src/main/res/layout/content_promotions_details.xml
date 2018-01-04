@@ -96,16 +96,15 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:text="@string/barber_promotion_creation_is_promotional"
-            android:textStyle="bold"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+            android:text="@string/barber_promotion_creation_is_promotional"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
@@ -121,65 +120,9 @@
             android:textSize="15sp"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-
-
-
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:text="Barber id"
-            android:textStyle="bold"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="#000000" />
-
-        <TextView
-            android:id="@+id/barber_cv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:text="Id"
-            android:textStyle="bold"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="#000000" />
-
-        <TextView
-            android:id="@+id/id_cv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:lineSpacingExtra="8dp"
-            android:padding="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="60sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
 
     </LinearLayout>
 

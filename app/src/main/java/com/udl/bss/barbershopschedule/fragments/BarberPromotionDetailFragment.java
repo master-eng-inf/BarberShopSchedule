@@ -162,36 +162,50 @@ public class BarberPromotionDetailFragment extends Fragment {
         btn_update.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-                alert.setTitle(getString(R.string.update_title_alert));
-                alert.setMessage(getString(R.string.update_promotion_dialog));
-                alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String nameToUpdate = name_cv.getText().toString();
-                        String descriptionToUpdate = description_cv.getText().toString();
-                        int isPromotionalToUpdate = checkBox.isChecked() ? 1 : 0;
 
-                        Promotion promotionUpdated = new Promotion(promotion_idToUpdate,barberShop_idToUpdate,service.getId(),nameToUpdate,descriptionToUpdate,isPromotionalToUpdate);
+                if(creationCheck()) {
 
-                        APIController.getInstance().updatePromotion(barber.getToken(), promotionUpdated);
-                        Toast.makeText(getContext(), "Your promotion was updated succesfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), HomeActivity.class);
-                        intent.putExtra("user", "Barber");
-                        startActivity(intent);
-                    }
-                });
-                alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+                    alert.setTitle(getString(R.string.update_title_alert));
+                    alert.setMessage(getString(R.string.update_promotion_dialog));
+                    alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String nameToUpdate = name_cv.getText().toString();
+                            String descriptionToUpdate = description_cv.getText().toString();
+                            int isPromotionalToUpdate = checkBox.isChecked() ? 1 : 0;
 
-                    }
-                });
-                alert.show();
+                            Promotion promotionUpdated = new Promotion(promotion_idToUpdate, barberShop_idToUpdate, service.getId(), nameToUpdate, descriptionToUpdate, isPromotionalToUpdate);
+
+                            APIController.getInstance().updatePromotion(barber.getToken(), promotionUpdated);
+                            Toast.makeText(getContext(), "Your promotion was updated succesfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getContext(), HomeActivity.class);
+                            intent.putExtra("user", "Barber");
+                            startActivity(intent);
+                        }
+                    });
+                    alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alert.show();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return view;
+
+    }
+
+    private boolean creationCheck () {
+
+        return name_cv != null && !name_cv.getText().toString().equals("")
+                && description_cv != null && !description_cv.getText().toString().equals("")
+                && service != null;
 
     }
 

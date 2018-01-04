@@ -1,29 +1,20 @@
 package com.udl.bss.barbershopschedule.fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
+import static android.content.Context.MODE_PRIVATE;
 
 public class PromotionDetailFragment extends Fragment {
 
@@ -31,6 +22,7 @@ public class PromotionDetailFragment extends Fragment {
     private Promotion promo;
     FloatingActionButton btn_edit;
     TextView name,description,service,is_promotional,barber,id;
+    private SharedPreferences mPrefs;
 
     public PromotionDetailFragment() {
         // Required empty public constructor
@@ -61,10 +53,15 @@ public class PromotionDetailFragment extends Fragment {
         service = view.findViewById(R.id.service_cv);
         is_promotional = view.findViewById(R.id.is_promotional_cv);
 
-        barber = view.findViewById(R.id.barber_cv);
-        id = view.findViewById(R.id.id_cv);
-
         btn_edit = view.findViewById(R.id.edit_btn);
+
+        mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        String mode = mPrefs.getString("mode", "");
+
+        if(mode.equals("User")) {
+            btn_edit.setVisibility(View.GONE);
+        }
+
         btn_edit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -111,8 +108,6 @@ public class PromotionDetailFragment extends Fragment {
         TextView service_cv = view.findViewById(R.id.service_cv);
         TextView is_promotional_cv = view.findViewById(R.id.is_promotional_cv);
 
-        TextView barber_cv = view.findViewById(R.id.barber_cv);
-        TextView id_cv = view.findViewById(R.id.id_cv);
         if (promotion != null) {
             name_cv.setText(promotion.getName());
             description_cv.setText(promotion.getDescription());
@@ -125,12 +120,6 @@ public class PromotionDetailFragment extends Fragment {
             } else{
                 is_promotional_cv.setText("Yes");
             }
-
-            String barber = Double.toString(promotion.getBarber_shop_id());
-            barber_cv.setText(barber);
-
-            String id = Double.toString(promotion.getId());
-            id_cv.setText(id);
 
             promo = new Promotion(promotion.getId(),promotion.getBarber_shop_id(),promotion.getService_id(),promotion.getName(),promotion.getDescription(),promotion.getIs_Promotional());
         }

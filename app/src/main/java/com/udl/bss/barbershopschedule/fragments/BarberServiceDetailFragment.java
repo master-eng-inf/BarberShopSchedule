@@ -116,36 +116,59 @@ public class BarberServiceDetailFragment extends Fragment {
         Button btn_update = (Button) view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-                alert.setTitle(getString(R.string.update_title_alert));
-                alert.setMessage(getString(R.string.update_service_dialog));
-                alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String nameToUpdate = name_cv.getText().toString();
-                        Double priceToUpdate = Double.parseDouble(price_cv.getText().toString());
-                        Double durationToUpdate = Double.parseDouble(duration_cv.getText().toString());
+            public void onClick(View v) {
 
-                        BarberService serviceUpdated = new BarberService(service_idToUpdate,barberShop_idToUpdate,nameToUpdate,priceToUpdate,durationToUpdate);
+                if (creationCheck()) {
 
-                        APIController.getInstance().updateService(barber.getToken(), serviceUpdated);
-                        Toast.makeText(getContext(), "Your service was updated succesfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), HomeActivity.class);
-                        intent.putExtra("user", "Barber");
-                        startActivity(intent);
+                    if(creationDurationCheck()) {
+
+                        AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+                        alert.setTitle(getString(R.string.update_title_alert));
+                        alert.setMessage(getString(R.string.update_service_dialog));
+                        alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String nameToUpdate = name_cv.getText().toString();
+                                Double priceToUpdate = Double.parseDouble(price_cv.getText().toString());
+                                Double durationToUpdate = Double.parseDouble(duration_cv.getText().toString());
+
+                                BarberService serviceUpdated = new BarberService(service_idToUpdate, barberShop_idToUpdate, nameToUpdate, priceToUpdate, durationToUpdate);
+
+                                APIController.getInstance().updateService(barber.getToken(), serviceUpdated);
+                                Toast.makeText(getContext(), "Your service was updated succesfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getContext(), HomeActivity.class);
+                                intent.putExtra("user", "Barber");
+                                startActivity(intent);
+                            }
+                        });
+                        alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        alert.show();
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.field_duration_error), Toast.LENGTH_SHORT).show();
                     }
-                });
-                alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alert.show();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.field_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;
+    }
+
+    private boolean creationCheck () {
+
+        return name_cv != null && !name_cv.getText().toString().equals("")
+                && price_cv != null && !price_cv.getText().toString().equals("")
+                && duration_cv != null && !duration_cv.getText().toString().equals("");
+    }
+
+    private boolean creationDurationCheck() {
+        Double durationDouble = Double.parseDouble(duration_cv.getText().toString());
+        return durationDouble%15 == 0;
     }
 
     @Override
