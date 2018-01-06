@@ -3,11 +3,16 @@ package com.udl.bss.barbershopschedule.listeners;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.BarberFreeHoursActivity;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
@@ -15,8 +20,12 @@ import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.domain.Time;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Alex on 10/11/2017.
@@ -27,6 +36,7 @@ public class FreeHourClick implements OnItemClickListener {
     private Activity activity;
     private RecyclerView recyclerView;
     private BarberService service;
+    private SharedPreferences mPrefs;
 
     public FreeHourClick(Activity activity, RecyclerView recyclerView, BarberService service) {
         this.activity = activity;
@@ -106,21 +116,42 @@ public class FreeHourClick implements OnItemClickListener {
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, activity.getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String db_format_time = time.getYear() + "-" + time.getMonth() + "-" + time.getDay() + " " + time.getHour() + ":" +
+                        final String db_format_time = time.getYear() + "-" + time.getMonth() + "-" + time.getDay() + " " + time.getHour() + ":" +
                                 time.getMinutes();
 
-                        BLL instance = new BLL(activity);
+                        mPrefs = activity.getSharedPreferences("USER", MODE_PRIVATE);
+                        Gson gson = new Gson();
+                        String json = mPrefs.getString("user", "");
+                        final Client client = gson.fromJson(json, Client.class);
 
-                        Promotion promotion = instance.Get_BarberShopPromotionForService(service.getBarberShopId(), service.getId());
+                        APIController.getInstance().getBarberShopPromotionForService(client.getToken(), String.valueOf(service.getBarberShopId()), String.valueOf(service.getId()))
+                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Integer> task) {
+                                        int promotion_id = task.getResult();
+
+                                        APIController.getInstance().createAppointment(client.getToken(), new Appointment(-1, client.getId(), service.getBarberShopId(),
+                                                service.getId(), promotion_id, db_format_time));
+
+                                        Intent intent = new Intent(activity, HomeActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.putExtra("user", "User");
+                                        activity.startActivity(intent);
+                                    }
+                                });
+
+                        //BLL instance = new BLL(activity);
+
+                        //Promotion promotion = instance.Get_BarberShopPromotionForService(service.getBarberShopId(), service.getId());
 
                         //TODO Change Client Id
-                        instance.Insert_Appointment(new Appointment(-1, 0, service.getBarberShopId(),
-                                service.getId(), promotion == null ? -1 : promotion.getId(), db_format_time));
+                        //instance.Insert_Appointment(new Appointment(-1, 0, service.getBarberShopId(),
+                        //service.getId(), promotion == null ? -1 : promotion.getId(), db_format_time));
 
-                        Intent intent = new Intent(activity, HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("user", "User");
-                        activity.startActivity(intent);
+                        //Intent intent = new Intent(activity, HomeActivity.class);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //intent.putExtra("user", "User");
+                        //activity.startActivity(intent);
                     }
                 });
 

@@ -35,10 +35,11 @@ public class APIController {
 
     private static APIController instance;
 
-    private APIController() {}
+    private APIController() {
+    }
 
-    public static synchronized APIController getInstance(){
-        if(instance == null){
+    public static synchronized APIController getInstance() {
+        if (instance == null) {
             instance = new APIController();
         }
         return instance;
@@ -49,7 +50,7 @@ public class APIController {
 
     /* Session Controller */
 
-    public Task<String> logInUser(String username, String password){
+    public Task<String> logInUser(String username, String password) {
         final TaskCompletionSource<String> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().logInUser(username, password).enqueue(new Callback<ResponseBody>() {
@@ -57,7 +58,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         Log.i("APISERVER", s);
                         tcs.setResult(s);
@@ -83,7 +84,7 @@ public class APIController {
 
     /* User Controller */
 
-    public Task<Boolean> isUserAvailable(String username){
+    public Task<Boolean> isUserAvailable(String username) {
         final TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().isUserAvailable(username).enqueue(new Callback<ResponseBody>() {
@@ -91,7 +92,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         Log.i("APISERVER", s);
                         tcs.setResult(Boolean.valueOf(s));
@@ -114,7 +115,7 @@ public class APIController {
 
     /* Barber Shop Controller */
 
-    public Task<List<Barber>> getAllBarbers(String token){
+    public Task<List<Barber>> getAllBarbers(String token) {
         final TaskCompletionSource<List<Barber>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getAllBarbers(token).enqueue(new Callback<ResponseBody>() {
@@ -122,7 +123,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<Barber> barberList = new ArrayList<>();
 
@@ -163,7 +164,7 @@ public class APIController {
     }
 
 
-    public Task<Barber> getBarberById(String token, String id){
+    public Task<Barber> getBarberById(String token, String id) {
         final TaskCompletionSource<Barber> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getBarberById(token, id).enqueue(new Callback<ResponseBody>() {
@@ -171,7 +172,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
 
                         JSONObject json = new JSONObject(s);
@@ -321,7 +322,7 @@ public class APIController {
     }
 
 
-    public Task<Client> getClientById(String token, String id){
+    public Task<Client> getClientById(String token, String id) {
         final TaskCompletionSource<Client> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getClientById(token, id).enqueue(new Callback<ResponseBody>() {
@@ -329,7 +330,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
 
                         JSONObject json = new JSONObject(s);
@@ -365,7 +366,7 @@ public class APIController {
 
     /* Appointment Controller */
 
-    public Task<List<Appointment>> getAppointmentsByBarber(String token, String id){
+    public Task<List<Appointment>> getAppointmentsByBarber(String token, String id) {
         final TaskCompletionSource<List<Appointment>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getAppointmentByBarber(token, id).enqueue(new Callback<ResponseBody>() {
@@ -373,7 +374,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<Appointment> appointmentList = new ArrayList<>();
 
@@ -408,7 +409,7 @@ public class APIController {
         return tcs.getTask();
     }
 
-    public Task<List<Appointment>> getAppointmentsByClient(String token, String id){
+    public Task<List<Appointment>> getAppointmentsByClient(String token, String id) {
         final TaskCompletionSource<List<Appointment>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getAppointmentByClient(token, id).enqueue(new Callback<ResponseBody>() {
@@ -416,7 +417,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<Appointment> appointmentList = new ArrayList<>();
 
@@ -451,6 +452,53 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public Task<Integer> getBarberShopPromotionForService(String token, String barber_shop_id, String service_id) {
+        final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getBarberShopPromotionForService(token, barber_shop_id, service_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+                        Log.i("APISERVER", s);
+                        tcs.setResult(Integer.valueOf(s));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Is user available ERROR");
+            }
+        });
+        return tcs.getTask();
+    }
+
+    public void createAppointment(String token, Appointment appointment) {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("id", String.valueOf(-1));
+        requestBody.put("client_id", String.valueOf(appointment.getClient_id()));
+        requestBody.put("barber_shop_id", String.valueOf(appointment.getBarber_shop_id()));
+        requestBody.put("service_id", String.valueOf(appointment.getService_id()));
+        requestBody.put("promotion_id", String.valueOf(appointment.getPromotion_id()));
+        requestBody.put("date", String.valueOf(appointment.getDate()));
+
+        ApiUtils.getService().createAppointment(token, requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Create service OK" + response.toString() + " " + response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Create service ERROR");
+            }
+        });
+    }
 
     /* Service Controller */
 
@@ -460,12 +508,12 @@ public class APIController {
         requestBody.put("barber_shop_id", String.valueOf(service.getBarberShopId()));
         requestBody.put("name", service.getName());
         requestBody.put("price", String.valueOf(service.getPrice()));
-        requestBody.put("duration", String.valueOf((int)service.getDuration()));
+        requestBody.put("duration", String.valueOf((int) service.getDuration()));
 
         ApiUtils.getService().createService(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                Log.i("APISERVER", "Create service OK" + response.toString()+" "+response.body());
+                Log.i("APISERVER", "Create service OK" + response.toString() + " " + response.body());
             }
 
             @Override
@@ -476,7 +524,7 @@ public class APIController {
 
     }
 
-    public Task<BarberService> getServiceById(String token, String id){
+    public Task<BarberService> getServiceById(String token, String id) {
         final TaskCompletionSource<BarberService> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getServiceById(token, id).enqueue(new Callback<ResponseBody>() {
@@ -484,7 +532,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         JSONObject json = new JSONObject(s);
                         BarberService service = new BarberService(
@@ -513,7 +561,7 @@ public class APIController {
     }
 
 
-    public Task<List<BarberService>> getServicesByBarber(String token, String id){
+    public Task<List<BarberService>> getServicesByBarber(String token, String id) {
         final TaskCompletionSource<List<BarberService>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getServicesByBarber(token, id).enqueue(new Callback<ResponseBody>() {
@@ -521,7 +569,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<BarberService> serviceList = new ArrayList<>();
 
@@ -562,7 +610,7 @@ public class APIController {
         requestBody.put("barber_shop_id", String.valueOf(service.getBarberShopId()));
         requestBody.put("name", service.getName());
         requestBody.put("price", String.valueOf(service.getPrice()));
-        requestBody.put("duration", String.valueOf((int)service.getDuration()));
+        requestBody.put("duration", String.valueOf((int) service.getDuration()));
 
         ApiUtils.getService().updateService(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -578,7 +626,7 @@ public class APIController {
     }
 
     public void removeService(String token, String service_id) {
-        ApiUtils.getService().removeService(token,service_id).enqueue(new Callback<ResponseBody>() {
+        ApiUtils.getService().removeService(token, service_id).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.i("APISERVER", "Service removed");
@@ -611,7 +659,7 @@ public class APIController {
         ApiUtils.getService().createPromotion(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                Log.i("APISERVER", "Create promotion OK" + response.toString()+" "+response.body());
+                Log.i("APISERVER", "Create promotion OK" + response.toString() + " " + response.body());
             }
 
             @Override
@@ -622,7 +670,7 @@ public class APIController {
 
     }
 
-    public Task<Promotion> getPromotionById(String token, String id){
+    public Task<Promotion> getPromotionById(String token, String id) {
         final TaskCompletionSource<Promotion> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getPromotionById(token, id).enqueue(new Callback<ResponseBody>() {
@@ -630,7 +678,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
 
                         JSONObject json = new JSONObject(s);
@@ -663,7 +711,7 @@ public class APIController {
         return tcs.getTask();
     }
 
-    public Task<List<Promotion>> getPromotionsByBarber(String token, String id){
+    public Task<List<Promotion>> getPromotionsByBarber(String token, String id) {
         final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getPromotionsByBarber(token, id).enqueue(new Callback<ResponseBody>() {
@@ -671,7 +719,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<Promotion> promotionList = new ArrayList<>();
 
@@ -710,7 +758,7 @@ public class APIController {
     }
 
 
-    public Task<List<Promotion>> getPromotionalPromotions(String token){
+    public Task<List<Promotion>> getPromotionalPromotions(String token) {
         final TaskCompletionSource<List<Promotion>> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getAllPromotionalPromotions(token).enqueue(new Callback<ResponseBody>() {
@@ -718,7 +766,7 @@ public class APIController {
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody body = response.body();
-                    if (body != null){
+                    if (body != null) {
                         String s = body.string();
                         List<Promotion> promotionList = new ArrayList<>();
 
@@ -781,7 +829,7 @@ public class APIController {
     }
 
     public void removePromotion(String token, String promotion_id) {
-        ApiUtils.getService().removePromotion(token,promotion_id).enqueue(new Callback<ResponseBody>() {
+        ApiUtils.getService().removePromotion(token, promotion_id).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.i("APISERVER", "Promotion removed");
@@ -842,7 +890,7 @@ public class APIController {
     }
 
     public void removeReview(String token, String barber_id, String client_id) {
-        ApiUtils.getService().removeReview(token,barber_id, client_id).enqueue(new Callback<ResponseBody>() {
+        ApiUtils.getService().removeReview(token, barber_id, client_id).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.i("APISERVER", "Review removed");

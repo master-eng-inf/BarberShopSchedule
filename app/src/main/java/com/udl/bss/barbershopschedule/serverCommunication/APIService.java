@@ -124,6 +124,10 @@ public interface APIService {
     Call<ResponseBody> getPromotionById(@Path(value = "token", encoded = true) String token,
                                         @Path(value = "promotion_id", encoded = true) String id);
 
+    @GET("promotions/promotion/barberShop/{barber_shop_id}/service/{service_id}/{token}")
+    Call<ResponseBody> getBarberShopPromotionForService(@Path(value = "token", encoded = true) String token,
+                                        @Path(value = "barber_shop_id", encoded = true) String barber_shop_id,
+                                                        @Path(value = "service_id", encoded = true) String service_id);
 
     @Headers("Content-Type: application/json")
     @POST("promotions/insertPromotion/{token}")
