@@ -154,41 +154,49 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
 
                                             if (freeHoursList.size() > 0) {
 
-                                                for (final Appointment current_appointment : appointments_for_current_day) {
-                                                    APIController.getInstance().getServiceById(client.getToken(), String.valueOf(current_appointment.getService_id()))
-                                                            .addOnCompleteListener(new OnCompleteListener<BarberService>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<BarberService> task) {
-                                                                    BarberService current_service = task.getResult();
+                                                if (appointments_for_current_day.size() > 0) {
+                                                    for (final Appointment current_appointment : appointments_for_current_day) {
+                                                        APIController.getInstance().getServiceById(client.getToken(), String.valueOf(current_appointment.getService_id()))
+                                                                .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<BarberService> task) {
+                                                                        BarberService current_service = task.getResult();
 
-                                                                    try {
-                                                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                                                                        Calendar appointment_date = Calendar.getInstance();
+                                                                        try {
+                                                                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                                                            Calendar appointment_date = Calendar.getInstance();
 
-                                                                        appointment_date.setTime(format.parse(current_appointment.getDate()));
+                                                                            appointment_date.setTime(format.parse(current_appointment.getDate()));
 
-                                                                        ArrayList<Integer> index = GetListIndexForTime(
-                                                                                new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY),
-                                                                                        appointment_date.get(Calendar.MINUTE)),
-                                                                                (int) current_service.getDuration());
+                                                                            ArrayList<Integer> index = GetListIndexForTime(
+                                                                                    new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY),
+                                                                                            appointment_date.get(Calendar.MINUTE)),
+                                                                                    (int) current_service.getDuration());
 
-                                                                        for (Object anIndex : index) {
-                                                                            int current_index = (int) anIndex;
+                                                                            for (Object anIndex : index) {
+                                                                                int current_index = (int) anIndex;
 
-                                                                            Time current_time = freeHoursList.get(current_index);
-                                                                            current_time.SetAvailability(false);
+                                                                                Time current_time = freeHoursList.get(current_index);
+                                                                                current_time.SetAvailability(false);
 
-                                                                            freeHoursList.set(current_index, current_time);
+                                                                                freeHoursList.set(current_index, current_time);
+                                                                            }
+
+                                                                        } catch (Exception e) {
+                                                                            e.printStackTrace();
                                                                         }
 
-                                                                    } catch (Exception e) {
-                                                                        e.printStackTrace();
+                                                                        FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(activity, freeHoursRecycleView, barberService), activity);
+                                                                        freeHoursRecycleView.setAdapter(adapter);
                                                                     }
+                                                                });
+                                                    }
+                                                }
 
-                                                                    FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(activity, freeHoursRecycleView, barberService), activity);
-                                                                    freeHoursRecycleView.setAdapter(adapter);
-                                                                }
-                                                            });
+                                                else
+                                                {
+                                                    FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(activity, freeHoursRecycleView, barberService), activity);
+                                                    freeHoursRecycleView.setAdapter(adapter);
                                                 }
                                             }
                                         }
