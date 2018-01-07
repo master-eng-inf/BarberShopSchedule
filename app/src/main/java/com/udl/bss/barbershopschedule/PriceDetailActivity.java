@@ -1,7 +1,9 @@
 package com.udl.bss.barbershopschedule;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +15,13 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 public class PriceDetailActivity extends AppCompatActivity {
 
@@ -23,6 +31,20 @@ public class PriceDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_price_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        String mode = mPrefs.getString("mode", "");
+
+        String token;
+        if (mode.equals("Barber")) {
+            Barber barber = gson.fromJson(json, Barber.class);
+            token = barber.getToken();
+        } else {
+            Client client = gson.fromJson(json, Client.class);
+            token = client.getToken();
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,14 +78,20 @@ public class PriceDetailActivity extends AppCompatActivity {
         TextView tv_service = findViewById(R.id.service_detail);
         TextView tv_duration = findViewById(R.id.duration_cv);
 
-        CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
+        final CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
         BarberService barber_shop_service = getIntent().getParcelableExtra("service");
 
-        /*TODO*/
-        //BLL instance = new BLL(this);
 
-        //ctl.setTitle(instance.Get_BarberShop(barber_shop_service.getBarberShopId()).getName());
+        APIController.getInstance().getBarberById(token, String.valueOf(barber_shop_service.getBarberShopId()))
+                .addOnCompleteListener(new OnCompleteListener<Barber>() {
+            @Override
+            public void onComplete(@NonNull Task<Barber> task) {
+                Barber barber = task.getResult();
+                ctl.setTitle(barber.getName());
+            }
+        });
+
         tv_service.setText(barber_shop_service.getName());
         String price = Double.toString(barber_shop_service.getPrice()) + " " + getResources().getString(R.string.service_price_currency);
         tv_price.setText(price);
