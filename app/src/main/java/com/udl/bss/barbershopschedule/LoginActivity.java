@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         Button login_btn = findViewById(R.id.login_button);
-        Button guest_btn = findViewById(R.id.guest_btn);
         Button register_btn = findViewById(R.id.register_button);
 
         final EditText username_et = findViewById(R.id.username_et);
@@ -60,15 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logIn(username_et.getText().toString(), password_et.getText().toString());
-            }
-        });
-
-        guest_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra("user", "");
-                startActivity(intent);
             }
         });
 
