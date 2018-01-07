@@ -45,7 +45,7 @@
                         android:id="@+id/textView_register_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mode"
+                        android:text="@string/mode"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
                     <android.support.v7.widget.AppCompatSpinner
@@ -91,7 +91,7 @@
                             android:id="@+id/textView_register_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Name"
+                            android:text="@string/name"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 
@@ -152,7 +152,7 @@
                             android:id="@+id/textView_register_mail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mail"
+                            android:text="@string/mail"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 
@@ -213,7 +213,7 @@
                             android:id="@+id/textView_register_password"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Password"
+                            android:text="@string/password"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 
@@ -273,7 +273,7 @@
                             android:id="@+id/textView_register_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Phone"
+                            android:text="@string/phone"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 
@@ -330,7 +330,7 @@
                         android:id="@+id/textView_register_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gender"
+                        android:text="@string/gender"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
                     <android.support.v7.widget.AppCompatSpinner
@@ -390,7 +390,7 @@
                                 android:id="@+id/button_form_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Select" />
+                                android:text="@string/select" />
 
                         </LinearLayout>
 
@@ -459,7 +459,7 @@
                             android:id="@+id/textView_register_place"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Place"
+                            android:text="@string/place"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
                         <LinearLayout
@@ -471,7 +471,7 @@
                                 android:id="@+id/button_selectPlacesID"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Select place" />
+                                android:text="@string/select_place" />
 
                         </LinearLayout>
 
@@ -502,7 +502,7 @@
                             android:id="@+id/textView_no_place"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No place selected"
+                            android:text="@string/no_place"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="30dp"
                             android:layout_marginBottom="30dp"
@@ -543,7 +543,7 @@
                             android:id="@+id/textView_register_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Description"
+                            android:text="@string/description"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 
@@ -603,7 +603,7 @@
                             android:id="@+id/textView_register_age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Age"
+                            android:text="@string/age"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
                     </LinearLayout>
 

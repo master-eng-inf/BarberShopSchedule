@@ -211,4 +211,20 @@
     <string name="free_hour_click_not_enough_time_title">Warning</string>
     <string name="free_hour_click_not_enough_time_dialog" formatted="false">The estimated time for %1$s is %2$s minutes, but with your selection there is only %3$s minutes at most. The appointment has to be validated by the barber shop. Do you want to continue? </string>
     <string name="title_activity_barber_update_service">BarberUpdateServiceActivity</string>
+
+
+    <string name="is_promotional">Is promotional</string>
+    <string name="place">Place</string>
+    <string name="mode">Mode</string>
+    <string name="name">Name</string>
+    <string name="mail">Mail</string>
+    <string name="phone">Phone</string>
+    <string name="gender">Gender</string>
+    <string name="select">Select</string>
+    <string name="select_place">Select place</string>
+    <string name="no_place">No place Selected</string>
+    <string name="description">Description</string>
+    <string name="age">Age</string>
+
+
 </resources>
