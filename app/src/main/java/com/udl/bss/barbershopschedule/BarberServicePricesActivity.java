@@ -1,7 +1,10 @@
 package com.udl.bss.barbershopschedule;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,20 +13,28 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
+import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.listeners.PreAppointmentBarberServiceClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BarberServicePricesActivity extends AppCompatActivity {
 
     private int barber_shop_id;
     private RecyclerView servicesRecyclerView;
     private String date;
+    private Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +68,19 @@ public class BarberServicePricesActivity extends AppCompatActivity {
         BLL instance = new BLL(this);
         ArrayList<BarberService> barber_shop_services = instance.Get_BarberShopServices(barber_shop_id);
 
-        ServiceAdapter adapter = new ServiceAdapter(barber_shop_services, new PreAppointmentBarberServiceClick(this, servicesRecyclerView, date), this);
-        servicesRecyclerView.setAdapter(adapter);
+        SharedPreferences mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        final Client client = gson.fromJson(json, Client.class);
+
+        APIController.getInstance().getServicesByBarber(client.getToken(), String.valueOf(barber_shop_id))
+                .addOnCompleteListener(new OnCompleteListener<List<BarberService>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<BarberService>> task) {
+
+                        ServiceAdapter adapter = new ServiceAdapter(task.getResult(), new PreAppointmentBarberServiceClick(activity, servicesRecyclerView, date), activity);
+                        servicesRecyclerView.setAdapter(adapter);
+                    }
+                });
     }
 }
