@@ -2,12 +2,8 @@ package com.udl.bss.barbershopschedule;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -37,8 +33,6 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.udl.bss.barbershopschedule.database.Users.BarbersSQLiteHelper;
-import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteHelper;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.listeners.GoogleMaps;
@@ -207,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity
                                     placesID,
                                     et_pass.getText().toString(),
                                     et_phone.getText().toString(),
-                                    ((TextView)spinner_gender.getSelectedView()).getText().toString(),
+                                    String.valueOf(spinner_gender.getSelectedItemPosition()),
                                     et_desc.getText().toString(),
                                     strArray[0]+","+strArray[1],
                                     strArray[2].replaceFirst("\\s",""),
@@ -215,6 +209,8 @@ public class RegisterActivity extends AppCompatActivity
                             );
 
                             APIController.getInstance().createBarber(barber);
+
+                            Toast.makeText(getApplicationContext(), "Barber created successfully", Toast.LENGTH_SHORT).show();
 
 
                         } else {
@@ -230,6 +226,8 @@ public class RegisterActivity extends AppCompatActivity
                             );
 
                             APIController.getInstance().createClient(client);
+
+                            Toast.makeText(getApplicationContext(), "Client created successfully", Toast.LENGTH_SHORT).show();
 
                         }
 
