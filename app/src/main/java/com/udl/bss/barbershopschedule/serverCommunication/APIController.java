@@ -80,6 +80,36 @@ public class APIController {
 
 
 
+    public Task<Boolean> checkUserSession(String username, String token) {
+        final TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().checkUserSession(username, token).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+                        Log.i("APISERVER", s);
+                        tcs.setResult(Boolean.valueOf(s));
+                    } else {
+                        tcs.setResult(null);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Check user session ERROR");
+            }
+        });
+        return tcs.getTask();
+    }
+
+
+
 
 
     /* User Controller */

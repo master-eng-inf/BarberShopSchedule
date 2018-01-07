@@ -23,6 +23,10 @@ public interface APIService {
     Call<ResponseBody> logInUser(@Path(value = "username", encoded = true) String username,
                                  @Path(value = "password", encoded = true) String password);
 
+    @GET("sessions/checkUserSession/{username}/{token}")
+    Call<ResponseBody> checkUserSession(@Path(value = "username", encoded = true) String username,
+                                        @Path(value = "token", encoded = true) String token);
+
 
     /* User Controller */
 
