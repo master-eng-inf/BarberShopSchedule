@@ -192,6 +192,7 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
             return -1;
         }
         if (internal.get(Calendar.YEAR) == external.get(Calendar.YEAR)) {
+
             if (internal.get(Calendar.MONTH) > external.get(Calendar.MONTH)) {
                 return 1;
             }
@@ -201,6 +202,7 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
             }
 
             if (internal.get(Calendar.MONTH) == external.get(Calendar.MONTH)) {
+
                 if (internal.get(Calendar.DAY_OF_MONTH) > external.get(Calendar.DAY_OF_MONTH)) {
                     return 1;
                 }
@@ -210,7 +212,29 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
                 }
 
                 if (internal.get(Calendar.DAY_OF_MONTH) == external.get(Calendar.DAY_OF_MONTH)) {
-                    return 0;
+
+                    if (internal.get(Calendar.HOUR_OF_DAY) > external.get(Calendar.HOUR_OF_DAY)) {
+                        return 1;
+                    }
+
+                    if (internal.get(Calendar.HOUR_OF_DAY) < external.get(Calendar.HOUR_OF_DAY)) {
+                        return -1;
+                    }
+
+                    if (internal.get(Calendar.HOUR_OF_DAY) == external.get(Calendar.HOUR_OF_DAY)) {
+
+                        if (internal.get(Calendar.MINUTE) > external.get(Calendar.MINUTE)) {
+                            return 1;
+                        }
+
+                        if (internal.get(Calendar.MINUTE) < external.get(Calendar.MINUTE)) {
+                            return -1;
+                        }
+
+                        if (internal.get(Calendar.MINUTE) == external.get(Calendar.MINUTE)) {
+                            return 0;
+                        }
+                    }
                 }
             }
         }

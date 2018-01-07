@@ -1,27 +1,33 @@
 package com.udl.bss.barbershopschedule;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.Menu;
-import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
 import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Schedule;
 import com.udl.bss.barbershopschedule.domain.Time;
 import com.udl.bss.barbershopschedule.listeners.FreeHourClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +43,9 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
     private Pair<Integer, Integer> closing1;
     private Pair<Integer, Integer> oppening2;
     private Pair<Integer, Integer> closing2;
+    private SharedPreferences mPrefs;
+    private Client client;
+    private Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,11 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
             LinearLayoutManager llm = new LinearLayoutManager(this);
             this.freeHoursRecycleView.setLayoutManager(llm);
 
+            mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("user", "");
+            client = gson.fromJson(json, Client.class);
+
             SetFreeHours();
         }
     }
@@ -75,92 +89,113 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
     }
 
     private void SetFreeHours() {
-        BLL instance = new BLL(this);
-        ArrayList<Appointment> appointments_for_current_day = instance.Get_BarberShopAppointmentsForSpecificDate(this.barberService.getBarberShopId(), this.date);
-        List<Time> freeHoursList = new ArrayList<>();
+        SimpleDateFormat ymh_format = new SimpleDateFormat("yyyy-MM-dd");
 
-        int day_of_week = date.get(Calendar.DAY_OF_WEEK) - 2;
+        APIController.getInstance().getBarberShopAppointmentsForDay(client.getToken(), String.valueOf(this.barberService.getBarberShopId()), ymh_format.format(this.date.getTime()))
+                .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Appointment>> task) {
 
-        Schedule schedule = instance.Get_BarberShopScheduleForSpecificDay(this.barberService.getBarberShopId(), day_of_week);
+                        final List<Appointment> appointments_for_current_day = task.getResult();
 
-        if (schedule != null) {
-            oppening1 = ParseTime(schedule.GetOppening1());
-            closing1 = ParseTime(schedule.GetClosing1());
-            oppening2 = ParseTime(schedule.GetOppening2());
-            closing2 = ParseTime(schedule.GetClosing2());
+                        int day_of_week = date.get(Calendar.DAY_OF_WEEK) - 2;
 
-            if (oppening1 != null && oppening2 != null && closing1 != null && closing2 != null) {
-                //Morning schedule
-                Pair<Integer, Integer> time_count1 = oppening1;
-                int morning_total_minutes = GetTimeDifference(oppening1, closing1);
-                while (morning_total_minutes >= 0) {
-                    freeHoursList.add(new Time(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH) + 1,
-                            this.date.get(Calendar.DAY_OF_MONTH), time_count1.first, time_count1.second, true));
+                        APIController.getInstance().getBarberShopScheduleByDay(client.getToken(), String.valueOf(barberService.getBarberShopId()), String.valueOf(day_of_week))
+                                .addOnCompleteListener(new OnCompleteListener<Schedule>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Schedule> task) {
 
-                    time_count1 = AddMinutes(time_count1, MINUTES_PER_TIME_SPACE);
+                                        Schedule schedule = task.getResult();
+                                        final List<Time> freeHoursList = new ArrayList<>();
 
-                    morning_total_minutes -= MINUTES_PER_TIME_SPACE;
-                }
+                                        if (schedule != null) {
+                                            oppening1 = ParseTime(schedule.GetOppening1());
+                                            closing1 = ParseTime(schedule.GetClosing1());
+                                            oppening2 = ParseTime(schedule.GetOppening2());
+                                            closing2 = ParseTime(schedule.GetClosing2());
 
-                //Afternoon schedule
-                Pair<Integer, Integer> time_count2 = oppening2;
-                int afternoon_total_minutes = GetTimeDifference(oppening2, closing2);
-                while (afternoon_total_minutes >= 0) {
-                    freeHoursList.add(new Time(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH) + 1,
-                            this.date.get(Calendar.DAY_OF_MONTH), time_count2.first, time_count2.second, true));
+                                            if (oppening1 != null && oppening2 != null && closing1 != null && closing2 != null) {
+                                                //Morning schedule
+                                                Pair<Integer, Integer> time_count1 = oppening1;
+                                                int morning_total_minutes = GetTimeDifference(oppening1, closing1);
+                                                while (morning_total_minutes >= 0) {
+                                                    freeHoursList.add(new Time(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1,
+                                                            date.get(Calendar.DAY_OF_MONTH), time_count1.first, time_count1.second, true));
 
-                    time_count2 = AddMinutes(time_count2, MINUTES_PER_TIME_SPACE);
+                                                    time_count1 = AddMinutes(time_count1, MINUTES_PER_TIME_SPACE);
 
-                    afternoon_total_minutes -= MINUTES_PER_TIME_SPACE;
-                }
-            } else if (oppening1 != null && oppening2 == null && closing1 == null && closing2 != null) {
-                //No rest, full day schedule
-                Pair<Integer, Integer> time_count1 = oppening1;
-                int morning_total_minutes = GetTimeDifference(oppening1, closing2);
-                while (morning_total_minutes >= 0) {
-                    freeHoursList.add(new Time(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH) + 1,
-                            this.date.get(Calendar.DAY_OF_MONTH), time_count1.first, time_count1.second, true));
+                                                    morning_total_minutes -= MINUTES_PER_TIME_SPACE;
+                                                }
 
-                    time_count1 = AddMinutes(time_count1, MINUTES_PER_TIME_SPACE);
+                                                //Afternoon schedule
+                                                Pair<Integer, Integer> time_count2 = oppening2;
+                                                int afternoon_total_minutes = GetTimeDifference(oppening2, closing2);
+                                                while (afternoon_total_minutes >= 0) {
+                                                    freeHoursList.add(new Time(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1,
+                                                            date.get(Calendar.DAY_OF_MONTH), time_count2.first, time_count2.second, true));
 
-                    morning_total_minutes -= MINUTES_PER_TIME_SPACE;
-                }
-            }
+                                                    time_count2 = AddMinutes(time_count2, MINUTES_PER_TIME_SPACE);
 
-            if (freeHoursList.size() > 0) {
+                                                    afternoon_total_minutes -= MINUTES_PER_TIME_SPACE;
+                                                }
+                                            } else if (oppening1 != null && oppening2 == null && closing1 == null && closing2 != null) {
+                                                //No rest, full day schedule
+                                                Pair<Integer, Integer> time_count1 = oppening1;
+                                                int morning_total_minutes = GetTimeDifference(oppening1, closing2);
+                                                while (morning_total_minutes >= 0) {
+                                                    freeHoursList.add(new Time(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1,
+                                                            date.get(Calendar.DAY_OF_MONTH), time_count1.first, time_count1.second, true));
 
-                for (Appointment current_appointment : appointments_for_current_day) {
-                    BarberService current_service = instance.Get_BarberShopService(current_appointment.getService_id());
+                                                    time_count1 = AddMinutes(time_count1, MINUTES_PER_TIME_SPACE);
 
-                    try {
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                        Calendar appointment_date = Calendar.getInstance();
+                                                    morning_total_minutes -= MINUTES_PER_TIME_SPACE;
+                                                }
+                                            }
 
-                        appointment_date.setTime(format.parse(current_appointment.getDate()));
+                                            if (freeHoursList.size() > 0) {
 
-                        ArrayList<Integer> index = GetListIndexForTime(
-                                new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY),
-                                        appointment_date.get(Calendar.MINUTE)),
-                                (int) current_service.getDuration());
+                                                for (final Appointment current_appointment : appointments_for_current_day) {
+                                                    APIController.getInstance().getServiceById(client.getToken(), String.valueOf(current_appointment.getService_id()))
+                                                            .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<BarberService> task) {
+                                                                    BarberService current_service = task.getResult();
 
-                        for (Object anIndex : index) {
-                            int current_index = (int) anIndex;
+                                                                    try {
+                                                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                                                        Calendar appointment_date = Calendar.getInstance();
 
-                            Time current_time = freeHoursList.get(current_index);
-                            current_time.SetAvailability(false);
+                                                                        appointment_date.setTime(format.parse(current_appointment.getDate()));
 
-                            freeHoursList.set(current_index, current_time);
-                        }
+                                                                        ArrayList<Integer> index = GetListIndexForTime(
+                                                                                new Pair<>(appointment_date.get(Calendar.HOUR_OF_DAY),
+                                                                                        appointment_date.get(Calendar.MINUTE)),
+                                                                                (int) current_service.getDuration());
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                                                                        for (Object anIndex : index) {
+                                                                            int current_index = (int) anIndex;
+
+                                                                            Time current_time = freeHoursList.get(current_index);
+                                                                            current_time.SetAvailability(false);
+
+                                                                            freeHoursList.set(current_index, current_time);
+                                                                        }
+
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+                                                                    FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(activity, freeHoursRecycleView, barberService), activity);
+                                                                    freeHoursRecycleView.setAdapter(adapter);
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
                     }
-                }
-
-                FreeHoursAdapter adapter = new FreeHoursAdapter(freeHoursList, new FreeHourClick(this, this.freeHoursRecycleView, this.barberService), this);
-                this.freeHoursRecycleView.setAdapter(adapter);
-            }
-        }
+                });
     }
 
     private Pair<Integer, Integer> ParseTime(String string_hour) {

@@ -17,11 +17,9 @@ import com.udl.bss.barbershopschedule.BarberFreeHoursActivity;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
-import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.domain.Time;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
@@ -131,12 +129,15 @@ public class FreeHourClick implements OnItemClickListener {
                                         int promotion_id = task.getResult();
 
                                         APIController.getInstance().createAppointment(client.getToken(), new Appointment(-1, client.getId(), service.getBarberShopId(),
-                                                service.getId(), promotion_id, db_format_time));
-
-                                        Intent intent = new Intent(activity, HomeActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        intent.putExtra("user", "User");
-                                        activity.startActivity(intent);
+                                                service.getId(), promotion_id, db_format_time)).addOnCompleteListener(new OnCompleteListener<Integer>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Integer> task) {
+                                                Intent intent = new Intent(activity, HomeActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                intent.putExtra("user", "User");
+                                                activity.startActivity(intent);
+                                            }
+                                        });
                                     }
                                 });
 

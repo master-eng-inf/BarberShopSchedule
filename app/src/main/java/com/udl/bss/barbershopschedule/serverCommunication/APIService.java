@@ -40,6 +40,11 @@ public interface APIService {
     Call<ResponseBody> getAppointmentByBarber(@Path(value = "token", encoded = true) String token,
                                               @Path(value = "barber_shop_id", encoded = true) String id);
 
+    @GET("appointments/list/barberShop/{barber_shop_id}/date/{date}/{token}")
+    Call<ResponseBody> getBarberShopAppointmentsForDay(@Path(value = "token", encoded = true) String token,
+                                                       @Path(value = "barber_shop_id", encoded = true) String id,
+                                                       @Path(value = "date", encoded = true) String date);
+
     @GET("appointments/list/client/{client_id}/{token}")
     Call<ResponseBody> getAppointmentByClient(@Path(value = "token", encoded = true) String token,
                                               @Path(value = "client_id", encoded = true) String id);
@@ -118,7 +123,7 @@ public interface APIService {
 
     @GET("promotions/list/barberShop/{barber_shop_id}/{token}")
     Call<ResponseBody> getPromotionsByBarber(@Path(value = "token", encoded = true) String token,
-                                            @Path(value = "barber_shop_id", encoded = true) String id);
+                                             @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("promotions/promotion/{promotion_id}/{token}")
     Call<ResponseBody> getPromotionById(@Path(value = "token", encoded = true) String token,
@@ -126,7 +131,7 @@ public interface APIService {
 
     @GET("promotions/promotion/barberShop/{barber_shop_id}/service/{service_id}/{token}")
     Call<ResponseBody> getBarberShopPromotionForService(@Path(value = "token", encoded = true) String token,
-                                        @Path(value = "barber_shop_id", encoded = true) String barber_shop_id,
+                                                        @Path(value = "barber_shop_id", encoded = true) String barber_shop_id,
                                                         @Path(value = "service_id", encoded = true) String service_id);
 
     @Headers("Content-Type: application/json")
@@ -153,8 +158,8 @@ public interface APIService {
 
     @GET("reviews/barberShop/{barber_shop_id}/client/{client_id}/{token}")
     Call<ResponseBody> getReviewByClientIdAndBarberId(@Path(value = "token", encoded = true) String token,
-                                                       @Path(value = "barber_shop_id", encoded = true) String barber_id,
-                                                       @Path(value = "client_id", encoded = true) String client_id);
+                                                      @Path(value = "barber_shop_id", encoded = true) String barber_id,
+                                                      @Path(value = "client_id", encoded = true) String client_id);
 
 
     @Headers("Content-Type: application/json")
@@ -203,7 +208,7 @@ public interface APIService {
 
     @GET("services/list/barberShop/{barber_shop_id}/{token}")
     Call<ResponseBody> getServicesByBarber(@Path(value = "token", encoded = true) String token,
-                                          @Path(value = "barber_shop_id", encoded = true) String id);
+                                           @Path(value = "barber_shop_id", encoded = true) String id);
 
     @GET("services/service/{service_id}/{token}")
     Call<ResponseBody> getServiceById(@Path(value = "token", encoded = true) String token,
@@ -249,5 +254,9 @@ public interface APIService {
                                         @Path(value = "date", encoded = true) String date);
 
 
-
+    /* Schedule controller */
+    @GET("schedules/barberShop/{barber_shop_id}/dayOfWeek/{day_of_week}/{token}")
+    Call<ResponseBody> getBarberShopScheduleByDay(@Path(value = "token", encoded = true) String token,
+                                                  @Path(value = "barber_shop_id", encoded = true) String barber_shop_id,
+                                                  @Path(value = "day_of_week", encoded = true) String day_of_week);
 }

@@ -11,6 +11,7 @@ import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.domain.Review;
+import com.udl.bss.barbershopschedule.domain.Schedule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -452,6 +453,49 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public Task<List<Appointment>> getBarberShopAppointmentsForDay(String token, String id, String date) {
+        final TaskCompletionSource<List<Appointment>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getBarberShopAppointmentsForDay(token, id, date).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+                        List<Appointment> appointmentList = new ArrayList<>();
+
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+                            Appointment appointment = new Appointment(
+                                    json.getInt("id"),
+                                    json.getInt("client_id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getInt("service_id"),
+                                    json.getInt("promotion_id"),
+                                    json.getString("date"));
+                            appointmentList.add(appointment);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(appointmentList);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get appointments by client ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
     public Task<Integer> getBarberShopPromotionForService(String token, String barber_shop_id, String service_id) {
         final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
 
@@ -462,10 +506,22 @@ public class APIController {
                     ResponseBody body = response.body();
                     if (body != null) {
                         String s = body.string();
+                        JSONObject json = new JSONObject(s);
+                        Promotion promotion = new Promotion(
+                                json.getInt("id"),
+                                json.getInt("barber_shop_id"),
+                                json.getInt("service_id"),
+                                json.getString("name"),
+                                json.getString("description"),
+                                json.getInt("is_promotional"));
+
                         Log.i("APISERVER", s);
-                        tcs.setResult(Integer.valueOf(s));
+                        tcs.setResult(promotion.getId());
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    tcs.setResult(-1);
                     e.printStackTrace();
                 }
             }
@@ -478,7 +534,10 @@ public class APIController {
         return tcs.getTask();
     }
 
-    public void createAppointment(String token, Appointment appointment) {
+    public Task<Integer> createAppointment(String token, Appointment appointment) {
+
+        final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
+
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("id", String.valueOf(-1));
         requestBody.put("client_id", String.valueOf(appointment.getClient_id()));
@@ -490,7 +549,15 @@ public class APIController {
         ApiUtils.getService().createAppointment(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                Log.i("APISERVER", "Create service OK" + response.toString() + " " + response.body());
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+                        tcs.setResult(Integer.valueOf(s));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -498,6 +565,8 @@ public class APIController {
                 Log.i("APISERVER", "Create service ERROR");
             }
         });
+
+        return tcs.getTask();
     }
 
     /* Service Controller */
@@ -974,6 +1043,48 @@ public class APIController {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.i("APISERVER", "Get review by client and barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
+
+    /* Schedule Controller */
+    public Task<Schedule> getBarberShopScheduleByDay(String token, String barber_shop_id, String day_of_week) {
+        final TaskCompletionSource<Schedule> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getBarberShopScheduleByDay(token, barber_shop_id, day_of_week).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+
+                        JSONObject json = new JSONObject(s);
+
+                        Schedule schedule = new Schedule(
+                                json.getInt("barber_shop_id"),
+                                json.getInt("day_of_week"),
+                                json.getString("opening_1"),
+                                json.getString("closing_1"),
+                                json.getString("opening_2"),
+                                json.getString("closing_2"),
+                                json.getInt("appointments_at_same_time"));
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(schedule);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get promotion by id ERROR");
             }
         });
 
