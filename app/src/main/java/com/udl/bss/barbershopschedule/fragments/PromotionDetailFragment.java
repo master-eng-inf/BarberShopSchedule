@@ -3,17 +3,31 @@ package com.udl.bss.barbershopschedule.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
+import com.udl.bss.barbershopschedule.domain.Barber;
+import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.listeners.ServiceClick;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
+
+import java.util.List;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class PromotionDetailFragment extends Fragment {
@@ -21,8 +35,10 @@ public class PromotionDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Promotion promo;
     FloatingActionButton btn_edit;
-    TextView name,description,service,is_promotional,barber,id;
+    TextView name,description,service,is_promotional,barber,id,service_cv;
+    private String service_id;
     private SharedPreferences mPrefs;
+    private Barber barberBarber;
 
     public PromotionDetailFragment() {
         // Required empty public constructor
@@ -57,6 +73,10 @@ public class PromotionDetailFragment extends Fragment {
 
         mPrefs = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String mode = mPrefs.getString("mode", "");
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        barberBarber = gson.fromJson(json, Barber.class);
+
 
         if(mode.equals("User")) {
             btn_edit.setVisibility(View.GONE);
@@ -105,15 +125,18 @@ public class PromotionDetailFragment extends Fragment {
 
         TextView name_cv = view.findViewById(R.id.name_cv);
         TextView description_cv = view.findViewById(R.id.description_cv);
-        TextView service_cv = view.findViewById(R.id.service_cv);
+        service_cv = view.findViewById(R.id.service_cv);
         TextView is_promotional_cv = view.findViewById(R.id.is_promotional_cv);
 
         if (promotion != null) {
             name_cv.setText(promotion.getName());
             description_cv.setText(promotion.getDescription());
 
-            String service_id = Double.toString(promotion.getService_id());
-            service_cv.setText(service_id);
+            service_id = Integer.toString(promotion.getService_id());
+            setBarberService();
+
+            //service_id = Double.toString(promotion.getService_id());
+            //service_cv.setText(service_id);
 
             if(promotion.getIs_Promotional()==0) {
                 is_promotional_cv.setText("No");
@@ -123,6 +146,21 @@ public class PromotionDetailFragment extends Fragment {
 
             promo = new Promotion(promotion.getId(),promotion.getBarber_shop_id(),promotion.getService_id(),promotion.getName(),promotion.getDescription(),promotion.getIs_Promotional());
         }
+    }
+
+    private void setBarberService() {
+
+        if (service_id != null) {
+            APIController.getInstance().getServiceById(barberBarber.getToken() ,service_id)
+                    .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+                        @Override
+                        public void onComplete(@NonNull Task<BarberService> task) {
+                            BarberService barberService = task.getResult();
+                            service_cv.setText(barberService.getName());
+                        }
+                    });
+        }
+
     }
 
     @Override
