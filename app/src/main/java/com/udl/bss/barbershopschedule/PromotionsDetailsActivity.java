@@ -1,7 +1,9 @@
 package com.udl.bss.barbershopschedule;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,9 +15,14 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
+import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 public class PromotionsDetailsActivity extends AppCompatActivity {
 
@@ -23,10 +30,24 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promotions_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        SharedPreferences mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("user", "");
+        String mode = mPrefs.getString("mode", "");
+
+        String token;
+        if (mode.equals("Barber")) {
+            Barber barber = gson.fromJson(json, Barber.class);
+            token = barber.getToken();
+        } else {
+            Client client = gson.fromJson(json, Client.class);
+            token = client.getToken();
+        }
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,19 +75,29 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
         fab.startAnimation(anim);
 
         TextView tv_description = findViewById(R.id.description_cv);
-        TextView tv_service = findViewById(R.id.service_detail);
-        CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
+        final TextView tv_service = findViewById(R.id.service_detail);
+        final CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
         Promotion p = getIntent().getParcelableExtra("promotion");
 
-        /*TODO*/
-        //BLL instance = new BLL(this);
+        APIController.getInstance().getBarberById(token, String.valueOf(p.getBarber_shop_id()))
+                .addOnCompleteListener(new OnCompleteListener<Barber>() {
+            @Override
+            public void onComplete(@NonNull Task<Barber> task) {
+                Barber barber = task.getResult();
+                ctl.setTitle(barber.getName());
+            }
+        });
 
-        //Barber barber = instance.Get_BarberShop(p.getBarber_shop_id());
-        //BarberService service = instance.Get_BarberShopService(p.getService_id());
+        APIController.getInstance().getServiceById(token, String.valueOf(p.getService_id()))
+                .addOnCompleteListener(new OnCompleteListener<BarberService>() {
+            @Override
+            public void onComplete(@NonNull Task<BarberService> task) {
+                BarberService service = task.getResult();
+                tv_service.setText(service.getName());
+            }
+        });
 
-        //ctl.setTitle(barber.getName());
-        //tv_service.setText(service.getName());
         tv_description.setText(p.getDescription());
     }
 }
