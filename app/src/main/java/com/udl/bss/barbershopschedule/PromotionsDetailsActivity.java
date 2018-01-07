@@ -13,7 +13,6 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Promotion;
@@ -60,13 +59,14 @@ public class PromotionsDetailsActivity extends AppCompatActivity {
 
         Promotion p = getIntent().getParcelableExtra("promotion");
 
-        BLL instance = new BLL(this);
+        /*TODO*/
+        //BLL instance = new BLL(this);
 
-        Barber barber = instance.Get_BarberShop(p.getBarber_shop_id());
-        BarberService service = instance.Get_BarberShopService(p.getService_id());
+        //Barber barber = instance.Get_BarberShop(p.getBarber_shop_id());
+        //BarberService service = instance.Get_BarberShopService(p.getService_id());
 
-        ctl.setTitle(barber.getName());
-        tv_service.setText(service.getName());
+        //ctl.setTitle(barber.getName());
+        //tv_service.setText(service.getName());
         tv_description.setText(p.getDescription());
     }
 }

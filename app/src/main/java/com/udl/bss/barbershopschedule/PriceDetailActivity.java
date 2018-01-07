@@ -13,9 +13,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.BarberService;
-import com.udl.bss.barbershopschedule.domain.Price;
 
 public class PriceDetailActivity extends AppCompatActivity {
 
@@ -23,10 +21,10 @@ public class PriceDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,9 +60,10 @@ public class PriceDetailActivity extends AppCompatActivity {
 
         BarberService barber_shop_service = getIntent().getParcelableExtra("service");
 
-        BLL instance = new BLL(this);
+        /*TODO*/
+        //BLL instance = new BLL(this);
 
-        ctl.setTitle(instance.Get_BarberShop(barber_shop_service.getBarberShopId()).getName());
+        //ctl.setTitle(instance.Get_BarberShop(barber_shop_service.getBarberShopId()).getName());
         tv_service.setText(barber_shop_service.getName());
         String price = Double.toString(barber_shop_service.getPrice()) + " " + getResources().getString(R.string.service_price_currency);
         tv_price.setText(price);

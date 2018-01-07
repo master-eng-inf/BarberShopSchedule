@@ -6,16 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
@@ -24,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
@@ -45,16 +41,15 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barber_appointment_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
-        String mode = mPrefs.getString("mode", "");
         Gson gson = new Gson();
         String json = mPrefs.getString("user", "");
         barber = gson.fromJson(json, Barber.class);
 
-        delete_btn = (FloatingActionButton) findViewById(R.id.delete_btn);
+        delete_btn = findViewById(R.id.delete_btn);
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,14 +99,12 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
         tv_client = findViewById(R.id.client_detail);
         tv_promotion = findViewById(R.id.promotion_detail);
         tv_date = findViewById(R.id.date_detail);
-        //CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
         appointment = getIntent().getParcelableExtra("appointment");
         appointmentId = Integer.toString(appointment.getId());
 
         Log.d("TAG", "onCreate: " +appointment);
 
-        //ctl.setTitle(a.getBarber_shop_id());
 
         String serviceId = Integer.toString(appointment.getService_id());
         APIController.getInstance().getServiceById(barber.getToken() ,serviceId)

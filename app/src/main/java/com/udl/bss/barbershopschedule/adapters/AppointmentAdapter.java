@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
@@ -33,7 +31,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     private List<Appointment> mDataset;
     private OnItemClickListener listener;
-    private Context context;
     private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,10 +47,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, Context context, String token) {
+    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, String token) {
         mDataset = myDataset;
         this.listener = listener;
-        this.context = context;
         this.token = token;
     }
 
@@ -67,9 +63,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        //BLL instance = new BLL(this.context);
-        //BarberService service = instance.Get_BarberShopService(mDataset.get(position).getService_id());
-        //Barber barber = instance.Get_BarberShop(mDataset.get(position).getBarber_shop_id());
 
         APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getService_id()))
                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {

@@ -1,7 +1,6 @@
 package com.udl.bss.barbershopschedule;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,23 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
-import com.udl.bss.barbershopschedule.domain.Appointment;
-import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.listeners.PreAppointmentBarberServiceClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BarberServicePricesActivity extends AppCompatActivity {
@@ -44,7 +36,7 @@ public class BarberServicePricesActivity extends AppCompatActivity {
         date = getIntent().getStringExtra("date");
         barber_shop_id = getIntent().getIntExtra("barber_shop_id",-1);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         this.servicesRecyclerView = findViewById(R.id.service_prices);
@@ -65,8 +57,6 @@ public class BarberServicePricesActivity extends AppCompatActivity {
     }
 
     private void setPricesItems() {
-        BLL instance = new BLL(this);
-        ArrayList<BarberService> barber_shop_services = instance.Get_BarberShopServices(barber_shop_id);
 
         SharedPreferences mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
         Gson gson = new Gson();

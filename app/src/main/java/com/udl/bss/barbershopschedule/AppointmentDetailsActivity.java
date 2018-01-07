@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,13 +15,10 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class AppointmentDetailsActivity extends AppCompatActivity {
 
@@ -32,10 +28,10 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        delete_btn = (FloatingActionButton) findViewById(R.id.delete_btn);
+        delete_btn = findViewById(R.id.delete_btn);
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,8 +53,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 });
                 alert.show();
 
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //       .setAction("Action", null).show();
             }
         });
 
@@ -86,13 +80,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         Appointment a = getIntent().getParcelableExtra("appointment");
 
-        BLL instance = new BLL(this);
-        Barber barber = instance.Get_BarberShop(a.getBarber_shop_id());
-        BarberService service = instance.Get_BarberShopService(a.getService_id());
+        /*TODO*/
+        //BLL instance = new BLL(this);
+        //Barber barber = instance.Get_BarberShop(a.getBarber_shop_id());
+        //BarberService service = instance.Get_BarberShopService(a.getService_id());
 
         //TODO format date
-        ctl.setTitle(barber.getName());
+        //ctl.setTitle(barber.getName());
         tv_date.setText(a.getDate());
-        tv_service.setText(service.getName());
+        //tv_service.setText(service.getName());
     }
 }

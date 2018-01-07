@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
@@ -64,10 +62,6 @@ public class HomeFragment extends Fragment {
             String json = getArguments().getString(CLIENT);
             this.client = gson.fromJson(json, Client.class);
         }
-        //this.instance = new BLL(getContext());
-        //this.instance.Initialize_Database();
-        //this.instance.Initialize_Clients();
-        //Log.d("", "onCreate: pozvananaaa");
     }
 
     @Override
@@ -127,7 +121,6 @@ public class HomeFragment extends Fragment {
                 AppointmentAdapter adapter = new AppointmentAdapter(
                         appointmentList,
                         new AppointmentClick(getActivity(), appointmentsRecyclerView),
-                        getContext(),
                         client.getToken());
                 appointmentsRecyclerView.setAdapter(adapter);
             }

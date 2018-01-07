@@ -18,17 +18,14 @@ import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.PromotionAdapter;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.listeners.BarberServiceClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BarberDetailPricesAndPromotionsFragment extends Fragment {

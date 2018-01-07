@@ -13,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,8 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.Gson;
-import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.BarberAdapter;
-import com.udl.bss.barbershopschedule.database.BLL;
-import com.udl.bss.barbershopschedule.database.Users.UsersSQLiteManager;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberClick;
 import com.udl.bss.barbershopschedule.listeners.FloatingButtonScrollListener;
@@ -42,13 +37,9 @@ public class BarberListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private BarberAdapter adapter;
-    private BLL instance;
     private OnFragmentInteractionListener mListener;
 
     SharedPreferences mPrefs;
-
-    String jsonStr;
-    private String TAG = HomeActivity.class.getSimpleName();
 
     public BarberListFragment() {
     }
@@ -60,7 +51,6 @@ public class BarberListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.instance = new BLL(getContext());
     }
 
     @Override
@@ -83,8 +73,6 @@ public class BarberListFragment extends Fragment {
             getActivity().getWindow().setExitTransition(fade);
         }
 
-        //final UsersSQLiteManager usm = new UsersSQLiteManager(getContext());
-        //List<Barber> barberList = usm.getRegisteredBarbers();
 
         mPrefs = getActivity().getSharedPreferences("USER", Activity.MODE_PRIVATE);
 
@@ -104,8 +92,6 @@ public class BarberListFragment extends Fragment {
 
             setBarbersToRecycleView();
 
-            //adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
-            //mRecyclerView.setAdapter(adapter);
         }
 
 
@@ -122,9 +108,7 @@ public class BarberListFragment extends Fragment {
                 }
                 adapter.removeAll();
                 setBarbersToRecycleView();
-                //List<Barber> barberList = usm.getRegisteredBarbers();
-                //adapter = new BarberAdapter(barberList, new BarberClick(getActivity(), mRecyclerView), getContext());
-                //mRecyclerView.setAdapter(adapter);
+
             }
         });
         sr.setColorSchemeResources(android.R.color.holo_blue_dark,
