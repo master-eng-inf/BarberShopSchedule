@@ -38,6 +38,9 @@
             android:name=".AppointmentDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".BarberAppointmentDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".PromotionsDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

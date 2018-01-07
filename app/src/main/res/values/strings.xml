@@ -13,6 +13,10 @@
     <string name="password">Password</string>
 
     <string name="transname_barbername">barberName</string>
+    <string name="transname_barberserv">barberServ</string>
+    <string name="transname_barberclient">barberClient</string>
+    <string name="transname_barberprom">barberProm</string>
+    <string name="transname_barberdate">barberDate</string>
     <string name="transname_barberaddress">barberAddr</string>
     <string name="transname_barberdesc">barberDesc</string>
     <string name="transname_barberimg">barberImage</string>
@@ -79,6 +83,8 @@
 
     <string name="services">Services</string>
     <string name="new_appointment">New appointment</string>
+    <string name="appointment_client_name">Client name</string>
+    <string name="appointment_date">Appointment date</string>
 
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>

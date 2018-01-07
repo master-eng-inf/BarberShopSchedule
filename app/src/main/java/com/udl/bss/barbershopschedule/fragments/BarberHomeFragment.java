@@ -22,6 +22,7 @@ import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
+import com.udl.bss.barbershopschedule.listeners.BarberAppointmentClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class BarberHomeFragment extends Fragment {
 
                 BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
                         task.getResult(),
-                        new AppointmentClick(getActivity(), appointmentsRecyclerView),
+                        new BarberAppointmentClick(getActivity(), appointmentsRecyclerView),
                         barber.getToken());
                 appointmentsRecyclerView.setAdapter(adapter);
             }

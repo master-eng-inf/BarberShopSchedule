@@ -451,6 +451,20 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public void removeAppointment(String token, String appointment_id) {
+        ApiUtils.getService().removeAppointment(token,appointment_id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Appointment removed");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Appointment deletion ERROR");
+            }
+        });
+    }
+
 
     /* Service Controller */
 
