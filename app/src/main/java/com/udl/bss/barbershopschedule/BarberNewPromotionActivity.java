@@ -115,7 +115,7 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
 
                 APIController.getInstance().createPromotion(barber.getToken(), newPromotion);
 
-                Toast.makeText(getApplicationContext(), "Your promotion was created succesfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.promotion_create), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("user", "Barber");

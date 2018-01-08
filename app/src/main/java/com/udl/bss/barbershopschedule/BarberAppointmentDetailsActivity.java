@@ -128,7 +128,7 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
 
         String promotionId = Integer.toString(appointment.getPromotion_id());
         if (appointment.getPromotion_id() == -1){
-            tv_promotion.setText("There isn't promotion");
+            tv_promotion.setText(getString(R.string.no_promotion));
         } else {
             APIController.getInstance().getPromotionById(barber.getToken() ,promotionId)
                     .addOnCompleteListener(new OnCompleteListener<Promotion>() {

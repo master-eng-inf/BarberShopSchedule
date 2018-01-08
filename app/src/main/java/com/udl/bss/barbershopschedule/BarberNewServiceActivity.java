@@ -72,7 +72,7 @@ public class BarberNewServiceActivity extends AppCompatActivity {
 
                     APIController.getInstance().createService(barber.getToken(), newService);
 
-                    Toast.makeText(getApplicationContext(), "Your service was created succesfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.service_create), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("user", "Barber");

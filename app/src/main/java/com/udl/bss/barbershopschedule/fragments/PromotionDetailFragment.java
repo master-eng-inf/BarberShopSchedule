@@ -139,9 +139,9 @@ public class PromotionDetailFragment extends Fragment {
             //service_cv.setText(service_id);
 
             if(promotion.getIs_Promotional()==0) {
-                is_promotional_cv.setText("No");
+                is_promotional_cv.setText(getString(R.string.no));
             } else{
-                is_promotional_cv.setText("Yes");
+                is_promotional_cv.setText(getString(R.string.yes));
             }
 
             promo = new Promotion(promotion.getId(),promotion.getBarber_shop_id(),promotion.getService_id(),promotion.getName(),promotion.getDescription(),promotion.getIs_Promotional());

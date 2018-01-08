@@ -97,7 +97,7 @@ public class BarberServiceDetailFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         APIController.getInstance().removeService(barber.getToken(), service_id);
-                        Toast.makeText(getContext(), "Your service was deleted succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.service_delete), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), HomeActivity.class);
                         intent.putExtra("user", "Barber");
                         startActivity(intent);
@@ -135,7 +135,7 @@ public class BarberServiceDetailFragment extends Fragment {
                                 BarberService serviceUpdated = new BarberService(service_idToUpdate, barberShop_idToUpdate, nameToUpdate, priceToUpdate, durationToUpdate);
 
                                 APIController.getInstance().updateService(barber.getToken(), serviceUpdated);
-                                Toast.makeText(getContext(), "Your service was updated succesfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.service_update), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getContext(), HomeActivity.class);
                                 intent.putExtra("user", "Barber");
                                 startActivity(intent);

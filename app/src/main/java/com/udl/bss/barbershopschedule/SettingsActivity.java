@@ -267,7 +267,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         saveToSharedPreferences((new Gson()).toJson(barber));
 
                         preference.setSummary(o.toString());
-                        Toast.makeText(getContext(), "Description updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.description_update), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -291,7 +291,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         saveToSharedPreferences((new Gson()).toJson(client));
 
                         preference.setSummary(o.toString());
-                        Toast.makeText(getContext(), "Age updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.age_update), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -318,9 +318,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                                 preference.setSummary(o.toString());
 
-                                Toast.makeText(getContext(), "Name updated successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.name_update), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getContext(), "Username is not available", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.name_not_available), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -341,7 +341,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         saveToSharedPreferences((new Gson()).toJson(client));
                     }
                     preference.setSummary(o.toString());
-                    Toast.makeText(getContext(), "Email updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.email_update), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -359,7 +359,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         saveToSharedPreferences((new Gson()).toJson(client));
                     }
                     preference.setSummary(o.toString());
-                    Toast.makeText(getContext(), "Phone updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.phone_update), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -376,7 +376,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         APIController.getInstance().updateClient(client.getToken(), client);
                         saveToSharedPreferences((new Gson()).toJson(client));
                     }
-                    Toast.makeText(getContext(), "Password updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.password_update), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -395,7 +395,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         saveToSharedPreferences((new Gson()).toJson(client));
                     }
                     preference.setSummary(o.toString());
-                    Toast.makeText(getContext(), "Gender updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.gender_update), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -479,7 +479,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                         pPlace.setSummary(barber.getAddress() + ", " + barber.getCity());
 
-                        Toast.makeText(getActivity(), "Place updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.place_update), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }

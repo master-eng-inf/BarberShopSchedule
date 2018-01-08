@@ -210,7 +210,7 @@ public class RegisterActivity extends AppCompatActivity
 
                             APIController.getInstance().createBarber(barber);
 
-                            Toast.makeText(getApplicationContext(), "Barber created successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.barber_create), Toast.LENGTH_SHORT).show();
 
 
                         } else {
@@ -227,14 +227,14 @@ public class RegisterActivity extends AppCompatActivity
 
                             APIController.getInstance().createClient(client);
 
-                            Toast.makeText(getApplicationContext(), "Client created successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.client_create), Toast.LENGTH_SHORT).show();
 
                         }
 
                         finish();
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Username is not avaliable", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.name_not_available), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

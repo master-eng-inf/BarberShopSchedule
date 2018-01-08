@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivityMode("User", gson.toJson(client));
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "Invalid user or password",
+                                Toast.makeText(getApplicationContext(), getString(R.string.invalid_user),
                                         Toast.LENGTH_SHORT).show();
                             }
 

@@ -142,7 +142,7 @@ public class BarberPromotionDetailFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         APIController.getInstance().removePromotion(barber.getToken(), promotion_id);
-                        Toast.makeText(getContext(), "Your Promotion was deleted succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.promotion_delete), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), HomeActivity.class);
                         intent.putExtra("user", "Barber");
                         startActivity(intent);
@@ -178,7 +178,7 @@ public class BarberPromotionDetailFragment extends Fragment {
                             Promotion promotionUpdated = new Promotion(promotion_idToUpdate, barberShop_idToUpdate, service.getId(), nameToUpdate, descriptionToUpdate, isPromotionalToUpdate);
 
                             APIController.getInstance().updatePromotion(barber.getToken(), promotionUpdated);
-                            Toast.makeText(getContext(), "Your promotion was updated succesfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.promotion_update), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getContext(), HomeActivity.class);
                             intent.putExtra("user", "Barber");
                             startActivity(intent);

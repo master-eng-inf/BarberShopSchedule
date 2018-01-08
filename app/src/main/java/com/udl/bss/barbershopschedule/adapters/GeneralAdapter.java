@@ -67,7 +67,8 @@ public class GeneralAdapter extends ArrayAdapter<Object> {
 
                     TextView free_hour_label = (TextView) v.findViewById(R.id.barbe_free_hour);
                     if (free_hour_label != null) {
-                        free_hour_label.setText(date.getHours()+":"+date.getMinutes());
+                        String s = date.getHours()+":"+date.getMinutes();
+                        free_hour_label.setText(s);
                     }
 
                     break;

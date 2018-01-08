@@ -226,5 +226,31 @@
     <string name="description">Description</string>
     <string name="age">Age</string>
 
+    <string name="name_not_available">Username is not available</string>
+    <string name="invalid_user">Invalid user or password</string>
+
+    <string name="barber_create">Barber created successfully</string>
+    <string name="client_create">Client created successfully</string>
+    <string name="service_create">Service created successfully</string>
+    <string name="promotion_create">Promotion created successfully</string>
+
+    <string name="description_update">Description updated successfully</string>
+    <string name="age_update">Age updated successfully</string>
+    <string name="name_update">Name updated successfully</string>
+    <string name="email_update">Email updated successfully</string>
+    <string name="phone_update">Phone updated successfully</string>
+    <string name="password_update">Password updated successfully</string>
+    <string name="gender_update">Gender updated successfully</string>
+    <string name="place_update">Place updated successfully</string>
+    <string name="service_update">Your service was updated successfully</string>
+    <string name="promotion_update">Your promotion was updated successfully</string>
+
+    <string name="service_delete">Your service was deleted successfully</string>
+    <string name="promotion_delete">Your promotion was deleted successfully</string>
+
+    <string name="no_promotion">There isn\'t promotion</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 
 </resources>

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.transition.Fade;
 import android.support.design.widget.NavigationView;
@@ -62,7 +63,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -74,16 +75,15 @@ public class HomeActivity extends AppCompatActivity
             getWindow().setExitTransition(fade);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //String user = getIntent().getStringExtra("user");
         ViewStub stub = findViewById(R.id.stub);
         Fragment fragment;
 
@@ -99,11 +99,6 @@ public class HomeActivity extends AppCompatActivity
 
             stub.setLayoutResource(R.layout.barber_fab);
             navigationView.inflateMenu(R.menu.activity_barber_home_drawer);
-
-            //TODO
-            //BLL instance = new BLL(this);
-            //instance.Initialize_Database();
-            //Barber barber = instance.Get_BarberShop(0);
 
             fragment = BarberHomeFragment.newInstance(barber);
             stub.inflate();
@@ -138,7 +133,6 @@ public class HomeActivity extends AppCompatActivity
             stub.setLayoutResource(R.layout.user_fab);
             navigationView.inflateMenu(R.menu.activity_home_drawer);
 
-            //TODO
             fragment = HomeFragment.newInstance(client);
             stub.inflate();
             floatingActionMenu = findViewById(R.id.fab_menu);
@@ -203,17 +197,13 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.home) {
-            //TODO
             HomeFragment hf = HomeFragment.newInstance(client);
             startFragmentBackStack(hf);
         } else if (id == R.id.barber_home) {
-            //TODO
-            //BLL instance = new BLL(this);
-            //Barber barber = instance.Get_BarberShop(0);
             BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
             startFragmentBackStack(bhf);
         } else if (id == R.id.show_barbers) {
@@ -242,13 +232,12 @@ public class HomeActivity extends AppCompatActivity
             finish();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void startFragment(Fragment fragment) {
-        //Toast.makeText(this,fragment.toString(),Toast.LENGTH_SHORT).show();
         if (fragment != null){
             getSupportFragmentManager()
                     .beginTransaction()
@@ -258,7 +247,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void startFragmentBackStack(Fragment fragment) {
-        //Toast.makeText(this,fragment.toString(),Toast.LENGTH_SHORT).show();
         if (fragment != null){
             getSupportFragmentManager()
                     .beginTransaction()

@@ -53,7 +53,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
 
         barberService = getIntent().getParcelableExtra("service");
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         try {
             this.date = Calendar.getInstance();
@@ -88,7 +88,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
     }
 
     private void SetFreeHours() {
-        SimpleDateFormat ymh_format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat ymh_format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         APIController.getInstance().getBarberShopAppointmentsForDay(client.getToken(), String.valueOf(this.barberService.getBarberShopId()), ymh_format.format(this.date.getTime()))
                 .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
