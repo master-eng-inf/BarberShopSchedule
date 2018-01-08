@@ -168,13 +168,13 @@ public class RegisterActivity extends AppCompatActivity
         if (isBarber){
 
             return et_name != null && et_mail != null && et_pass != null
-                    && placesID != null && !et_name.getText().toString().equals("")
+                    && placesID != null && !et_name.getText().toString().trim().equals("")
                     && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
                     && et_phone != null && !et_phone.getText().toString().equals("")
                     && et_desc != null && !et_desc.getText().toString().equals("");
         }
 
-        return et_name != null && et_mail != null && et_pass != null && !et_name.getText().toString().equals("")
+        return et_name != null && et_mail != null && et_pass != null && !et_name.getText().toString().trim().equals("")
                 && !et_pass.getText().toString().equals("") && !et_mail.getText().toString().equals("")
                 && et_phone != null && !et_phone.getText().toString().equals("")
                 && et_age != null && !et_age.getText().toString().equals("");
@@ -185,7 +185,8 @@ public class RegisterActivity extends AppCompatActivity
 
         if (registerOk()) {
 
-            APIController.getInstance().isUserAvailable(et_name.getText().toString())
+            final String username = et_name.getText().toString().trim();
+            APIController.getInstance().isUserAvailable(username)
                     .addOnCompleteListener(new OnCompleteListener<Boolean>() {
                 @Override
                 public void onComplete(@NonNull Task<Boolean> task) {
@@ -196,7 +197,7 @@ public class RegisterActivity extends AppCompatActivity
                             String[] strArray = address.replaceAll("\\'", " ").split(",");
 
                             Barber barber = new Barber(
-                                    et_name.getText().toString(),
+                                    username,
                                     et_mail.getText().toString(),
                                     placesID,
                                     et_pass.getText().toString(),
@@ -216,7 +217,7 @@ public class RegisterActivity extends AppCompatActivity
                         } else {
 
                             Client client = new Client(
-                                    et_name.getText().toString(),
+                                    username,
                                     et_mail.getText().toString(),
                                     et_pass.getText().toString(),
                                     et_phone.getText().toString(),
