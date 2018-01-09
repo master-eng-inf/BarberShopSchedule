@@ -27,6 +27,7 @@ import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,7 +52,7 @@ public class BarberServicesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_barber_services, container, false);
@@ -84,7 +85,8 @@ public class BarberServicesFragment extends Fragment {
             servicesRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             servicesRecyclerView.setLayoutManager(llm);
-
+            servicesRecyclerView.setAdapter(
+                    new ServiceAdapter(new ArrayList<BarberService>(), null, null));
             setBarberServices();
 
             /* Swipe down to refresh */

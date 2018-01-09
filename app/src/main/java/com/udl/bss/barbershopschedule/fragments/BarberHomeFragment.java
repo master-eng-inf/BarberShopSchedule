@@ -18,13 +18,14 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
-import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.BarberAppointmentClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,7 +58,7 @@ public class BarberHomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_barber_home, container, false);
@@ -68,7 +69,7 @@ public class BarberHomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getActivity() != null) {
             Fade fade = new Fade();
             fade.excludeTarget(android.R.id.statusBarBackground, true);
             fade.excludeTarget(android.R.id.navigationBarBackground, true);
@@ -85,7 +86,8 @@ public class BarberHomeFragment extends Fragment {
             appointmentsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             appointmentsRecyclerView.setLayoutManager(llm);
-
+            appointmentsRecyclerView.setAdapter(
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null));
             setAppointmentItems();
         }
 
