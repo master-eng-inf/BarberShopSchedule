@@ -67,9 +67,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         APIController.getInstance().removeAppointment(token, appointmentId);
                         Toast.makeText(getApplicationContext(), getString(R.string.appointment_deleted), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra("user", "");
-                    startActivity(intent);
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.putExtra("user", "");
+                        startActivity(intent);
                     }
                 });
 
