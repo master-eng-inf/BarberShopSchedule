@@ -1,6 +1,7 @@
 package com.udl.bss.barbershopschedule;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,12 +25,15 @@ import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 
 public class AppointmentDetailsActivity extends AppCompatActivity {
 
     FloatingActionButton delete_btn;
+    private Appointment appointment;
+    String token,appointmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,6 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         String json = mPrefs.getString("user", "");
         String mode = mPrefs.getString("mode", "");
 
-        String token;
         if (mode.equals("Barber")) {
             Barber barber = gson.fromJson(json, Barber.class);
             token = barber.getToken();
@@ -62,7 +65,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                 @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        APIController.getInstance().removeAppointment(token, appointmentId);
                         Toast.makeText(getApplicationContext(), getString(R.string.appointment_deleted), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.putExtra("user", "");
+                    startActivity(intent);
                     }
                 });
 
@@ -87,6 +94,9 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             getWindow().setExitTransition(fade);
         }
 
+        appointment = getIntent().getParcelableExtra("appointment");
+        appointmentId = Integer.toString(appointment.getId());
+
         ScaleAnimation anim = new ScaleAnimation(0,1,0,1);
         anim.setFillBefore(true);
         anim.setFillAfter(true);
@@ -97,11 +107,10 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
 
         TextView tv_date = findViewById(R.id.date_detail);
         final TextView tv_service = findViewById(R.id.service_detail);
+        final TextView tv_promotion = findViewById(R.id.promotion_detail);
         final CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
-        Appointment a = getIntent().getParcelableExtra("appointment");
-
-        APIController.getInstance().getBarberById(token, String.valueOf(a.getBarber_shop_id())).addOnCompleteListener(new OnCompleteListener<Barber>() {
+        APIController.getInstance().getBarberById(token, String.valueOf(appointment.getBarber_shop_id())).addOnCompleteListener(new OnCompleteListener<Barber>() {
             @Override
             public void onComplete(@NonNull Task<Barber> task) {
                 Barber barber = task.getResult();
@@ -109,7 +118,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             }
         });
 
-        APIController.getInstance().getServiceById(token, String.valueOf(a.getService_id())).addOnCompleteListener(new OnCompleteListener<BarberService>() {
+        APIController.getInstance().getServiceById(token, String.valueOf(appointment.getService_id())).addOnCompleteListener(new OnCompleteListener<BarberService>() {
             @Override
             public void onComplete(@NonNull Task<BarberService> task) {
                 BarberService service = task.getResult();
@@ -117,8 +126,22 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             }
         });
 
+        String promotionId = Integer.toString(appointment.getPromotion_id());
+        if (appointment.getPromotion_id() == -1){
+            tv_promotion.setText(getString(R.string.no_promotion));
+        } else {
+            APIController.getInstance().getPromotionById(token,promotionId)
+                    .addOnCompleteListener(new OnCompleteListener<Promotion>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Promotion> task) {
+                            Promotion promotion = task.getResult();
+                            tv_promotion.setText(promotion.getName());
+                        }
+                    });
+        }
+
         //TODO format date
-        tv_date.setText(a.getDate());
+        tv_date.setText(appointment.getDate());
 
     }
 }

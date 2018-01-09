@@ -14,24 +14,85 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/date_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="23sp"
+            android:text="@string/barber_service_creation_name"
+            android:textStyle="bold"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:transitionName="@string/transname_barberdesc" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="#000000" />
 
         <TextView
             android:id="@+id/service_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:lineSpacingExtra="8dp"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:transitionName="@string/transname_barberaddress" />
+            android:paddingLeft="30sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="23sp"
+            android:text="@string/barber_promotion_creation_name"
+            android:textStyle="bold"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/promotion_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:paddingLeft="30sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="23sp"
+            android:text="@string/appointment_date"
+            android:textStyle="bold"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/date_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:lineSpacingExtra="8dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:paddingLeft="30sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
     </LinearLayout>
 
