@@ -1,25 +1,24 @@
 package com.udl.bss.barbershopschedule.listeners;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
 import android.view.View;
 
 import com.udl.bss.barbershopschedule.R;
+import com.udl.bss.barbershopschedule.ServiceDetailsActivity;
 import com.udl.bss.barbershopschedule.adapters.ServiceAdapter;
-import com.udl.bss.barbershopschedule.fragments.BarberServiceDetailFragment;
-import com.udl.bss.barbershopschedule.fragments.ServiceDetailFragment;
-import com.udl.bss.barbershopschedule.transitions.DetailsTransition;
 
 
 public class ServiceClick implements OnItemClickListener {
 
-    private FragmentActivity activity;
+    private Activity activity;
     private RecyclerView recyclerView;
 
-    public ServiceClick(FragmentActivity activity, RecyclerView recyclerView) {
+    public ServiceClick(Activity activity, RecyclerView recyclerView) {
         this.activity = activity;
         this.recyclerView = recyclerView;
     }
@@ -34,31 +33,20 @@ public class ServiceClick implements OnItemClickListener {
 
         ServiceAdapter adapter = (ServiceAdapter) recyclerView.getAdapter();
 
-        ServiceDetailFragment fragment =
-                ServiceDetailFragment.newInstance(adapter.getItem(position));
+        Intent intent = new Intent(activity, ServiceDetailsActivity.class);
+        intent.putExtra("service", adapter.getItem(position));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            fragment.setSharedElementEnterTransition(new DetailsTransition());
-            fragment.setEnterTransition(new Fade());
-            fragment.setSharedElementReturnTransition(new DetailsTransition());
+        Pair<View, String> p1 = Pair.create(name_cv, activity.getString(R.string.transname_servicename));
+        Pair<View, String> p2 = Pair.create(price_cv, activity.getString(R.string.transname_serviceprice));
+        Pair<View, String> p3 = Pair.create(duration_cv, activity.getString(R.string.transname_serviceduration));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2, p3);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            activity.startActivity(intent, options.toBundle());
+        } else {
+            activity.startActivity(intent);
         }
-        startFragmentWithSharedElement(fragment,
-                name_cv, activity.getString(R.string.transname_servicename),
-                price_cv, activity.getString(R.string.transname_serviceprice),
-                duration_cv, activity.getString(R.string.transname_serviceduration));
+
     }
 
-    private void startFragmentWithSharedElement(Fragment fragment,
-                                                View sharedElement1, String transitionName1,
-                                                View sharedElement2, String transitionName2,
-                                                View sharedElement3, String transitionName3) {
-        if (fragment != null){
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .addSharedElement(sharedElement1, transitionName1)
-                    .replace(R.id.content_home, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
 }

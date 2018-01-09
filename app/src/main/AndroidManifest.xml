@@ -64,6 +64,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.udl.bss.barbershopschedule.HomeActivity" />
         </activity>
+        <activity
+            android:name=".ServiceDetailsActivity"
+            android:label="@string/title_activity_service_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ServiceEditActivity"></activity>
     </application>
 
 </manifest>

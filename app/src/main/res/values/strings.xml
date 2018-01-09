@@ -251,6 +251,7 @@
     <string name="no_promotion">There isn\'t promotion</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="title_activity_service_details">Service Details Activity</string>
 
 
 </resources>

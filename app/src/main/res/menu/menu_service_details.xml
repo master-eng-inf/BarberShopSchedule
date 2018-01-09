@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.udl.bss.barbershopschedule.ServiceDetailsActivity">
+    <item
+        android:id="@+id/delete_btn"
+        android:orderInCategory="100"
+        android:title="Delete"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_delete_white_24dp"/>
+</menu>
