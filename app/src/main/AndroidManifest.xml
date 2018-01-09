@@ -41,9 +41,6 @@
             android:name=".BarberAppointmentDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PromotionsDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".PriceDetailActivity"
             android:label="@string/title_activity_price_detail"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -68,7 +65,11 @@
             android:name=".ServiceDetailsActivity"
             android:label="@string/title_activity_service_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ServiceEditActivity"></activity>
+        <activity android:name=".ServiceEditActivity" />
+        <activity
+            android:name=".PromotionDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PromotionEditActivity" />
     </application>
 
 </manifest>
