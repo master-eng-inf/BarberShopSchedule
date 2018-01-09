@@ -253,5 +253,8 @@
     <string name="no">No</string>
     <string name="title_activity_service_details">Service Details Activity</string>
 
+    <string name="promotional_title">Promotional</string>
+    <string name="promotional">Checking this option, the promotion will be visible in the home of the clients.\nYou will have a charge of 5€ in your credit card.</string>
+
 
 </resources>

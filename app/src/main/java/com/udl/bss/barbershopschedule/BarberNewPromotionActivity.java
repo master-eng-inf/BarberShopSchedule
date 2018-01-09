@@ -1,14 +1,17 @@
 package com.udl.bss.barbershopschedule;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -46,6 +49,23 @@ public class BarberNewPromotionActivity extends AppCompatActivity {
         new_promotion_name = findViewById(R.id.new_promotion_name);
         new_promotion_description = findViewById(R.id.new_promotion_description);
         checkBox = findViewById(R.id.checkbox_promotional);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AlertDialog alert = new AlertDialog.Builder(BarberNewPromotionActivity.this).create();
+                    alert.setTitle(getString(R.string.promotional_title));
+                    alert.setMessage(getString(R.string.promotional));
+                    alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button),
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { }
+                    });
+                    alert.show();
+                }
+            }
+        });
 
         final Spinner spinner = findViewById(R.id.service_spinner);
         APIController.getInstance().getServicesByBarber(barber.getToken(), String.valueOf(barber.getId()))

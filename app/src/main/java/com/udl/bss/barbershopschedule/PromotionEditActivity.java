@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -55,7 +56,6 @@ public class PromotionEditActivity extends AppCompatActivity {
         Button btn_update = findViewById(R.id.btn_update);
 
 
-
         APIController.getInstance().getServicesByBarber(barber.getToken(), String.valueOf(barber.getId()))
                 .addOnCompleteListener(new OnCompleteListener<List<BarberService>>() {
                     @Override
@@ -91,7 +91,22 @@ public class PromotionEditActivity extends AppCompatActivity {
         description_cv.setText(promotion.getDescription());
         checkBox.setChecked(promotion.getIs_Promotional() == 1);
 
-
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AlertDialog alert = new AlertDialog.Builder(PromotionEditActivity.this).create();
+                    alert.setTitle(getString(R.string.promotional_title));
+                    alert.setMessage(getString(R.string.promotional));
+                    alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) { }
+                            });
+                    alert.show();
+                }
+            }
+        });
 
         btn_update.setOnClickListener(new View.OnClickListener(){
             @Override
