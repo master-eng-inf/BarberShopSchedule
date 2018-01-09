@@ -30,6 +30,7 @@ import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,7 +55,7 @@ public class BarberListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_barber_list, container, false);
     }
@@ -64,7 +65,7 @@ public class BarberListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getActivity() != null) {
             Fade fade = new Fade();
             fade.excludeTarget(android.R.id.statusBarBackground, true);
             fade.excludeTarget(android.R.id.navigationBarBackground, true);
@@ -89,7 +90,7 @@ public class BarberListFragment extends Fragment {
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(llm);
-
+            mRecyclerView.setAdapter(new BarberAdapter(new ArrayList<Barber>(), null, null));
             setBarbersToRecycleView();
 
         }

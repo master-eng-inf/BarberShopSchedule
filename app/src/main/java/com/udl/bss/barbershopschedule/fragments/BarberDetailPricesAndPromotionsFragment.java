@@ -26,6 +26,7 @@ import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 import com.udl.bss.barbershopschedule.listeners.ServiceClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BarberDetailPricesAndPromotionsFragment extends Fragment {
@@ -54,7 +55,7 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_barber_detail_prices_and_promotions, container, false);
     }
 
@@ -79,7 +80,8 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
             servicesRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             servicesRecyclerView.setLayoutManager(llm);
-
+            servicesRecyclerView.setAdapter(
+                    new ServiceAdapter(new ArrayList<BarberService>(), null, null));
             setServicesItems();
 
         }
@@ -88,7 +90,8 @@ public class BarberDetailPricesAndPromotionsFragment extends Fragment {
             promotionsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecyclerView.setLayoutManager(llm);
-
+            promotionsRecyclerView.setAdapter(
+                    new PromotionAdapter(new ArrayList<Promotion>(), null, null));
             setPromotionsItems();
         }
     }

@@ -198,22 +198,22 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.home) {
             HomeFragment hf = HomeFragment.newInstance(client);
-            startFragmentBackStack(hf);
+            startFragment(hf);
         } else if (id == R.id.barber_home) {
             BarberHomeFragment bhf = BarberHomeFragment.newInstance(barber);
-            startFragmentBackStack(bhf);
+            startFragment(bhf);
         } else if (id == R.id.show_barbers) {
             BarberListFragment blf = BarberListFragment.newInstance();
-            startFragmentBackStack(blf);
+            startFragment(blf);
         } else if (id == R.id.show_schedule) {
             BarberScheduleFragment bsf = BarberScheduleFragment.newInstance();
-            startFragmentBackStack(bsf);
+            startFragment(bsf);
         } else if (id == R.id.show_services) {
             BarberServicesFragment bsf = BarberServicesFragment.newInstance();
-            startFragmentBackStack(bsf);
+            startFragment(bsf);
         } else if (id == R.id.show_promotions) {
             BarberPromotionsFragment bpf = BarberPromotionsFragment.newInstance();
-            startFragmentBackStack(bpf);
+            startFragment(bpf);
         } else if (id == R.id.profile) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);

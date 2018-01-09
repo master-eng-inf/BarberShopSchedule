@@ -28,6 +28,7 @@ import com.udl.bss.barbershopschedule.listeners.AppointmentClick;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class HomeFragment extends Fragment {
     private Client client;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView promotionsRecycleView;
-    //private BLL instance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getActivity() != null) {
             Fade fade = new Fade();
             fade.excludeTarget(android.R.id.statusBarBackground, true);
             fade.excludeTarget(android.R.id.navigationBarBackground, true);
@@ -94,7 +94,8 @@ public class HomeFragment extends Fragment {
             appointmentsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             appointmentsRecyclerView.setLayoutManager(llm);
-
+            appointmentsRecyclerView.setAdapter(
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null, null));
             setAppointmentItems();
         }
 
@@ -102,7 +103,8 @@ public class HomeFragment extends Fragment {
             promotionsRecycleView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecycleView.setLayoutManager(llm);
-
+            promotionsRecycleView.setAdapter(
+                    new PromotionAdapter(new ArrayList<Promotion>(), null, null));
             setPromotionsItems();
         }
 

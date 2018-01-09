@@ -27,6 +27,7 @@ import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.listeners.PromotionClick;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class BarberPromotionsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_barber_promotions, container, false);
@@ -86,7 +87,8 @@ public class BarberPromotionsFragment extends Fragment {
             promotionsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             promotionsRecyclerView.setLayoutManager(llm);
-
+            promotionsRecyclerView.setAdapter(
+                    new PromotionAdapter(new ArrayList<Promotion>(), null, null));
             setPromotions();
 
             /* Swipe down to refresh */
