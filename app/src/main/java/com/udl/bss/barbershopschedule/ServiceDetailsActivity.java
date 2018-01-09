@@ -26,6 +26,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
 
     private BarberService service;
     private String token;
+    private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         FloatingActionButton btn_edit = findViewById(R.id.edit_btn);
 
         SharedPreferences mPrefs = getSharedPreferences("USER", MODE_PRIVATE);
-        String mode = mPrefs.getString("mode", "");
+        mode = mPrefs.getString("mode", "");
         String json = mPrefs.getString("user", "");
         Gson gson = new Gson();
 
@@ -85,8 +86,10 @@ public class ServiceDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_service_details, menu);
+        if (mode != null && !mode.equals("User")){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_service_details, menu);
+        }
         return true;
     }
 
