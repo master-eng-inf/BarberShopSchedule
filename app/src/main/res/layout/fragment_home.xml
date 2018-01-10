@@ -1,43 +1,62 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    tools:context="com.udl.bss.barbershopschedule.fragments.HomeFragment"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="#d3d3d3">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/barber_home_fragment"
+        android:layout_width="match_parent"
+        tools:context="com.udl.bss.barbershopschedule.fragments.HomeFragment"
+        android:background="#d3d3d3"
+        android:layout_height="0dp"
+        android:layout_weight="0.9">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/barber_home_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#d3d3d3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next_appointment"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/promotions"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv2" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#d3d3d3">
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/ad_mob_unit_key">
+    </com.google.android.gms.ads.AdView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next_appointment"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rv" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/promotions"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rv2" />
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

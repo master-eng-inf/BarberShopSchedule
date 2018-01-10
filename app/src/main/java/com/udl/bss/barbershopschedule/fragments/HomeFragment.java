@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView promotionsRecycleView;
 
     private OnFragmentInteractionListener mListener;
+    private AdView mAdView;
 
     public HomeFragment() {
     }
@@ -87,8 +90,13 @@ public class HomeFragment extends Fragment {
         if (getView() != null) {
             appointmentsRecyclerView = getView().findViewById(R.id.rv);
             promotionsRecycleView = getView().findViewById(R.id.rv2);
+            mAdView = getView().findViewById(R.id.adView);
         }
 
+        if (mAdView != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
         if (appointmentsRecyclerView != null) {
             appointmentsRecyclerView.setHasFixedSize(true);

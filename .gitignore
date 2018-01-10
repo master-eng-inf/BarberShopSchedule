@@ -7,4 +7,5 @@
 /captures
 .externalNativeBuild
 /app/src/main/res/values/google_maps_api.xml
+/app/src/main/res/values/ad_mob_api.xml
 

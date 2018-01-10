@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
@@ -40,7 +42,8 @@ public class BarberListFragment extends Fragment {
     private BarberAdapter adapter;
     private OnFragmentInteractionListener mListener;
 
-    SharedPreferences mPrefs;
+    private SharedPreferences mPrefs;
+    private AdView mAdView;
 
     public BarberListFragment() {
     }
@@ -79,6 +82,12 @@ public class BarberListFragment extends Fragment {
 
         if (getView() != null) {
             mRecyclerView = getView().findViewById(R.id.rv);
+            mAdView = getView().findViewById(R.id.adView);
+        }
+
+        if (mAdView != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
         }
 
         if (mRecyclerView != null) {
