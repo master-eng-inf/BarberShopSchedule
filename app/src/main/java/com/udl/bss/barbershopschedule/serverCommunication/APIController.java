@@ -833,8 +833,8 @@ public class APIController {
     }
 
 
-    public Task<Promotion> getPromotionByService(String token, String barber_shop_id, String service_id) {
-        final TaskCompletionSource<Promotion> tcs = new TaskCompletionSource<>();
+    public Task<Integer> getPromotionByService(String token, String barber_shop_id, String service_id) {
+        final TaskCompletionSource<Integer> tcs = new TaskCompletionSource<>();
 
         ApiUtils.getService().getPromotionByService(token, barber_shop_id, service_id).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -853,9 +853,12 @@ public class APIController {
                                 json.getInt("is_promotional"));
 
                         Log.i("APISERVER", s);
-                        tcs.setResult(promotion);
+                        tcs.setResult(promotion.getId());
                     }
-                } catch (IOException | JSONException e) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    tcs.setResult(-1);
                     e.printStackTrace();
                 }
             }

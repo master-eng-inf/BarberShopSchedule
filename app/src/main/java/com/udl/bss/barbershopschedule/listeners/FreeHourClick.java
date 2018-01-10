@@ -127,13 +127,13 @@ public class FreeHourClick implements OnItemClickListener {
                                 client.getToken(),
                                 String.valueOf(service.getBarberShopId()),
                                 String.valueOf(service.getId()))
-                                .addOnCompleteListener(new OnCompleteListener<Promotion>() {
+                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Promotion> task) {
-                                        Promotion promotion = task.getResult();
+                                    public void onComplete(@NonNull Task<Integer> task) {
+                                        int promotion_id = task.getResult();
                                         APIController.getInstance().createAppointment(client.getToken(),
                                                 new Appointment(-1, client.getId(), service.getBarberShopId(),
-                                                service.getId(), promotion.getId(), db_format_time))
+                                                service.getId(), promotion_id, db_format_time))
                                                 .addOnCompleteListener(new OnCompleteListener<Integer>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Integer> task) {
