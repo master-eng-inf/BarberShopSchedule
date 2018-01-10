@@ -218,6 +218,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.log_out) {
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             mPrefs.edit().remove("user").remove("mode").apply();
 
