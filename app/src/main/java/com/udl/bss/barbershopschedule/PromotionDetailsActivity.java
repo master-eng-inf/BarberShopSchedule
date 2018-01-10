@@ -20,11 +20,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
+
+import java.util.List;
 
 public class PromotionDetailsActivity extends AppCompatActivity {
 
@@ -114,28 +117,49 @@ public class PromotionDetailsActivity extends AppCompatActivity {
             }
             return true;
         } else if (id == R.id.delete_btn) {
-            AlertDialog alert = new AlertDialog.Builder(this).create();
-            alert.setTitle(getString(R.string.delete_promotion_dialog_title));
-            alert.setMessage(getString(R.string.delete_promotion_dialog));
-            alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
 
-                    APIController.getInstance().removePromotion(token, String.valueOf(promotion.getId()));
-                    Toast.makeText(getApplicationContext(), getString(R.string.promotion_delete), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra("user", "Barber");
-                    startActivity(intent);
-                    finish();
+            APIController.getInstance().getAppointmentsByBarber(token, String.valueOf(promotion.getBarber_shop_id()))
+                    .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Appointment>> task) {
+                    boolean relationed_data = false;
+                    String result = getString(R.string.remove_promotion);
+
+                    for (Appointment appointment: task.getResult()) {
+                        if (appointment.getService_id() == promotion.getId()) {
+                            relationed_data = true;
+                            result += "- Appointment " + appointment.getId() + "\n";
+                        }
+                    }
+
+                    if (relationed_data) result += getString(R.string.delete_promotion_dialog);
+                    else result = getString(R.string.no_data) + getString(R.string.delete_promotion_dialog);
+
+                    AlertDialog alert = new AlertDialog.Builder(PromotionDetailsActivity.this).create();
+                    alert.setTitle(getString(R.string.delete_promotion_dialog_title));
+                    alert.setMessage(result);
+                    alert.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.accept_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            APIController.getInstance().removePromotion(token, String.valueOf(promotion.getId()));
+                            Toast.makeText(getApplicationContext(), getString(R.string.promotion_delete), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra("user", "Barber");
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alert.show();
                 }
             });
-            alert.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            alert.show();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -257,6 +257,8 @@
     <string name="promotional">Checking this option, the promotion will be visible in the home of the clients.\nYou will have a charge of 5€ in your credit card.</string>
 
     <string name="remove_service">Remove this service will remove the next elements:\n</string>
+    <string name="remove_promotion">Remove this promotion will remove the next elements:\n</string>
+    <string name="no_data">No data associated.\n</string>
 
 
 </resources>
