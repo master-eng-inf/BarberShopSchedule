@@ -110,15 +110,17 @@ public class ServiceDetailsActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.delete_btn) {
 
-            final String[] result = {getString(R.string.remove_service)};
-
             APIController.getInstance().getPromotionsByBarber(token,
                     String.valueOf(service.getBarberShopId()))
                     .addOnCompleteListener(new OnCompleteListener<List<Promotion>>() {
                 @Override
                 public void onComplete(@NonNull Task<List<Promotion>> task) {
+                    final boolean[] relationed_data = {false};
+                    final String[] result = {getString(R.string.remove_service)};
+
                     for (Promotion promotion: task.getResult()) {
                         if (promotion.getService_id() == service.getId()) {
+                            relationed_data[0] = true;
                             result[0] += "- " + promotion.getName() + "\n";
                         }
                     }
@@ -129,12 +131,13 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<List<Appointment>> task) {
                             for (Appointment appointment: task.getResult()) {
                                 if (appointment.getService_id() == service.getId()) {
+                                    relationed_data[0] = true;
                                     result[0] += "- Appointment " + appointment.getId() + "\n";
                                 }
                             }
 
-                            result[0] += getString(R.string.delete_service_dialog);
-
+                            if (relationed_data[0]) result[0] += getString(R.string.delete_service_dialog);
+                            else result[0] = getString(R.string.no_data) + getString(R.string.delete_service_dialog);
 
                             AlertDialog alert = new AlertDialog.Builder(ServiceDetailsActivity.this).create();
                             alert.setTitle(getString(R.string.delete_service_dialog_title));
