@@ -20,6 +20,7 @@ import com.udl.bss.barbershopschedule.adapters.FreeHoursAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.domain.Promotion;
 import com.udl.bss.barbershopschedule.domain.Time;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
@@ -122,14 +123,18 @@ public class FreeHourClick implements OnItemClickListener {
                         String json = mPrefs.getString("user", "");
                         final Client client = gson.fromJson(json, Client.class);
 
-                        APIController.getInstance().getBarberShopPromotionForService(client.getToken(), String.valueOf(service.getBarberShopId()), String.valueOf(service.getId()))
-                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+                        APIController.getInstance().getPromotionByService(
+                                client.getToken(),
+                                String.valueOf(service.getBarberShopId()),
+                                String.valueOf(service.getId()))
+                                .addOnCompleteListener(new OnCompleteListener<Promotion>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Integer> task) {
-                                        int promotion_id = task.getResult();
-
-                                        APIController.getInstance().createAppointment(client.getToken(), new Appointment(-1, client.getId(), service.getBarberShopId(),
-                                                service.getId(), promotion_id, db_format_time)).addOnCompleteListener(new OnCompleteListener<Integer>() {
+                                    public void onComplete(@NonNull Task<Promotion> task) {
+                                        Promotion promotion = task.getResult();
+                                        APIController.getInstance().createAppointment(client.getToken(),
+                                                new Appointment(-1, client.getId(), service.getBarberShopId(),
+                                                service.getId(), promotion.getId(), db_format_time))
+                                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Integer> task) {
                                                 Intent intent = new Intent(activity, HomeActivity.class);
@@ -141,18 +146,6 @@ public class FreeHourClick implements OnItemClickListener {
                                     }
                                 });
 
-                        //BLL instance = new BLL(activity);
-
-                        //Promotion promotion = instance.Get_BarberShopPromotionForService(service.getBarberShopId(), service.getId());
-
-                        //TODO Change Client Id
-                        //instance.Insert_Appointment(new Appointment(-1, 0, service.getBarberShopId(),
-                        //service.getId(), promotion == null ? -1 : promotion.getId(), db_format_time));
-
-                        //Intent intent = new Intent(activity, HomeActivity.class);
-                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        //intent.putExtra("user", "User");
-                        //activity.startActivity(intent);
                     }
                 });
 
