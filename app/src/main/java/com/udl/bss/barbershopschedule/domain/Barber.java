@@ -22,6 +22,7 @@ public class Barber implements Parcelable {
     private String gender;
     private String imagePath;
     private String token;
+    private String firebaseToken;
 
     public Barber(int id, String name, String description, String city, String address, String phone, String email, Bitmap image) {
         this.id = id;
@@ -202,6 +203,14 @@ public class Barber implements Parcelable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 
     @Override

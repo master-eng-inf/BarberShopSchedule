@@ -17,6 +17,7 @@ public class Client {
     private Bitmap image;
     private String imagePath;
     private String token;
+    private String firebaseToken;
 
     public Client(int id, String name, String phone, String email, int gender, int age)
     {
@@ -118,5 +119,13 @@ public class Client {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 }
