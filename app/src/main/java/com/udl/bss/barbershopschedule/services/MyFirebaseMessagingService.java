@@ -16,33 +16,35 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.udl.bss.barbershopschedule.HomeActivity;
 import com.udl.bss.barbershopschedule.R;
 
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = "FCM";
 
-    public MyFirebaseMessagingService() { }
+    public MyFirebaseMessagingService() {
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        String message = "";
-
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-        }
+            try {
+                Map<String, String> notification = remoteMessage.getData();
+                sendNotification(notification.get("service"), notification.get("time"), notification.get("type"));
+            } catch (Exception ex) {
 
-        if (remoteMessage.getNotification() != null) {
-            message = remoteMessage.getNotification().getBody();
-            Log.d(TAG, "Message Notification Body: " + message);
+            }
         }
-
-        sendNotification(message);
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String serviceName, String serviceTime, String type) {
+        String notificationTitle = type.equals("request") ? getString(R.string.notification_type_request_appointment) : getString(R.string.notification_type_request_appointment);
+        String notificationBody = serviceName + "  " + serviceTime;
+
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -52,8 +54,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                         .setSmallIcon(R.mipmap.logo_icon)
-                        .setContentTitle("Barber Shop Schedule Message")
-                        .setContentText(messageBody)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
@@ -68,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
-            notificationManager.notify(0, notificationBuilder.build());
+            notificationManager.notify((new Random()).nextInt(999999), notificationBuilder.build());
         }
 
 

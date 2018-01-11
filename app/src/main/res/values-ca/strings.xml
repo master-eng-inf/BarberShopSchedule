@@ -51,4 +51,7 @@
     <string name="free_hour_click_not_enough_time_dialog" formatted="false">El temps estimat per %1$s és de %2$s minutes, però amb la teva selecció només es disposa de %3$s minuts com a molt. La cita haurà de ser validada per la perruqueria. Vols continuar? </string>
 
     <string name="savePreferences" />
+
+    <string name="notification_type_request_appointment">Sol·licitud de cita</string>
+    <string name="notification_type_cancel_appointment">Cancel·lació de cita</string>
 </resources>
