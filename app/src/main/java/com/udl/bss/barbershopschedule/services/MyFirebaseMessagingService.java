@@ -42,7 +42,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String serviceName, String serviceTime, String type) {
-        String notificationTitle = type.equals("request") ? getString(R.string.notification_type_request_appointment) : getString(R.string.notification_type_request_appointment);
+        String notificationTitle = type.equals("request") ?
+                getString(R.string.notification_type_request_appointment) : type.equals("accept") ?
+                getString(R.string.notification_type_accept_appointment) :
+                getString(R.string.notification_type_request_appointment);
+
         String notificationBody = serviceName + "  " + serviceTime;
 
         Intent intent = new Intent(this, HomeActivity.class);

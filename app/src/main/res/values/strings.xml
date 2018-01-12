@@ -263,5 +263,6 @@
     <string name="default_notification_channel_id">default</string>
 
     <string name="notification_type_request_appointment">Appointment request</string>
-    <string name="notification_type_cancel_appointment">Appointment cancellation</string>
+    <string name="notification_type_cancel_appointment">Appointment cancelled</string>
+    <string name="notification_type_accept_appointment">Appointment accepted</string>
 </resources>

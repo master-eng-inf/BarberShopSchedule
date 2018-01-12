@@ -53,5 +53,6 @@
     <string name="savePreferences" />
 
     <string name="notification_type_request_appointment">Sol·licitud de cita</string>
-    <string name="notification_type_cancel_appointment">Cancel·lació de cita</string>
+    <string name="notification_type_cancel_appointment">Cita cancel·lada</string>
+    <string name="notification_type_accept_appointment">Cita acceptada</string>
 </resources>
