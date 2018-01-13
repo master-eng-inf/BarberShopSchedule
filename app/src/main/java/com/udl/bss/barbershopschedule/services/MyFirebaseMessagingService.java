@@ -9,7 +9,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -18,7 +17,6 @@ import com.udl.bss.barbershopschedule.R;
 
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -36,7 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Map<String, String> notification = remoteMessage.getData();
                 sendNotification(notification.get("service"), notification.get("time"), notification.get("type"));
             } catch (Exception ex) {
-
+                ex.printStackTrace();
             }
         }
     }

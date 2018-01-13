@@ -439,6 +439,49 @@ public class APIController {
         return tcs.getTask();
     }
 
+    public Task<List<Appointment>> getPendingAppointmentsByBarber(String token, String id) {
+        final TaskCompletionSource<List<Appointment>> tcs = new TaskCompletionSource<>();
+
+        ApiUtils.getService().getPendingAppointmentsByBarber(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String s = body.string();
+                        List<Appointment> appointmentList = new ArrayList<>();
+
+                        JSONArray jsonArray = new JSONArray(s);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+                            Appointment appointment = new Appointment(
+                                    json.getInt("id"),
+                                    json.getInt("client_id"),
+                                    json.getInt("barber_shop_id"),
+                                    json.getInt("service_id"),
+                                    json.getInt("promotion_id"),
+                                    json.getString("date"));
+                            appointmentList.add(appointment);
+                        }
+
+                        Log.i("APISERVER", s);
+                        tcs.setResult(appointmentList);
+                    }
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Get pending appointments by barber ERROR");
+            }
+        });
+
+        return tcs.getTask();
+    }
+
     public Task<List<Appointment>> getAppointmentsByClient(String token, String id) {
         final TaskCompletionSource<List<Appointment>> tcs = new TaskCompletionSource<>();
 

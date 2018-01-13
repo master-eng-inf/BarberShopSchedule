@@ -36,6 +36,7 @@ public class BarberHomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView appointmentsRecyclerView;
+    private RecyclerView pendingAppointmentsRecyclerView;
 
     public BarberHomeFragment() {
         // Required empty public constructor
@@ -80,6 +81,7 @@ public class BarberHomeFragment extends Fragment {
 
         if (getView() != null) {
             appointmentsRecyclerView = getView().findViewById(R.id.rv);
+            pendingAppointmentsRecyclerView = getView().findViewById(R.id.rv2);
         }
 
         if (appointmentsRecyclerView != null) {
@@ -89,6 +91,15 @@ public class BarberHomeFragment extends Fragment {
             appointmentsRecyclerView.setAdapter(
                     new AppointmentAdapter(new ArrayList<Appointment>(), null ,null));
             setAppointmentItems();
+        }
+
+        if (pendingAppointmentsRecyclerView != null) {
+            pendingAppointmentsRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            pendingAppointmentsRecyclerView.setLayoutManager(llm);
+            pendingAppointmentsRecyclerView.setAdapter(
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null));
+            setPendingAppointmentItems();
         }
 
         FloatingActionMenu floatingActionMenu = getActivity().findViewById(R.id.fab_menu);
@@ -109,6 +120,23 @@ public class BarberHomeFragment extends Fragment {
                 appointmentsRecyclerView.setAdapter(adapter);
             }
         });
+
+    }
+
+    private void setPendingAppointmentItems() {
+
+        APIController.getInstance().getPendingAppointmentsByBarber(barber.getToken(), String.valueOf(barber.getId()))
+                .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Appointment>> task) {
+
+                        BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
+                                task.getResult(),
+                                new BarberAppointmentClick(getActivity(), pendingAppointmentsRecyclerView),
+                                barber.getToken());
+                        pendingAppointmentsRecyclerView.setAdapter(adapter);
+                    }
+                });
 
     }
 

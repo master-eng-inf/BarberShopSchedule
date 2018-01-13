@@ -44,6 +44,10 @@ public interface APIService {
     Call<ResponseBody> getAppointmentByBarber(@Path(value = "token", encoded = true) String token,
                                               @Path(value = "barber_shop_id", encoded = true) String id);
 
+    @GET("appointments/list/pending/barberShop/{barber_shop_id}/{token}")
+    Call<ResponseBody> getPendingAppointmentsByBarber(@Path(value = "token", encoded = true) String token,
+                                                      @Path(value = "barber_shop_id", encoded = true) String id);
+
     @GET("appointments/list/barberShop/{barber_shop_id}/date/{date}/{token}")
     Call<ResponseBody> getBarberShopAppointmentsForDay(@Path(value = "token", encoded = true) String token,
                                                        @Path(value = "barber_shop_id", encoded = true) String id,
