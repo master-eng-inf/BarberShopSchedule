@@ -60,6 +60,7 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
                 @Override
                     public void onClick(DialogInterface dialog, int which) {
                         APIController.getInstance().removeAppointment(barber.getToken(), appointmentId);
+                        APIController.getInstance().cancelAppointment(barber.getToken(), appointmentId);
                         Toast.makeText(getApplicationContext(), getString(R.string.appointment_deleted), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         intent.putExtra("user", "Barber");
