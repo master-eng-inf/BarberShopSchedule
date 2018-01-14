@@ -1180,7 +1180,7 @@ public class APIController {
                     }
 
                 } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    tcs.setResult(null);
                 }
             }
 
