@@ -129,7 +129,8 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<List<Appointment>>() {
                         @Override
                         public void onComplete(@NonNull Task<List<Appointment>> task) {
-                            for (Appointment appointment: task.getResult()) {
+                            final List<Appointment> appointmentList = task.getResult();
+                            for (Appointment appointment: appointmentList) {
                                 if (appointment.getServiceId() == service.getId()) {
                                     relationed_data[0] = true;
                                     result[0] += "- Appointment " + appointment.getId() + "\n";
@@ -147,6 +148,9 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
+                                    for (Appointment appointment: appointmentList) {
+                                        APIController.getInstance().cancelAppointment(token, String.valueOf(appointment.getId()));
+                                    }
                                     APIController.getInstance().removeService(token, String.valueOf(service.getId()));
                                     Toast.makeText(getApplicationContext(), getString(R.string.service_delete), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

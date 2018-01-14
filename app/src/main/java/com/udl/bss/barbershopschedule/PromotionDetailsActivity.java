@@ -125,7 +125,8 @@ public class PromotionDetailsActivity extends AppCompatActivity {
                     boolean relationed_data = false;
                     String result = getString(R.string.remove_promotion);
 
-                    for (Appointment appointment: task.getResult()) {
+                    final List<Appointment> appointmentList = task.getResult();
+                    for (Appointment appointment: appointmentList) {
                         if (appointment.getServiceId() == promotion.getId()) {
                             relationed_data = true;
                             result += "- Appointment " + appointment.getId() + "\n";
@@ -142,6 +143,9 @@ public class PromotionDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+                            for (Appointment appointment: appointmentList) {
+                                APIController.getInstance().cancelAppointment(token, String.valueOf(appointment.getId()));
+                            }
                             APIController.getInstance().removePromotion(token, String.valueOf(promotion.getId()));
                             Toast.makeText(getApplicationContext(), getString(R.string.promotion_delete), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
