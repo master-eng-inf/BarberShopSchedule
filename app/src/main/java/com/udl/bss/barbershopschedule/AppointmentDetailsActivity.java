@@ -110,7 +110,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         final TextView tv_promotion = findViewById(R.id.promotion_detail);
         final CollapsingToolbarLayout ctl = findViewById(R.id.toolbar_layout);
 
-        APIController.getInstance().getBarberById(token, String.valueOf(appointment.getBarber_shop_id())).addOnCompleteListener(new OnCompleteListener<Barber>() {
+        APIController.getInstance().getBarberById(token, String.valueOf(appointment.getBarberShopId())).addOnCompleteListener(new OnCompleteListener<Barber>() {
             @Override
             public void onComplete(@NonNull Task<Barber> task) {
                 Barber barber = task.getResult();
@@ -118,7 +118,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             }
         });
 
-        APIController.getInstance().getServiceById(token, String.valueOf(appointment.getService_id())).addOnCompleteListener(new OnCompleteListener<BarberService>() {
+        APIController.getInstance().getServiceById(token, String.valueOf(appointment.getServiceId())).addOnCompleteListener(new OnCompleteListener<BarberService>() {
             @Override
             public void onComplete(@NonNull Task<BarberService> task) {
                 BarberService service = task.getResult();
@@ -126,8 +126,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
             }
         });
 
-        String promotionId = Integer.toString(appointment.getPromotion_id());
-        if (appointment.getPromotion_id() == -1){
+        String promotionId = Integer.toString(appointment.getPromotionId());
+        if (appointment.getPromotionId() == -1){
             tv_promotion.setText(getString(R.string.no_promotion));
         } else {
             APIController.getInstance().getPromotionById(token,promotionId)

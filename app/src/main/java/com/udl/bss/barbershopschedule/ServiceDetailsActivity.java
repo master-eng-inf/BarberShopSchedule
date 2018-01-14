@@ -130,7 +130,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<List<Appointment>> task) {
                             for (Appointment appointment: task.getResult()) {
-                                if (appointment.getService_id() == service.getId()) {
+                                if (appointment.getServiceId() == service.getId()) {
                                     relationed_data[0] = true;
                                     result[0] += "- Appointment " + appointment.getId() + "\n";
                                 }

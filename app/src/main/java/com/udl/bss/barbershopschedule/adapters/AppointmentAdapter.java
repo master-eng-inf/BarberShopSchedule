@@ -1,6 +1,5 @@
 package com.udl.bss.barbershopschedule.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
@@ -64,7 +63,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getService_id()))
+        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getServiceId()))
                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {
             @Override
             public void onComplete(@NonNull Task<BarberService> task) {
@@ -73,7 +72,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             }
         });
 
-        APIController.getInstance().getBarberById(token ,String.valueOf(mDataset.get(position).getBarber_shop_id()))
+        APIController.getInstance().getBarberById(token ,String.valueOf(mDataset.get(position).getBarberShopId()))
                 .addOnCompleteListener(new OnCompleteListener<Barber>() {
             @Override
             public void onComplete(@NonNull Task<Barber> task) {

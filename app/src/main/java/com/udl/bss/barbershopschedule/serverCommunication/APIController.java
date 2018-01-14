@@ -588,10 +588,10 @@ public class APIController {
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("id", String.valueOf(-1));
-        requestBody.put("client_id", String.valueOf(appointment.getClient_id()));
-        requestBody.put("barber_shop_id", String.valueOf(appointment.getBarber_shop_id()));
-        requestBody.put("service_id", String.valueOf(appointment.getService_id()));
-        requestBody.put("promotion_id", String.valueOf(appointment.getPromotion_id()));
+        requestBody.put("client_id", String.valueOf(appointment.getClientId()));
+        requestBody.put("barber_shop_id", String.valueOf(appointment.getBarberShopId()));
+        requestBody.put("service_id", String.valueOf(appointment.getServiceId()));
+        requestBody.put("promotion_id", String.valueOf(appointment.getPromotionId()));
         requestBody.put("date", String.valueOf(appointment.getDate()));
         requestBody.put("pending_confirmation", String.valueOf(appointment.getPending()));
 

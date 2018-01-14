@@ -106,7 +106,7 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
         Log.d("TAG", "onCreate: " +appointment);
 
 
-        String serviceId = Integer.toString(appointment.getService_id());
+        String serviceId = Integer.toString(appointment.getServiceId());
         APIController.getInstance().getServiceById(barber.getToken() ,serviceId)
                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {
                     @Override
@@ -116,7 +116,7 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-        String clientId = Integer.toString(appointment.getClient_id());
+        String clientId = Integer.toString(appointment.getClientId());
         APIController.getInstance().getClientById(barber.getToken() ,clientId)
                 .addOnCompleteListener(new OnCompleteListener<Client>() {
                     @Override
@@ -126,8 +126,8 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-        String promotionId = Integer.toString(appointment.getPromotion_id());
-        if (appointment.getPromotion_id() == -1){
+        String promotionId = Integer.toString(appointment.getPromotionId());
+        if (appointment.getPromotionId() == -1){
             tv_promotion.setText(getString(R.string.no_promotion));
         } else {
             APIController.getInstance().getPromotionById(barber.getToken() ,promotionId)

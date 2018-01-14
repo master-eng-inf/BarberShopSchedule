@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.udl.bss.barbershopschedule.R;
 import com.udl.bss.barbershopschedule.adapters.AppointmentAdapter;
 import com.udl.bss.barbershopschedule.adapters.BarberAppointmentsAdapter;
+import com.udl.bss.barbershopschedule.adapters.PendingAppointmentAdapter;
 import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.listeners.BarberAppointmentClick;
@@ -130,9 +131,8 @@ public class BarberHomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<List<Appointment>> task) {
 
-                        BarberAppointmentsAdapter adapter = new BarberAppointmentsAdapter(
+                        PendingAppointmentAdapter adapter = new PendingAppointmentAdapter(
                                 task.getResult(),
-                                new BarberAppointmentClick(getActivity(), pendingAppointmentsRecyclerView),
                                 barber.getToken());
                         pendingAppointmentsRecyclerView.setAdapter(adapter);
                     }

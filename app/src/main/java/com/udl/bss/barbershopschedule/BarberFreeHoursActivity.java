@@ -155,7 +155,7 @@ public class BarberFreeHoursActivity extends AppCompatActivity {
 
                                                 if (appointments_for_current_day.size() > 0) {
                                                     for (final Appointment current_appointment : appointments_for_current_day) {
-                                                        APIController.getInstance().getServiceById(client.getToken(), String.valueOf(current_appointment.getService_id()))
+                                                        APIController.getInstance().getServiceById(client.getToken(), String.valueOf(current_appointment.getServiceId()))
                                                                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<BarberService> task) {

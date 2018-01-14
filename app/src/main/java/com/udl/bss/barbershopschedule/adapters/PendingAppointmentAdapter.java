@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,7 +18,6 @@ import com.udl.bss.barbershopschedule.domain.Appointment;
 import com.udl.bss.barbershopschedule.domain.BarberService;
 import com.udl.bss.barbershopschedule.domain.Client;
 import com.udl.bss.barbershopschedule.domain.Promotion;
-import com.udl.bss.barbershopschedule.listeners.OnItemClickListener;
 import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 import java.text.ParseException;
@@ -27,9 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppointmentsAdapter.ViewHolder> {
+public class PendingAppointmentAdapter extends RecyclerView.Adapter<PendingAppointmentAdapter.ViewHolder> {
     private List<Appointment> mDataset;
-    private OnItemClickListener listener;
     private String token;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,6 +37,8 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         TextView client_name;
         TextView date;
         TextView promotion_name;
+        Button accept_button;
+        Button cancel_button;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -46,24 +47,25 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
             client_name = itemView.findViewById(R.id.client_name_cv);
             promotion_name= itemView.findViewById(R.id.promotion_name_cv);
             date = itemView.findViewById(R.id.date_cv);
+            accept_button = itemView.findViewById(R.id.accept_btn);
+            cancel_button = itemView.findViewById(R.id.cancel_btn);
         }
     }
 
-    public BarberAppointmentsAdapter(List<Appointment> myDataset, OnItemClickListener listener, String token) {
+    public PendingAppointmentAdapter(List<Appointment> myDataset, String token) {
         mDataset = myDataset;
-        this.listener = listener;
         this.token = token;
     }
 
     @Override
-    public BarberAppointmentsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PendingAppointmentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.barber_appointments_card_view, parent, false);
+                .inflate(R.layout.pending_appointment_card_view, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final BarberAppointmentsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PendingAppointmentAdapter.ViewHolder holder, final int position) {
 
         APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getServiceId()))
                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {
@@ -83,15 +85,18 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
                     }
                 });
 
-        APIController.getInstance().getPromotionById(token, String.valueOf(mDataset.get(position).getPromotionId()))
-                .addOnCompleteListener(new OnCompleteListener<Promotion>() {
-            @Override
-            public void onComplete(@NonNull Task<Promotion> task) {
-                Promotion promotion = task.getResult();
-                String promoName = promotion != null ? promotion.getDescription() : "";
-                holder.promotion_name.setText(promoName);
-            }
-        });
+        if (mDataset.get(position).getPromotionId() != -1){
+            APIController.getInstance().getPromotionById(token, String.valueOf(mDataset.get(position).getPromotionId()))
+                    .addOnCompleteListener(new OnCompleteListener<Promotion>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Promotion> task) {
+                            Promotion promotion = task.getResult();
+                            String promoName = promotion != null ? promotion.getDescription() : "";
+                            holder.promotion_name.setText(promoName);
+                        }
+                    });
+        }
+
 
 
         Date date_obj = null;
@@ -107,13 +112,23 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
         ViewCompat.setTransitionName(holder.client_name, String.valueOf(position)+"_name");
         ViewCompat.setTransitionName(holder.date, String.valueOf(position)+"_date");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.accept_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(v, holder.getAdapterPosition());
+                APIController.getInstance().acceptAppointment(token, String.valueOf(mDataset.get(position).getId()));
+                mDataset.remove(position);
+                notifyItemRemoved(position);
             }
         });
 
+        holder.cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                APIController.getInstance().cancelAppointment(token, String.valueOf(mDataset.get(position).getId()));
+                mDataset.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
     }
 
     @Override

@@ -126,7 +126,7 @@ public class PromotionDetailsActivity extends AppCompatActivity {
                     String result = getString(R.string.remove_promotion);
 
                     for (Appointment appointment: task.getResult()) {
-                        if (appointment.getService_id() == promotion.getId()) {
+                        if (appointment.getServiceId() == promotion.getId()) {
                             relationed_data = true;
                             result += "- Appointment " + appointment.getId() + "\n";
                         }

@@ -43,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String notificationTitle = type.equals("request") ?
                 getString(R.string.notification_type_request_appointment) : type.equals("accept") ?
                 getString(R.string.notification_type_accept_appointment) :
-                getString(R.string.notification_type_request_appointment);
+                getString(R.string.notification_type_cancel_appointment);
 
         String notificationBody = serviceName + "  " + serviceTime;
 
