@@ -118,6 +118,7 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<PendingAppoi
                 APIController.getInstance().acceptAppointment(token, String.valueOf(mDataset.get(position).getId()));
                 mDataset.remove(position);
                 notifyItemRemoved(position);
+                notifyItemRangeRemoved(position, getItemCount());
             }
         });
 
@@ -127,6 +128,7 @@ public class PendingAppointmentAdapter extends RecyclerView.Adapter<PendingAppoi
                 APIController.getInstance().cancelAppointment(token, String.valueOf(mDataset.get(position).getId()));
                 mDataset.remove(position);
                 notifyItemRemoved(position);
+                notifyItemRangeRemoved(position, getItemCount());
             }
         });
     }

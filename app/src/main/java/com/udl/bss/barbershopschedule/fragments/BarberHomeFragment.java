@@ -95,7 +95,6 @@ public class BarberHomeFragment extends Fragment {
         }
 
         if (pendingAppointmentsRecyclerView != null) {
-            pendingAppointmentsRecyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             pendingAppointmentsRecyclerView.setLayoutManager(llm);
             pendingAppointmentsRecyclerView.setAdapter(
