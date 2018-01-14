@@ -141,6 +141,19 @@ public class APIController {
     }
 
 
+    public void updateDeviceToken(String token, String device_token, String name) {
+        ApiUtils.getService().updateDeviceToken(token, device_token, name).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Device token updated");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Update device token ERROR");
+            }
+        });
+    }
 
 
     /* Barber Shop Controller */
@@ -580,6 +593,7 @@ public class APIController {
         requestBody.put("service_id", String.valueOf(appointment.getService_id()));
         requestBody.put("promotion_id", String.valueOf(appointment.getPromotion_id()));
         requestBody.put("date", String.valueOf(appointment.getDate()));
+        requestBody.put("pending_confirmation", String.valueOf(appointment.getPending()));
 
         ApiUtils.getService().createAppointment(token, requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1178,4 +1192,50 @@ public class APIController {
 
         return tcs.getTask();
     }
+
+
+    /* Notification controller */
+
+    public void acceptAppointment(String token, String id) {
+        ApiUtils.getService().acceptAppointment(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Appointment accepted");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Accept appointment ERROR");
+            }
+        });
+    }
+
+    public void cancelAppointment(String token, String id) {
+        ApiUtils.getService().cancelAppointment(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Appointment cancelled");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Cancel appointment ERROR");
+            }
+        });
+    }
+
+    public void requestAppointment(String token, String id) {
+        ApiUtils.getService().requestAppointment(token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                Log.i("APISERVER", "Appointment requested");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.i("APISERVER", "Request appointment ERROR");
+            }
+        });
+    }
+
 }

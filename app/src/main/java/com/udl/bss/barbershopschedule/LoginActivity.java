@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.getResult() != null) {
                                 Gson gson = new Gson();
                                 JSONObject json = new JSONObject(task.getResult());
+                                String firebase_token = FirebaseInstanceId.getInstance().getToken();
                                 if (json.has("places_id")) {
                                     Barber barber = new Barber(
                                             json.getInt("id"),
@@ -93,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                                             null
                                     );
                                     barber.setToken(json.getString("token"));
+                                    barber.setFirebaseToken(firebase_token);
 
                                     startActivityMode("Barber", gson.toJson(barber));
                                 } else {
@@ -107,9 +110,17 @@ public class LoginActivity extends AppCompatActivity {
                                             null
                                     );
                                     client.setToken(json.getString("token"));
+                                    client.setFirebaseToken(firebase_token);
 
                                     startActivityMode("User", gson.toJson(client));
                                 }
+
+                                APIController.getInstance().updateDeviceToken(
+                                        json.getString("token"),
+                                        firebase_token,
+                                        json.getString("name")
+                                );
+
                             } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.invalid_user),
                                         Toast.LENGTH_SHORT).show();

@@ -8,6 +8,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.gson.Gson;
 import com.udl.bss.barbershopschedule.domain.Barber;
 import com.udl.bss.barbershopschedule.domain.Client;
+import com.udl.bss.barbershopschedule.serverCommunication.APIController;
 
 
 public class FirebaseIdService extends FirebaseInstanceIdService {
@@ -34,14 +35,26 @@ public class FirebaseIdService extends FirebaseInstanceIdService {
         if (mode.equals("Barber")) {
             Barber barber = gson.fromJson(json, Barber.class);
             barber.setFirebaseToken(token);
+
+            APIController.getInstance().updateDeviceToken(
+                    barber.getToken(),
+                    token,
+                    barber.getName()
+            );
+
             saveToSharedPreferences(gson.toJson(barber));
         } else {
             Client client = gson.fromJson(json, Client.class);
             client.setFirebaseToken(token);
+
+            APIController.getInstance().updateDeviceToken(
+                    client.getToken(),
+                    token,
+                    client.getName()
+            );
+
             saveToSharedPreferences(gson.toJson(client));
         }
-
-        // TODO: Implement this method to send token to your app server.
 
     }
 

@@ -131,12 +131,24 @@ public class FreeHourClick implements OnItemClickListener {
                                     @Override
                                     public void onComplete(@NonNull Task<Integer> task) {
                                         int promotion_id = task.getResult();
-                                        APIController.getInstance().createAppointment(client.getToken(),
-                                                new Appointment(-1, client.getId(), service.getBarberShopId(),
-                                                service.getId(), promotion_id, db_format_time))
+                                        Appointment appointment = new Appointment(
+                                                -1,
+                                                client.getId(),
+                                                service.getBarberShopId(),
+                                                service.getId(),
+                                                promotion_id,
+                                                db_format_time);
+                                        appointment.setPending(1);
+                                        APIController.getInstance().createAppointment(client.getToken(), appointment)
                                                 .addOnCompleteListener(new OnCompleteListener<Integer>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Integer> task) {
+
+                                                APIController.getInstance().requestAppointment(
+                                                        client.getToken(),
+                                                        String.valueOf(task.getResult())
+                                                );
+
                                                 Intent intent = new Intent(activity, HomeActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 intent.putExtra("user", "User");

@@ -33,6 +33,11 @@ public interface APIService {
     @GET("users/isAvailable/{username}")
     Call<ResponseBody> isUserAvailable(@Path(value = "username", encoded = true) String username);
 
+    @POST("users/updateUserDeviceToken/{username}/{deviceToken}/{token}")
+    Call<ResponseBody> updateDeviceToken(@Path(value = "token", encoded = true) String token,
+                                         @Path(value = "deviceToken", encoded = true) String device_token,
+                                         @Path(value = "username", encoded = true) String name);
+
 
 
     /* Appointment Controller */
@@ -267,4 +272,21 @@ public interface APIService {
     Call<ResponseBody> getBarberShopScheduleByDay(@Path(value = "token", encoded = true) String token,
                                                   @Path(value = "barber_shop_id", encoded = true) String barber_shop_id,
                                                   @Path(value = "day_of_week", encoded = true) String day_of_week);
+
+
+    /* Notification controller */
+
+    @POST("notifications/acceptAppointment/{id}/{token}")
+    Call<ResponseBody> acceptAppointment(@Path(value = "token", encoded = true) String token,
+                                         @Path(value = "id", encoded = true) String id);
+
+    @POST("notifications/cancelAppointment/{id}/{token}")
+    Call<ResponseBody> cancelAppointment(@Path(value = "token", encoded = true) String token,
+                                         @Path(value = "id", encoded = true) String id);
+
+
+    @POST("notifications/requestAppointment/{id}/{token}")
+    Call<ResponseBody> requestAppointment(@Path(value = "token", encoded = true) String token,
+                                          @Path(value = "id", encoded = true) String id);
+
 }

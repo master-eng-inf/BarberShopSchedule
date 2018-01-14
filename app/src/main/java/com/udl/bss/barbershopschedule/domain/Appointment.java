@@ -18,6 +18,7 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
     private int service_id;
     private int promotion_id;
     private Date date;
+    private int pending;
 
     public Appointment(int id, int client_id, int barber_shop_id, int service_id, int promotion_id, String date) {
         this.id = id;
@@ -132,6 +133,14 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getPending() {
+        return pending;
+    }
+
+    public void setPending(int pending) {
+        this.pending = pending;
     }
 
     @Override
