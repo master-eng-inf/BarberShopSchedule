@@ -1,5 +1,6 @@
 package com.udl.bss.barbershopschedule.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
@@ -31,12 +32,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private List<Appointment> mDataset;
     private OnItemClickListener listener;
     private String token;
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView name;
         TextView date;
         TextView service;
+
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_view);
@@ -46,10 +49,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, String token) {
+    public AppointmentAdapter(List<Appointment> myDataset, OnItemClickListener listener, String token, Context context) {
         mDataset = myDataset;
         this.listener = listener;
         this.token = token;
+        this.context = context;
     }
 
     @Override
@@ -62,24 +66,29 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (mDataset.get(position).getPending() == 1) {
+            holder.cv.setCardBackgroundColor(context.getResources().getColor(R.color.freeHourUnavailable));
+        } else {
+            holder.cv.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        }
 
-        APIController.getInstance().getServiceById(token ,String.valueOf(mDataset.get(position).getServiceId()))
+        APIController.getInstance().getServiceById(token, String.valueOf(mDataset.get(position).getServiceId()))
                 .addOnCompleteListener(new OnCompleteListener<BarberService>() {
-            @Override
-            public void onComplete(@NonNull Task<BarberService> task) {
-                BarberService barberService = task.getResult();
-                holder.service.setText(barberService.getName());
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<BarberService> task) {
+                        BarberService barberService = task.getResult();
+                        holder.service.setText(barberService.getName());
+                    }
+                });
 
-        APIController.getInstance().getBarberById(token ,String.valueOf(mDataset.get(position).getBarberShopId()))
+        APIController.getInstance().getBarberById(token, String.valueOf(mDataset.get(position).getBarberShopId()))
                 .addOnCompleteListener(new OnCompleteListener<Barber>() {
-            @Override
-            public void onComplete(@NonNull Task<Barber> task) {
-                Barber barber = task.getResult();
-                holder.name.setText(barber.getName());
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<Barber> task) {
+                        Barber barber = task.getResult();
+                        holder.name.setText(barber.getName());
+                    }
+                });
 
         Date date_obj;
 
@@ -93,9 +102,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         String date = new SimpleDateFormat("HH:mm dd-MM-yyyy", new Locale("es", "ES")).format(date_obj);
         holder.date.setText(date);
 
-        ViewCompat.setTransitionName(holder.service, String.valueOf(position)+"_serv");
-        ViewCompat.setTransitionName(holder.name, String.valueOf(position)+"_name");
-        ViewCompat.setTransitionName(holder.date, String.valueOf(position)+"_date");
+        ViewCompat.setTransitionName(holder.service, String.valueOf(position) + "_serv");
+        ViewCompat.setTransitionName(holder.name, String.valueOf(position) + "_name");
+        ViewCompat.setTransitionName(holder.date, String.valueOf(position) + "_date");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,13 +120,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return mDataset.size();
     }
 
-    public Appointment getItem (int position) {
+    public Appointment getItem(int position) {
         return mDataset.get(position);
     }
 
-    public void removeAll(){
+    public void removeAll() {
         Iterator<Appointment> iter = mDataset.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Appointment app = iter.next();
             int position = mDataset.indexOf(app);
             iter.remove();
@@ -125,10 +134,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
 
-    public int add(Appointment app){
+    public int add(Appointment app) {
         mDataset.add(app);
-        notifyItemInserted(mDataset.size()-1);
-        return mDataset.size()-1;
+        notifyItemInserted(mDataset.size() - 1);
+        return mDataset.size() - 1;
     }
 }
 

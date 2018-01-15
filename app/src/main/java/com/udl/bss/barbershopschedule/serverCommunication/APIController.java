@@ -517,6 +517,7 @@ public class APIController {
                                     json.getInt("service_id"),
                                     json.getInt("promotion_id"),
                                     json.getString("date"));
+                            appointment.setPending(json.getInt("pending_confirmation"));
                             appointmentList.add(appointment);
                         }
 

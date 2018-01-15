@@ -72,6 +72,13 @@ public class FreeHourClick implements OnItemClickListener {
                 not_enough_time = true;
             }
 
+            mPrefs = activity.getSharedPreferences("USER", MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("user", "");
+            final Client client = gson.fromJson(json, Client.class);
+            final String db_format_time = time.getYear() + "-" + time.getMonth() + "-" + time.getDay() + " " + time.getHour() + ":" +
+                    time.getMinutes();
+
             if (not_enough_time) {
                 AlertDialog alert = new AlertDialog.Builder(this.activity).create();
 
@@ -84,10 +91,43 @@ public class FreeHourClick implements OnItemClickListener {
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, activity.getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(activity, HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("user", "");
-                        activity.startActivity(intent);
+                        APIController.getInstance().getPromotionByService(
+                                client.getToken(),
+                                String.valueOf(service.getBarberShopId()),
+                                String.valueOf(service.getId()))
+                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Integer> task) {
+                                        int promotion_id = task.getResult();
+                                        Appointment appointment = new Appointment(
+                                                -1,
+                                                client.getId(),
+                                                service.getBarberShopId(),
+                                                service.getId(),
+                                                promotion_id,
+                                                db_format_time);
+                                        appointment.setPending(1);
+                                        APIController.getInstance().createAppointment(client.getToken(), appointment)
+                                                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Integer> task) {
+
+
+                                                APIController.getInstance().requestAppointment(
+                                                        client.getToken(),
+                                                        String.valueOf(task.getResult())
+                                                );
+
+                                                        Intent intent = new Intent(activity, HomeActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        intent.putExtra("user", "User");
+                                                        activity.startActivity(intent);
+                                                    }
+                                                });
+                                    }
+                                });
+
+
                     }
                 });
 
@@ -115,14 +155,6 @@ public class FreeHourClick implements OnItemClickListener {
                 alert.setButton(DialogInterface.BUTTON_POSITIVE, activity.getString(R.string.accept_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final String db_format_time = time.getYear() + "-" + time.getMonth() + "-" + time.getDay() + " " + time.getHour() + ":" +
-                                time.getMinutes();
-
-                        mPrefs = activity.getSharedPreferences("USER", MODE_PRIVATE);
-                        Gson gson = new Gson();
-                        String json = mPrefs.getString("user", "");
-                        final Client client = gson.fromJson(json, Client.class);
-
                         APIController.getInstance().getPromotionByService(
                                 client.getToken(),
                                 String.valueOf(service.getBarberShopId()),
@@ -138,23 +170,24 @@ public class FreeHourClick implements OnItemClickListener {
                                                 service.getId(),
                                                 promotion_id,
                                                 db_format_time);
-                                        appointment.setPending(1);
+                                        appointment.setPending(0);
                                         APIController.getInstance().createAppointment(client.getToken(), appointment)
                                                 .addOnCompleteListener(new OnCompleteListener<Integer>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Integer> task) {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Integer> task) {
 
+                                                /*
                                                 APIController.getInstance().requestAppointment(
                                                         client.getToken(),
                                                         String.valueOf(task.getResult())
                                                 );
-
-                                                Intent intent = new Intent(activity, HomeActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                intent.putExtra("user", "User");
-                                                activity.startActivity(intent);
-                                            }
-                                        });
+                                                */
+                                                        Intent intent = new Intent(activity, HomeActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        intent.putExtra("user", "User");
+                                                        activity.startActivity(intent);
+                                                    }
+                                                });
                                     }
                                 });
 
