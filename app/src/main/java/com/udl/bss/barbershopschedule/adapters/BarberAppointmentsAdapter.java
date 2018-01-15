@@ -83,16 +83,17 @@ public class BarberAppointmentsAdapter extends RecyclerView.Adapter<BarberAppoin
                     }
                 });
 
-        APIController.getInstance().getPromotionById(token, String.valueOf(mDataset.get(position).getPromotionId()))
-                .addOnCompleteListener(new OnCompleteListener<Promotion>() {
-            @Override
-            public void onComplete(@NonNull Task<Promotion> task) {
-                Promotion promotion = task.getResult();
-                String promoName = promotion != null ? promotion.getDescription() : "";
-                holder.promotion_name.setText(promoName);
-            }
-        });
-
+        if (mDataset.get(position).getPromotionId() != -1){
+            APIController.getInstance().getPromotionById(token, String.valueOf(mDataset.get(position).getPromotionId()))
+                    .addOnCompleteListener(new OnCompleteListener<Promotion>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Promotion> task) {
+                            Promotion promotion = task.getResult();
+                            String promoName = promotion != null ? promotion.getDescription() : "";
+                            holder.promotion_name.setText(promoName);
+                        }
+                    });
+        }
 
         Date date_obj = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());

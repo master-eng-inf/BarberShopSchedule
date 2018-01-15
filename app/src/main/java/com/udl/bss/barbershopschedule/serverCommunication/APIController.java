@@ -902,16 +902,9 @@ public class APIController {
                     if (body != null) {
                         String s = body.string();
                         JSONObject json = new JSONObject(s);
-                        Promotion promotion = new Promotion(
-                                json.getInt("id"),
-                                json.getInt("barber_shop_id"),
-                                json.getInt("service_id"),
-                                json.getString("name"),
-                                json.getString("description"),
-                                json.getInt("is_promotional"));
 
                         Log.i("APISERVER", s);
-                        tcs.setResult(promotion.getId());
+                        tcs.setResult(json.getInt("id"));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

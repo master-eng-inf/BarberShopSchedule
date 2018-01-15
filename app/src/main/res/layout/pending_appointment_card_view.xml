@@ -68,7 +68,7 @@
                 android:paddingBottom="5dp"
                 android:textColor="#fff"
                 android:textSize="15sp"
-                android:text="No promotion"
+                android:text="@string/no_promo"
                 android:transitionName="@string/transname_barberaddress"/>
 
             <TextView
