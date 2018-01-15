@@ -90,7 +90,7 @@ public class BarberHomeFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             appointmentsRecyclerView.setLayoutManager(llm);
             appointmentsRecyclerView.setAdapter(
-                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null));
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null, getContext()));
             setAppointmentItems();
         }
 
@@ -98,7 +98,7 @@ public class BarberHomeFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             pendingAppointmentsRecyclerView.setLayoutManager(llm);
             pendingAppointmentsRecyclerView.setAdapter(
-                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null));
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null ,null, getContext()));
             setPendingAppointmentItems();
         }
 

@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             appointmentsRecyclerView.setLayoutManager(llm);
             appointmentsRecyclerView.setAdapter(
-                    new AppointmentAdapter(new ArrayList<Appointment>(), null, null));
+                    new AppointmentAdapter(new ArrayList<Appointment>(), null, null, getContext()));
             setAppointmentItems();
         }
 
@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment {
                 AppointmentAdapter adapter = new AppointmentAdapter(
                         appointmentList,
                         new AppointmentClick(getActivity(), appointmentsRecyclerView),
-                        client.getToken());
+                        client.getToken(), getContext());
                 appointmentsRecyclerView.setAdapter(adapter);
             }
         });
