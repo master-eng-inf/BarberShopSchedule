@@ -20,9 +20,20 @@ import com.udl.bss.barbershopschedule.R;
 public class GoogleMaps {
 
     private Activity activity;
+    private ViewHolder holder;
 
     public GoogleMaps (Activity activity) {
         this.activity = activity;
+        this.holder = new ViewHolder();
+
+        holder.mapView = activity.findViewById(R.id.lite_listrow_map);
+        holder.title = activity.findViewById(R.id.textView_register_place);
+
+        if (holder.mapView != null) {
+            holder.mapView.onCreate(null);
+            holder.mapView.getMapAsync(holder);
+        }
+
     }
 
     private static class NamedLocation {
@@ -53,30 +64,21 @@ public class GoogleMaps {
             }
         }
 
-        void initializeMapView() {
-            if (mapView != null) {
-                mapView.onCreate(null);
-                mapView.getMapAsync(this);
-            }
-        }
-
     }
 
     public void setMap(String name, LatLng location) {
-        ViewHolder holder = new ViewHolder();
-        holder.mapView = activity.findViewById(R.id.lite_listrow_map);
-        holder.title = activity.findViewById(R.id.textView_register_place);
+        if (holder != null) {
+            holder.mapView.setVisibility(View.VISIBLE);
 
-        holder.mapView.setVisibility(View.VISIBLE);
+            NamedLocation item = new NamedLocation(name, location);
+            holder.mapView.setTag(item);
 
-        holder.initializeMapView();
-        NamedLocation item = new NamedLocation(name, location);
-        holder.mapView.setTag(item);
-
-        if (holder.map != null) {
-            setMapLocation(holder.map, item);
+            if (holder.map != null) {
+                setMapLocation(holder.map, item);
+            }
+            holder.title.setText(item.name);
         }
-        holder.title.setText(item.name);
+
     }
 
 
