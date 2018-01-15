@@ -3,6 +3,7 @@ package com.udl.bss.barbershopschedule;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -75,8 +76,12 @@ public class BarberNewServiceActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), getString(R.string.service_create), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(this, HomeActivity.class);
-                    intent.putExtra("user", "Barber");
-                    this.startActivity(intent);
+                    startActivity(intent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        finishAffinity();
+                    } else {
+                        finish();
+                    }
                 }
             }
             else {

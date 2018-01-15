@@ -63,8 +63,12 @@ public class BarberAppointmentDetailsActivity extends AppCompatActivity {
                         APIController.getInstance().cancelAppointment(barber.getToken(), appointmentId);
                         Toast.makeText(getApplicationContext(), getString(R.string.appointment_deleted), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        intent.putExtra("user", "Barber");
                         startActivity(intent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            finishAffinity();
+                        } else {
+                            finish();
+                        }
                     }
                 });
 

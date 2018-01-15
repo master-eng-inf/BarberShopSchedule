@@ -69,8 +69,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
                         APIController.getInstance().cancelAppointment(token, appointmentId);
                         Toast.makeText(getApplicationContext(), getString(R.string.appointment_deleted), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        intent.putExtra("user", "");
                         startActivity(intent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            finishAffinity();
+                        } else {
+                            finish();
+                        }
                     }
                 });
 
